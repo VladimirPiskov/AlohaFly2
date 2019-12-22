@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="AlohaFly.UI.CtrlCatalogAutoCompliteBox"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" HorizontalAlignment="Stretch"
+             x:Name="uc"
+             >
+
+    <UserControl.Resources>
+        <Style x:Key="AutoCompleteStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="13.333" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <DataTemplate x:Key="SongsSearchAutoComplete">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding DisplayMemberPathName}" Style="{StaticResource AutoCompleteStyle}" />
+                <Label Content=", " Style="{StaticResource AutoCompleteStyle}" />
+                <Label Content="{Binding Author}" Style="{StaticResource AutoCompleteStyle}" />
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <Label Content="{Binding Header}"   Visibility="{Binding HeaderVisibility}" />
+
+            <!--   <telerik:RadComboBox x:Name="TechnologySelection" 
+                                         Margin="2" FontFamily="Segoe UI"
+                                         ClearSelectionButtonContent="Show all" 
+                                         DisplayMemberPath="{Binding DisplayMemberPathName}"
+                                         ItemsSource="{Binding DataCatalog}" 
+                                         SelectedItem="{Binding SelectedData}"
+                                     IsTextSearchCaseSensitive="False"
+                                     IsTextSearchEnabled="True"
+                                         IsEditable="True"
+                                         EmptyText="{Binding EmptyText}"/>
+
+            /!-->
+
+
+            <telerik:RadAutoCompleteBox  WatermarkContent="{Binding EmptyText}"
+                                         TabIndex="{Binding ElementName=uc, Path=TabIndex}"
+											 x:Name="songsAutoCompleteBox"
+											 TextSearchMode="Contains"
+											 AutoCompleteMode="Suggest"
+											 SelectionMode="Single"
+											 TextSearchPath="{Binding DisplayMemberPathName}"
+											 ItemsSource="{Binding DataCatalog}"
+										
+											 Margin="2"
+                                             SelectedItem="{Binding SelectedData, Mode=TwoWay}"
+                                             NoResultsContent="Совпадения не найдены"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>  

@@ -1,0 +1,286 @@
+2018-08-29 16:28:36,985 [14] ERROR CreateAirCompany started.
+2018-08-29 16:54:55,990 [25] INFO  CreateAirCompany started.
+2018-08-29 16:56:40,129 [6] INFO  CreateAirCompany started.
+2018-08-29 16:57:19,095 [32] INFO  CreateAirCompany started.
+2018-08-29 16:58:35,648 [32] INFO  CreateAirCompany started.
+2018-08-29 17:04:31,763 [49] INFO  CreateAirCompany started.
+2018-08-29 17:06:35,424 [49] INFO  CreateAirCompany started.
+2018-08-29 17:11:19,591 [28] INFO  CreateAirCompany started.
+2018-08-29 17:15:35,095 [63] INFO  CreateAirCompany started.
+2018-08-29 17:18:12,576 [55] INFO  CreateAirCompany started.
+2018-08-29 17:24:01,530 [9] INFO  CreateAirCompany started.
+2018-08-29 17:28:42,497 [24] INFO  CreateAirCompany started.
+2018-08-29 17:30:00,939 [32] INFO  CreateAirCompany started.
+2018-08-29 17:31:22,517 [5] INFO  CreateAirCompany started.
+2018-08-29 17:32:13,004 [28] INFO  CreateAirCompany started.
+2018-08-29 17:36:52,191 [36] INFO  CreateAirCompany started.
+2018-08-29 17:38:05,559 [27] INFO  CreateAirCompany started.
+2018-08-29 17:39:23,080 [10] INFO  CreateAirCompany started.
+2018-08-29 17:44:20,894 [21] INFO  CreateAirCompany started.
+2018-08-29 17:57:36,722 [9] INFO  CreateAirCompany started.
+2018-08-29 17:57:45,386 [18] INFO  CreateAirCompany started.
+2018-08-29 17:58:42,989 [38] INFO  CreateAirCompany started.
+2018-08-29 20:14:36,131 [7] INFO  CreateAirCompany started.
+2018-08-30 15:11:24,586 [21] INFO  CreateAirCompany started.
+2018-08-30 15:20:27,896 [14] INFO  CreateAirCompany started.
+2018-08-30 15:22:11,230 [12] INFO  CreateAirCompany started.
+2018-08-30 15:23:00,134 [15] INFO  CreateAirCompany started.
+2018-08-30 15:24:33,392 [12] INFO  CreateAirCompany started.
+2018-08-30 21:14:16,824 [21] INFO  CreateAirCompany started.
+2018-09-06 01:07:54,658 [13] INFO  CreateAirCompany started.
+2018-09-06 01:09:15,646 [11] INFO  CreateAirCompany started.
+2018-09-06 01:09:15,675 [11] INFO  CreateAirCompany started.
+2018-09-06 01:09:15,685 [11] INFO  CreateAirCompany started.
+2018-09-06 01:13:26,179 [32] INFO  CreateAirCompany started.
+2018-09-06 01:13:26,237 [32] INFO  CreateAirCompany started.
+2018-09-06 01:13:26,248 [32] INFO  CreateAirCompany started.
+2018-09-06 01:16:18,321 [37] INFO  CreateAirCompany started.
+2018-09-06 01:16:20,244 [37] INFO  CreateAirCompany started.
+2018-09-06 01:16:20,256 [37] INFO  CreateAirCompany started.
+2018-09-06 01:18:01,741 [37] INFO  CreateAirCompany started.
+2018-09-06 01:18:21,451 [37] INFO  CreateAirCompany started.
+2018-09-06 01:18:21,459 [37] INFO  CreateAirCompany started.
+2018-09-06 01:18:21,462 [37] INFO  CreateAirCompany started.
+2018-09-07 01:47:20,778 [17] ERROR Error
+System.InvalidOperationException: The ForeignKeyAttribute on property 'Dish' on type 'AlohaService.Entities.DishPackageFlightOrder' is not valid. The foreign key name 'ContactPersonId' was not found on the dependent type 'AlohaService.Entities.DishPackageFlightOrder'. The Name value should be a comma separated list of foreign key property names.
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.<GetDependentProperties>d__f.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.Apply(NavigationProperty item, DbModel model)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmNavigationProperty(NavigationProperty item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmEntityType(EntityType item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitEdmModel(EdmModel item)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ApplyConceptualModel(DbModel model)
+   at System.Data.Entity.DbModelBuilder.Build(DbProviderManifest providerManifest, DbProviderInfo providerInfo)
+   at System.Data.Entity.DbModelBuilder.Build(DbConnection providerConnection)
+   at System.Data.Entity.Internal.LazyInternalContext.CreateModel(LazyInternalContext internalContext)
+   at System.Data.Entity.Internal.RetryLazy`2.GetValue(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.Initialize()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+2018-09-07 01:48:37,804 [22] ERROR Error
+System.InvalidOperationException: The ForeignKeyAttribute on property 'Dish' on type 'AlohaService.Entities.DishPackageFlightOrder' is not valid. The foreign key name 'ContactPersonId' was not found on the dependent type 'AlohaService.Entities.DishPackageFlightOrder'. The Name value should be a comma separated list of foreign key property names.
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.<GetDependentProperties>d__f.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.Apply(NavigationProperty item, DbModel model)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmNavigationProperty(NavigationProperty item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmEntityType(EntityType item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitEdmModel(EdmModel item)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ApplyConceptualModel(DbModel model)
+   at System.Data.Entity.DbModelBuilder.Build(DbProviderManifest providerManifest, DbProviderInfo providerInfo)
+   at System.Data.Entity.DbModelBuilder.Build(DbConnection providerConnection)
+   at System.Data.Entity.Internal.LazyInternalContext.CreateModel(LazyInternalContext internalContext)
+   at System.Data.Entity.Internal.RetryLazy`2.GetValue(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.Initialize()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+2018-09-07 01:49:22,170 [18] ERROR Error
+System.InvalidOperationException: The ForeignKeyAttribute on property 'AirCompany' on type 'AlohaService.Entities.OrderFlight' is not valid. The foreign key name 'MailingAddressId' was not found on the dependent type 'AlohaService.Entities.OrderFlight'. The Name value should be a comma separated list of foreign key property names.
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.<GetDependentProperties>d__f.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.Apply(NavigationProperty item, DbModel model)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmNavigationProperty(NavigationProperty item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmEntityType(EntityType item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitEdmModel(EdmModel item)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ApplyConceptualModel(DbModel model)
+   at System.Data.Entity.DbModelBuilder.Build(DbProviderManifest providerManifest, DbProviderInfo providerInfo)
+   at System.Data.Entity.DbModelBuilder.Build(DbConnection providerConnection)
+   at System.Data.Entity.Internal.LazyInternalContext.CreateModel(LazyInternalContext internalContext)
+   at System.Data.Entity.Internal.RetryLazy`2.GetValue(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.Initialize()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+2018-09-07 01:49:51,350 [21] ERROR Error
+System.InvalidOperationException: The ForeignKeyAttribute on property 'AirCompany' on type 'AlohaService.Entities.OrderFlight' is not valid. The foreign key name 'MailingAddressId' was not found on the dependent type 'AlohaService.Entities.OrderFlight'. The Name value should be a comma separated list of foreign key property names.
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.<GetDependentProperties>d__f.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyNavigationPropertyAttributeConvention.Apply(NavigationProperty item, DbModel model)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmNavigationProperty(NavigationProperty item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ModelConventionDispatcher.VisitEdmEntityType(EntityType item)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitCollection[T](IEnumerable`1 collection, Action`1 visitMethod)
+   at System.Data.Entity.Edm.EdmModelVisitor.VisitEdmModel(EdmModel item)
+   at System.Data.Entity.ModelConfiguration.Configuration.ConventionsConfiguration.ApplyConceptualModel(DbModel model)
+   at System.Data.Entity.DbModelBuilder.Build(DbProviderManifest providerManifest, DbProviderInfo providerInfo)
+   at System.Data.Entity.DbModelBuilder.Build(DbConnection providerConnection)
+   at System.Data.Entity.Internal.LazyInternalContext.CreateModel(LazyInternalContext internalContext)
+   at System.Data.Entity.Internal.RetryLazy`2.GetValue(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.Initialize()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+2018-09-07 01:50:30,727 [23] ERROR Error
+System.Data.Entity.ModelConfiguration.ModelValidationException: One or more validation errors were detected during model generation:
+
+AlohaService.DeliveryPlace: : EntityType 'DeliveryPlace' has no key defined. Define the key for this EntityType.
+DeliveryPlace: EntityType: EntitySet 'DeliveryPlace' is based on type 'DeliveryPlace' that has no keys defined.
+
+   at System.Data.Entity.Core.Metadata.Edm.EdmModel.Validate()
+   at System.Data.Entity.DbModelBuilder.Build(DbProviderManifest providerManifest, DbProviderInfo providerInfo)
+   at System.Data.Entity.DbModelBuilder.Build(DbConnection providerConnection)
+   at System.Data.Entity.Internal.LazyInternalContext.CreateModel(LazyInternalContext internalContext)
+   at System.Data.Entity.Internal.RetryLazy`2.GetValue(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.Initialize()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+2018-09-07 02:24:20,826 [7] ERROR Error
+System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.SqlServer.SqlProviderServices.<>c__DisplayClass33.<UsingConnection>b__32()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.SqlProviderServices.UsingMasterConnection(DbConnection sqlConnection, Action`1 act)
+   at System.Data.Entity.SqlServer.SqlProviderServices.CreateDatabaseFromScript(Nullable`1 commandTimeout, DbConnection sqlConnection, String createDatabaseScript)
+   at System.Data.Entity.SqlServer.SqlProviderServices.DbCreateDatabase(DbConnection connection, Nullable`1 commandTimeout, StoreItemCollection storeItemCollection)
+   at System.Data.Entity.Migrations.Utilities.DatabaseCreator.Create(DbConnection connection)
+   at System.Data.Entity.Migrations.DbMigrator.EnsureDatabaseExists(Action mustSucceedToKeepDatabase)
+   at System.Data.Entity.Migrations.DbMigrator.Update(String targetMigration)
+   at System.Data.Entity.Internal.DatabaseCreator.CreateDatabase(InternalContext internalContext, Func`3 createMigrator, ObjectContext objectContext)
+   at System.Data.Entity.Database.Create(DatabaseExistenceState existenceState)
+   at System.Data.Entity.DropCreateDatabaseIfModelChanges`1.InitializeDatabase(TContext context)
+   at System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   at System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   at System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:-1,State:0,Class:20
+2018-09-07 02:33:56,284 [13] ERROR Error
+System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.SqlServer.SqlProviderServices.<>c__DisplayClass33.<UsingConnection>b__32()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.SqlProviderServices.UsingMasterConnection(DbConnection sqlConnection, Action`1 act)
+   at System.Data.Entity.SqlServer.SqlProviderServices.CreateDatabaseFromScript(Nullable`1 commandTimeout, DbConnection sqlConnection, String createDatabaseScript)
+   at System.Data.Entity.SqlServer.SqlProviderServices.DbCreateDatabase(DbConnection connection, Nullable`1 commandTimeout, StoreItemCollection storeItemCollection)
+   at System.Data.Entity.Migrations.Utilities.DatabaseCreator.Create(DbConnection connection)
+   at System.Data.Entity.Migrations.DbMigrator.EnsureDatabaseExists(Action mustSucceedToKeepDatabase)
+   at System.Data.Entity.Migrations.DbMigrator.Update(String targetMigration)
+   at System.Data.Entity.Internal.DatabaseCreator.CreateDatabase(InternalContext internalContext, Func`3 createMigrator, ObjectContext objectContext)
+   at System.Data.Entity.Database.Create(DatabaseExistenceState existenceState)
+   at System.Data.Entity.DropCreateDatabaseIfModelChanges`1.InitializeDatabase(TContext context)
+   at System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   at System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   at System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Any[TSource](IQueryable`1 source, Expression`1 predicate)
+   at AlohaService.BusinessServices.UserService.CreateUser(UserInfo userInfo) in D:\Питание\Aloha.Database\AlohaService\AlohaService\BusinessServices\UserService.cs:line 30
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:-1,State:0,Class:20
+2018-09-12 17:31:03,543 [26] ERROR Error
+System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   at System.Data.Entity.SqlServer.SqlProviderServices.<>c__DisplayClass33.<UsingConnection>b__32()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.SqlServer.SqlProviderServices.UsingMasterConnection(DbConnection sqlConnection, Action`1 act)
+   at System.Data.Entity.SqlServer.SqlProviderServices.CreateDatabaseFromScript(Nullable`1 commandTimeout, DbConnection sqlConnection, String createDatabaseScript)
+   at System.Data.Entity.SqlServer.SqlProviderServices.DbCreateDatabase(DbConnection connection, Nullable`1 commandTimeout, StoreItemCollection storeItemCollection)
+   at System.Data.Entity.Migrations.Utilities.DatabaseCreator.Create(DbConnection connection)
+   at System.Data.Entity.Migrations.DbMigrator.EnsureDatabaseExists(Action mustSucceedToKeepDatabase)
+   at System.Data.Entity.Migrations.DbMigrator.Update(String targetMigration)
+   at System.Data.Entity.Internal.DatabaseCreator.CreateDatabase(InternalContext internalContext, Func`3 createMigrator, ObjectContext objectContext)
+   at System.Data.Entity.Database.Create(DatabaseExistenceState existenceState)
+   at System.Data.Entity.DropCreateDatabaseIfModelChanges`1.InitializeDatabase(TContext context)
+   at System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   at System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   at System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   at System.Data.Entity.DbSet`1.Add(TEntity entity)
+   at AlohaService.BusinessServices.UserGroupService.CreateUserFunc(UserFunc userFunc)
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:-1,State:0,Class:20
+2018-09-26 17:46:14,507 [8] INFO  CreateAirCompany started.
+2018-09-26 18:25:54,119 [54] INFO  CreateAirCompany started.
+2018-09-26 18:39:06,881 [98] INFO  CreateAirCompany started.
+2018-11-04 20:06:15,740 [7] INFO  CreateAirCompany started.
+2018-12-18 17:25:43,453 [74] ERROR Error
+System.NullReferenceException: Ссылка на объект не указывает на экземпляр объекта.
+   в AlohaService.BusinessServices.OrderCustomerService.CreateOrderCustomer(OrderCustomer orderCustomer) в D:\Питание\Git\AlohaCommercial\AlohaService\BusinessServices\OrderCustomerService.cs:строка 34

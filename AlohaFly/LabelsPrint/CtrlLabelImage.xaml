@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="AlohaFly.LabelsPrint.CtrlLabelImage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.LabelsPrint"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Width="690" Height="690">
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+        <Grid.Resources>
+
+            <Style x:Key="BaseFont" TargetType="TextBlock">
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="FontSize" Value="40"/>
+            </Style>
+            <Style x:Key="BigFont" TargetType="TextBlock" BasedOn="{StaticResource BaseFont}">
+
+            </Style>
+            <Style x:Key="SmallFont" TargetType="TextBlock" BasedOn="{StaticResource BaseFont}">
+                <Setter Property="FontSize" Value="35"/>
+            </Style>
+
+            <Style x:Key="BigBoldFont" TargetType="TextBlock"  BasedOn="{StaticResource BaseFont}">
+                <Setter Property="FontSize" Value="50"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+            <Style x:Key="BoldFont" TargetType="TextBlock"  BasedOn="{StaticResource BaseFont}">
+
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+        </Grid.Resources>
+        <!--
+        <Grid.Background>
+            <ImageBrush ImageSource="/Icons/ToFlyLogo.png" Stretch="Uniform" Opacity="0.1" />
+        </Grid.Background>
+        </-->
+        <Border BorderBrush="White" BorderThickness="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MaxHeight="500" Height="auto"></RowDefinition>
+                        <RowDefinition Height="140"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Viewbox  VerticalAlignment="Top" MaxHeight="500" >
+                        
+                    <Grid   Margin="50" MaxWidth="500" VerticalAlignment="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource  BigBoldFont}" Grid.Row="0" Text="{Binding BarCode}"/>
+                        <TextBlock Style="{StaticResource  BoldFont}" Grid.Row="1" Text="{Binding CommentStr}" Visibility="{Binding CommentStrVisibility}"/>
+                        <Border Background="Gray" HorizontalAlignment="Stretch" Grid.Row="2" Height="6" BorderThickness="0,2,0,0"></Border>
+                        <TextBlock Style="{StaticResource  BigFont}" Grid.Row="3" Text="{Binding RussianItem}"/>
+                        <TextBlock Style="{StaticResource  BigFont}"  Grid.Row="4" Text="{Binding EnglishItem}"/>
+                        <TextBlock Style="{StaticResource  BoldFont}"  Grid.Row="5" Text="{Binding PartStr}"/>
+                        <TextBlock Style="{StaticResource  SmallFont}"  Grid.Row="6" Text="{Binding RussianComp}"/>
+                        <TextBlock Style="{StaticResource  SmallFont}"  Grid.Row="7" Text="{Binding EnglishComp}"/>
+                        <Border Background="Gray" HorizontalAlignment="Stretch"  Grid.Row="8" Height="6" BorderThickness="0,2,0,0"></Border>
+                    </Grid>
+                </Viewbox>
+
+                    <Image Source="/Icons/ToFlyLogo.png" Grid.Row="1" Stretch="Uniform" Opacity="1" Height="150" Visibility="{Binding ToFlyLogoVisible}" />
+                    <Image Source="/Icons/ToGoLogo.png" Grid.Row="1" Stretch="Uniform" Opacity="1" Height="150" Visibility="{Binding ToGoLogoVisible}" />
+                
+            </Grid>
+            
+            <TextBlock Grid.Column="1" Margin="0,120,40,0" Style="{StaticResource  SmallFont}" Text="{Binding LDate}" Grid.RowSpan="2">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90"/>
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

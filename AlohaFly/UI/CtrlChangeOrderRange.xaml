@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="AlohaFly.UI.CtrlChangeOrderRange"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+                          xmlns:localModels="clr-namespace:AlohaFly.Models"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}" Command="{Binding TodayCommand}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/planner-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Этот день" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}" Command="{Binding ThisMonthCommand}" IsChecked="{Binding ThisMonthisChecked, Mode=OneTime}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/calendar-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Этот месяц" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}" Command="{Binding LastMonthCommand}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Тот месяц" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}" Command="{Binding FreeRangeCommand}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/data_sheet-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Произвольный диапазон" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <Label Content="{Binding CurentRangeDatesStr}" />
+            <Label Content="{Binding OrderRangeSumm}" Visibility="Collapsed"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Height="30" Margin="5"  Orientation="Horizontal" Visibility="{Binding DatePanelVis}" >
+            <telerik:RadDatePicker SelectedValue="{Binding StartDt}"></telerik:RadDatePicker>
+            <telerik:RadDatePicker  SelectedValue="{Binding StopDt}"></telerik:RadDatePicker>
+            <telerik:RadButton Height="25" Content="Ok" Margin="5,0,5,0"  Command="{Binding FreeRangeOkCommand}" >
+                
+            </telerik:RadButton>
+        </StackPanel>
+    </Grid>
+</UserControl>

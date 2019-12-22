@@ -1,0 +1,682 @@
+﻿<UserControl x:Class="AlohaFly.Analytics.CtrlMainAnalitics"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.Analytics"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:chart="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Chart"
+             xmlns:chartView="clr-namespace:Telerik.Windows.Controls.ChartView;assembly=Telerik.Windows.Controls.Chart"
+             xmlns:charting="clr-namespace:Telerik.Charting;assembly=Telerik.Windows.Controls.Chart"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <PathGeometry x:Key="markerGeometry">
+            <PathGeometry.Figures>
+                <PathFigure StartPoint="0.41,8.89" IsClosed="True">
+                    <PathFigure.Segments>
+                        <BezierSegment Point1="1.61,4.39" Point2="5.32,0.99" Point3="9.92,0.18" />
+                        <LineSegment Point="12,12" />
+                    </PathFigure.Segments>
+                </PathFigure>
+            </PathGeometry.Figures>
+        </PathGeometry>
+        <SolidColorBrush x:Key="TextBlockForeground" Color="#FF767676" />
+        <SolidColorBrush x:Key="HeaderTextBlockForeground" Color="#FF25A0DA" />
+        <SolidColorBrush x:Key="GridLineAnnotationLabelBrush" Color="#FF767676" />
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+
+        <Style x:Key="H1" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="{StaticResource HeaderTextBlockForeground}" />
+            <Setter Property="Margin" Value="0,20,0,0" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+
+        <Style x:Key="Underline" TargetType="Rectangle">
+            <Setter Property="Height" Value="1" />
+            <Setter Property="Fill" Value="{StaticResource HeaderTextBlockForeground}" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+
+        <Style x:Key="TabFont" TargetType="telerik:RadTabItem">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="20,0,20,0" />
+            <Setter Property="Padding" Value="10,0,10,0" />
+            
+            
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            
+        </Grid.RowDefinitions>
+        <telerik:RadTimeBar Name="timeBar1" Height="150"
+                            PeriodStart="{Binding PeriodStart, Mode=TwoWay}" 
+                            PeriodEnd="{Binding PeriodEnd, Mode=TwoWay}"
+                            VisiblePeriodStart="{Binding VisiblePeriodStart, Mode=TwoWay}" 
+                            VisiblePeriodEnd="{Binding VisiblePeriodEnd, Mode=TwoWay}"
+                            SelectionStart="{Binding SelectedStartDate, Mode=TwoWay}"
+                            SelectionEnd="{Binding SelectedEndDate, Mode=TwoWay}"
+                            MinSelectionRange="{Binding MinSelectionRange, Mode=TwoWay}"
+                            IsSnapToIntervalEnabled="True">
+           
+
+
+
+            <telerik:RadTimeBar.Intervals>
+                <telerik:QuarterInterval />
+                <telerik:MonthInterval />
+                <telerik:WeekInterval />
+                <telerik:DayInterval />
+            </telerik:RadTimeBar.Intervals>
+            
+
+            <telerik:RadColumnSparkline ItemsSource="{Binding RevenueInfos}" XValuePath="Date" YValuePath="Revenue"  />
+        </telerik:RadTimeBar>
+
+        <telerik:RadTabControl Grid.Row="1" VerticalAlignment="Stretch" Margin="0,10,0,0" Background="White"  
+                               
+				DisplayMemberPath="Content" DropDownDisplayMode="Visible" ScrollMode="Viewport" BorderThickness="0">
+            <telerik:RadTabItem DropDownContent="ToFly" Header="ToFly" Style="{StaticResource TabFont}">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Rectangle Style="{StaticResource Underline}" />
+                            <Grid Height="75" VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+                                    </Style>
+                                </Grid.Resources>
+
+
+                                <Rectangle Fill="DarkGray" Grid.Column="2" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                                <Rectangle Fill="DarkGray" Grid.Column="5" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                
+
+                                <TextBlock Text="выручка" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SaleAirSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"/>
+                                <TextBlock Text="ср. чек" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock Text="{Binding AvgSaleAirSummStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="заказано через шереметьево" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Row="2" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SaleSharAirSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI" Grid.Row="2"/>
+
+
+                                <TextBlock Text="срочные" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4"/>
+                                <TextBlock Text="{Binding AlertAirOrdersStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3"/>
+                                <TextBlock Text="отмененные" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="4"/>
+                                <TextBlock Text="{Binding CancelledAirOrdersStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="3" Grid.Row="1"/>
+                                <TextBlock Text="гастрофуд" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="2" Grid.Column="4"/>
+                                <TextBlock Text="{Binding GastroSummStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="3" Grid.Row="2"/>
+                                
+
+                                <TextBlock Text="дневные" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="7"/>
+                                <TextBlock Text="{Binding DaysAirOrdersStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="6"/>
+                                <TextBlock Text="ночные" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="7"/>
+                                <TextBlock Text="{Binding NightAirOrdersStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="6" Grid.Row="1"/>
+
+                               
+                            </Grid>
+                        </StackPanel>
+                        
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <!--pie-->
+                            <TextBlock Text="Выручка по авиакомпаниям" Style="{StaticResource H1}" />
+                            <Rectangle Grid.Row="1" Style="{StaticResource Underline}" />
+
+                            <Grid Grid.Row="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+
+                                </Grid.ColumnDefinitions>
+                               
+                                <chart:RadCartesianChart Palette="Windows8" x:Name="pie" HorizontalAlignment="Stretch">
+                                    <chartView:BarSeries HorizontalAlignment="Stretch"
+                                         ItemsSource="{Binding CompanyRevenueInfos}" 
+										 ValueBinding="Revenue"
+                        CategoryBinding="Cname"
+                        >
+
+                                        <chartView:BarSeries.LabelDefinitions>
+                                            <chartView:ChartSeriesLabelDefinition Margin="-10">
+                                                <chartView:ChartSeriesLabelDefinition.DefaultVisualStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontFamily" Value="Segoe UI"/>
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                    </Style>
+                                                </chartView:ChartSeriesLabelDefinition.DefaultVisualStyle>
+                                            </chartView:ChartSeriesLabelDefinition>
+                                        </chartView:BarSeries.LabelDefinitions>
+
+                                    </chartView:BarSeries>
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chartView:CategoricalAxis FontFamily="Segoe UI" 
+                                                    GapLength="0.5"
+										   FontSize="12"
+                                                   Title="Авиакомпании"
+                                                   LabelFitMode="MultiLine"
+                                                   
+                                                   >
+
+                                        </chartView:CategoricalAxis>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chartView:LinearAxis FontFamily="Segoe UI"
+                                              ShowLabels="True"
+                                              
+									  FontSize="12"
+									  Title="Выручка" 
+									  />
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                    <telerik:RadCartesianChart.Grid>
+                                        <telerik:CartesianChartGrid MajorLinesVisibility="Y" />
+                                    </telerik:RadCartesianChart.Grid>
+                                </chart:RadCartesianChart>
+                             
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            
+            
+            <telerik:RadTabItem DropDownContent="ToGo" Header="ToGo" Style="{StaticResource TabFont}">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Rectangle Style="{StaticResource Underline}" />
+                            <Grid Height="75" VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+                                    </Style>
+                                </Grid.Resources>
+
+
+                                <Rectangle Fill="DarkGray" Grid.Column="2" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                                <Rectangle Fill="DarkGray" Grid.Column="5" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+
+
+                                <TextBlock Text="выручка" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SaleToGoSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"/>
+                                <TextBlock Text="ср. чек" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock Text="{Binding AvgToGoAirSummStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="0" Grid.Row="1"/>
+                                
+
+                                <TextBlock Text="не закрытые" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4"/>
+                                <TextBlock Text="{Binding SaleToGoSummNonClosedStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3"/>
+                                <TextBlock Text="не отправленные" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4" Grid.Row="1"/>
+                                <TextBlock Text="{Binding SaleToGoSummNonSendStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3" Grid.Row="1"/>
+                                <TextBlock Text="отмененные" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="2" Grid.Column="4"/>
+                                <TextBlock Text="{Binding CancelledToGoOrdersStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="3" Grid.Row="2"/>
+
+                                <TextBlock Text="дневные" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="7"/>
+                                <TextBlock Text="{Binding DaysToGoOrdersStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="6"/>
+                                <TextBlock Text="ночные" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="7"/>
+                                <TextBlock Text="{Binding NightToGoOrdersStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="6" Grid.Row="1"/>
+
+
+                            </Grid>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <!--pie-->
+                            <TextBlock Text="Выручка по каналу продаж" Style="{StaticResource H1}" />
+                            <Rectangle Grid.Row="1" Style="{StaticResource Underline}" />
+
+                            <Grid Grid.Row="2" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+
+                                </Grid.ColumnDefinitions>
+
+                                <chart:RadCartesianChart Palette="Windows8" x:Name="pieToGo" HorizontalAlignment="Stretch">
+                                    <chartView:BarSeries HorizontalAlignment="Stretch"
+                                         ItemsSource="{Binding ToGoChanelsRevenueInfos}" 
+										 ValueBinding="Revenue"
+                        CategoryBinding="Cname"
+                        >
+
+                                        <chartView:BarSeries.LabelDefinitions>
+                                            <chartView:ChartSeriesLabelDefinition Margin="-10">
+                                                <chartView:ChartSeriesLabelDefinition.DefaultVisualStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontFamily" Value="Segoe UI"/>
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                    </Style>
+                                                </chartView:ChartSeriesLabelDefinition.DefaultVisualStyle>
+                                            </chartView:ChartSeriesLabelDefinition>
+                                        </chartView:BarSeries.LabelDefinitions>
+
+                                    </chartView:BarSeries>
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chartView:CategoricalAxis FontFamily="Segoe UI" 
+                                                    GapLength="0.5"
+										   FontSize="12"
+                                                   Title="Канал продаж"
+                                                   LabelFitMode="MultiLine"
+                                                   
+                                                   >
+
+                                        </chartView:CategoricalAxis>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chartView:LinearAxis FontFamily="Segoe UI"
+                                              ShowLabels="True"
+                                              
+									  FontSize="12"
+									  Title="Выручка" 
+									  />
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                    <telerik:RadCartesianChart.Grid>
+                                        <telerik:CartesianChartGrid MajorLinesVisibility="Y" />
+                                    </telerik:RadCartesianChart.Grid>
+                                </chart:RadCartesianChart>
+
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+
+            <telerik:RadTabItem DropDownContent="Шереметьево" Header="Шереметьево" Style="{StaticResource TabFont}">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Rectangle Style="{StaticResource Underline}" />
+                            <Grid Height="75" VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+                                    </Style>
+                                </Grid.Resources>
+
+
+                                <Rectangle Fill="DarkGray" Grid.Column="2" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                                <Rectangle Fill="DarkGray" Grid.Column="5" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+
+
+                                <TextBlock Text="выручка (без авиакомп.)" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SaleSharSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"/>
+                                <TextBlock Text="ср. чек" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock Text="{Binding AvgSharSummStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="0" Grid.Row="1"/>
+
+
+                                <TextBlock Text="на авиакомпании" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4"/>
+                                <TextBlock Text="{Binding SaleSharAirSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3"/>
+                                <TextBlock Text="списание" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4" Grid.Row="1"/>
+                                <TextBlock Text="{Binding SpisSharSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3" Grid.Row="1"/>
+                                
+
+                            </Grid>
+                        </StackPanel>
+                        
+                        <telerik:RadGridView 
+                                              RowHeight="23"
+                            HorizontalAlignment="Center"
+                    Grid.Row="1" Grid.Column="0"
+                    RowIndicatorVisibility="Collapsed"
+                    Margin="0,30,0,50"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=SharRevenueInfos}"
+                             MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserFreezeColumns="False"
+                    FrozenColumnCount="3"
+                    IsFilteringAllowed="True" 
+                    
+                            IsReadOnly="True"
+                                RightFrozenColumnsSplitterVisibility="Hidden"
+            FrozenColumnsSplitterVisibility="Hidden"
+                            FontFamily="Segoe UI"
+                                              >
+                            <telerik:RadGridView.Columns>
+                                <telerik:GridViewDataColumn Header="Категория" Width="320" IsReadOnly="True"  DataMemberBinding="{Binding Cname}"/>
+                                <telerik:GridViewDataColumn Header="Сумма" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding Revenue, StringFormat={}{0:C}, ConverterCulture=ru-RU }"   />
+                            </telerik:RadGridView.Columns>
+                        </telerik:RadGridView>
+                                              
+
+                    </Grid>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem DropDownContent="Списание" Header="Списание" Style="{StaticResource TabFont}">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Rectangle Style="{StaticResource Underline}" />
+                            <Grid Height="75" VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+                                    </Style>
+                                </Grid.Resources>
+
+
+                                <Rectangle Fill="DarkGray" Grid.Column="2" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                                <Rectangle Fill="DarkGray" Grid.Column="5" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+
+
+                                <TextBlock Text="ToGo" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SpisToGoSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"/>
+                                <TextBlock Text="ToFly" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SpisToFlySummStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="0" Grid.Row="1"/>
+
+
+                                <TextBlock Text="Шереметьево" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4"/>
+                                <TextBlock Text="{Binding SpisSharSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3"/>
+                                
+
+
+                            </Grid>
+                        </StackPanel>
+
+                        <telerik:RadGridView 
+                                              RowHeight="23"
+                            HorizontalAlignment="Center"
+                    Grid.Row="1" Grid.Column="0"
+                    RowIndicatorVisibility="Collapsed"
+                    Margin="0,30,0,50"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=SpisRevenueInfos}"
+                             MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserFreezeColumns="False"
+                    FrozenColumnCount="3"
+                    IsFilteringAllowed="True" 
+                    
+                            IsReadOnly="True"
+                                RightFrozenColumnsSplitterVisibility="Hidden"
+            FrozenColumnsSplitterVisibility="Hidden"
+                            FontFamily="Segoe UI"
+                                              >
+                            <telerik:RadGridView.Columns>
+                                <telerik:GridViewDataColumn Header="Категория" Width="320" IsReadOnly="True"  DataMemberBinding="{Binding Cname}"/>
+                                <telerik:GridViewDataColumn Header="Сумма" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding Revenue, StringFormat={}{0:C}, ConverterCulture=ru-RU }"   />
+                            </telerik:RadGridView.Columns>
+                        </telerik:RadGridView>
+                    </Grid>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem DropDownContent="Блюда" Header="Блюда" Style="{StaticResource TabFont}">
+                <telerik:RadTabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Visibility="Hidden">
+                            <Rectangle Style="{StaticResource Underline}" />
+                            <Grid Height="75" VerticalAlignment="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+                                    </Style>
+                                </Grid.Resources>
+
+
+                                <Rectangle Fill="DarkGray" Grid.Column="2" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                                <Rectangle Fill="DarkGray" Grid.Column="5" Grid.RowSpan="2" Width="1" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+
+
+                                <TextBlock Text="ToGo" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SpisToGoSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"/>
+                                <TextBlock Text="ToFly" Margin="7,0,0,0" VerticalAlignment="Bottom" FontSize="20" HorizontalAlignment="Left" Foreground="{StaticResource TextBlockForeground}" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock Text="{Binding SpisToFlySummStr}" VerticalAlignment="Bottom" Foreground="Black" FontSize="22" FontFamily="Segoe UI" TextAlignment="Right" Grid.Column="0" Grid.Row="1"/>
+
+
+                                <TextBlock Text="Шереметьево" Margin="7,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="20" Foreground="{StaticResource TextBlockForeground}" Grid.Column="4"/>
+                                <TextBlock Text="{Binding SpisSharSummStr}" Foreground="Black" VerticalAlignment="Bottom" FontSize="22" FontFamily="Segoe UI"  Grid.Column="3"/>
+
+
+
+                            </Grid>
+                        </StackPanel>
+                        <Grid Grid.Column="1"  Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="2" Grid.RowSpan="2">
+                            <telerik:RadButton x:Name="btnToFlyExport"  Style="{StaticResource MainButtonsStyle}" Command="{Binding PentToFlyToExc}" Visibility="Visible" Click="btnToFlyExport_Click">
+                                <telerik:RadButton.Content>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Icons/data_sheet-96.png" Stretch="Fill" />
+                                        <TextBlock Style="{StaticResource MainButtonsTextBlockStyle}" Text="ToFly to Excel" />
+                                    </Grid>
+                                </telerik:RadButton.Content>
+                            </telerik:RadButton>
+
+                                <telerik:RadButton x:Name="btnToGoExport"  Style="{StaticResource MainButtonsStyle}" Command="{Binding PentToFlyToExc}" Click="btnToGoExport_Click" >
+                                <telerik:RadButton.Content>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Icons/data_sheet-96.png" Stretch="Fill" />
+                                            <TextBlock Style="{StaticResource MainButtonsTextBlockStyle}" Text="ToGo To Excel" />
+                                    </Grid>
+                                </telerik:RadButton.Content>
+                            </telerik:RadButton>
+                            </StackPanel>
+                            <TextBlock Text="ToFly" Margin="0,10,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="20" Foreground="Black" Grid.Column="0"/>
+                            <telerik:RadGridView Grid.Row="1"  x:Name="GrPenToFly"
+                                              RowHeight="23"
+                            HorizontalAlignment="Center"
+                   Grid.Column="0"
+                    RowIndicatorVisibility="Collapsed"
+                    Margin="10,0,10,50"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=DishAInfosToFly}"
+                             MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserFreezeColumns="False"
+                    
+                    IsFilteringAllowed="True" 
+                    
+                            IsReadOnly="True"
+                                RightFrozenColumnsSplitterVisibility="Hidden"
+            FrozenColumnsSplitterVisibility="Hidden"
+                            FontFamily="Segoe UI"
+                                              >
+
+                                <telerik:RadGridView.Columns>
+                                <telerik:GridViewDataColumn Header="Баркод" Width="90" TextAlignment="Right" IsReadOnly="True"  DataMemberBinding="{Binding Barcode}"/>
+                                <telerik:GridViewDataColumn Header="Наименование" TextAlignment="Left" Width="340"  DataMemberBinding="{Binding Name}"   />
+                                <telerik:GridViewDataColumn SortingState="Ascending" Header="Penetration, %" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding Penetration }"   />
+                                    <telerik:GridViewDataColumn Header="Кол-во продаж" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding Count }"   />
+                            </telerik:RadGridView.Columns>
+                        </telerik:RadGridView>
+                            <TextBlock Text="ToGo" Margin="0,10,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="20" Foreground="Black" Grid.Column="1"/>
+                            <telerik:RadGridView Grid.Row="1" Grid.Column="1" x:Name="GrPenToGo"
+                                              RowHeight="23"
+                            HorizontalAlignment="Center"
+                   
+                    RowIndicatorVisibility="Collapsed"
+                    Margin="10,0,10,50"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=DishAInfosToGo, IsAsync=True}"
+                             MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime" 
+                                                 VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserFreezeColumns="False"
+                    
+                    IsFilteringAllowed="True" 
+                    
+                            IsReadOnly="True"
+                                RightFrozenColumnsSplitterVisibility="Hidden"
+            FrozenColumnsSplitterVisibility="Hidden"
+                            FontFamily="Segoe UI"
+                            
+                            
+                                              >
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Header="Баркод" Width="90" TextAlignment="Right" IsReadOnly="True"  DataMemberBinding="{Binding Barcode}"/>
+                                    <telerik:GridViewDataColumn Header="Наименование" TextAlignment="Left" Width="340"  DataMemberBinding="{Binding Name}"   />
+                                    <telerik:GridViewDataColumn SortingState="Ascending" Header="Penetration, %" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding Penetration }"   />
+                                    <telerik:GridViewDataColumn Header="Кол-во продаж" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding Count }"   />
+
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+
+                        </Grid>
+                    </Grid>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
+
+
+        
+    </Grid>
+</UserControl>

@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="AlohaFly.UI.CtrlOrdersNonSH"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <GridSplitter x:Name="gridSplitter"  HorizontalAlignment="Stretch" Background="LightGray"    VerticalAlignment="Center" Height="4" ShowsPreview="True" Margin="0,3,0,3"
+                      Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" />
+        <StackPanel x:Name="ButtonsPanel" Grid.Row="0" Grid.Column="1" Orientation="Vertical">
+            <telerik:RadButton  Style="{StaticResource MainButtonsStyle}" Command="{Binding CreateSHIToFlyInvoice}" >
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Image Source="/Icons/data_recovery-96.png" Stretch="Fill" />
+                        <Label Content="Списать заказ ToFly"/>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+            <telerik:RadButton  HorizontalAlignment="Stretch" Style="{StaticResource MainButtonsStyle}" Command="{Binding CreateAllToFlySHInvoice}"  >
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/data_configuration-96.png" Stretch="Fill" />
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Left" Text="Списать все заказы ToFly" TextWrapping="WrapWithOverflow"/>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+        </StackPanel>
+
+        <StackPanel x:Name="ButtonsPanel2" Grid.Row="2" Grid.Column="1" Orientation="Vertical">
+            <telerik:RadButton  Style="{StaticResource MainButtonsStyle}" Command="{Binding CreateSHIToGoInvoice}" >
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Image Source="/Icons/data_recovery-96.png" Stretch="Fill" />
+                        <Label Content="Списать заказ ToGo"/>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+            <telerik:RadButton  HorizontalAlignment="Stretch" Style="{StaticResource MainButtonsStyle}" Command="{Binding CreateAllToGoSHInvoice}"  >
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/data_configuration-96.png" Stretch="Fill" />
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Left" Text="Списать все заказы ToGo" TextWrapping="WrapWithOverflow"/>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+
+
+            <telerik:RadButton  HorizontalAlignment="Stretch" Style="{StaticResource MainButtonsStyle}" Command="{Binding CreateAllSHInvoice}"  >
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/data_configuration-96.png" Stretch="Fill" />
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Left" Text="Списать все все заказы " TextWrapping="WrapWithOverflow"/>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+
+
+
+            <telerik:RadButton  HorizontalAlignment="Stretch" Style="{StaticResource MainButtonsStyle}" Command="{Binding CreateAllSHInvoiceByData}"  >
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Icons/data_configuration-96.png" Stretch="Fill" />
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Left" Text="Списать совсем все все заказы " TextWrapping="WrapWithOverflow"/>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+        </StackPanel>
+
+        <telerik:RadGridView  x:Name="ordersGrid"
+            
+                    RowHeight="23"
+                    Grid.Row="0" Grid.Column="0"
+                    RowIndicatorVisibility="Collapsed"
+                    Margin="0,0,0,10"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=Orders}"
+                    MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserFreezeColumns="False"
+                    FrozenColumnCount="3"
+                    IsFilteringAllowed="True" 
+                    IsScrolling="True"
+                    SelectedItem="{Binding CurentOrder}"
+                             IsReadOnly="True"
+                             RowStyleSelector="{StaticResource StadiumCapacityStyle}" 
+            RightFrozenColumnsSplitterVisibility="Hidden"
+            FrozenColumnsSplitterVisibility="Hidden"
+                             
+                             local:FocusExtension.IsFocused="{Binding OrdersFocused, Mode=TwoWay}"
+            >
+
+
+            <telerik:RadGridView.InputBindings>
+
+                <KeyBinding Key="Return" Command="{Binding EditOrderCommand}" ></KeyBinding>
+            </telerik:RadGridView.InputBindings>
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="№" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Id}" TextAlignment="Right"/>
+                <telerik:GridViewDataColumn Header="Компания" Width="120" IsReadOnly="True"  DataMemberBinding="{Binding AirCompany.Name}"/>
+                <telerik:GridViewDataColumn Header="Борт" Width="auto" DataMemberBinding="{Binding FlightNumber}"/>
+
+                <telerik:GridViewDataColumn Header="Дата доставки" Width="auto" DataMemberBinding="{Binding DeliveryDate,StringFormat={}{0:dd/MM/yyyy HH:mm}}" />
+                <telerik:GridViewDataColumn Header="Место доставки" Width="auto" DataMemberBinding="{Binding DeliveryPlace.Name}" />
+                <telerik:GridViewDataColumn Header="Контактное лицо" Width="auto"  IsReadOnly="True" DataMemberBinding="{Binding ContactPerson.FullName}" />
+                <telerik:GridViewDataColumn Header="Телефон" Width="auto"  DataMemberBinding="{Binding ContactPerson.Phone}" />
+                <telerik:GridViewDataColumn Header="Сумма" TextAlignment="Right" Width="150"  DataMemberBinding="{Binding OrderTotalSumm, StringFormat={}{0:C}, ConverterCulture=ru-RU }"   />
+                <telerik:GridViewDataColumn Header="Статус" Width="auto"  IsReadOnly="True" DataMemberBinding="{Binding OrderStatus}" />
+                <telerik:GridViewDataColumn Header="Комментарий" Width="*"   DataMemberBinding="{Binding Comment}" Loaded="GridViewDataColumn_Loaded">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <telerik:RadRichTextBox x:Name="radRichTextBox1"   VerticalScrollBarVisibility="Hidden"
+                                                        DocumentInheritsDefaultStyleSettings="True"
+                                                            Background="Transparent"
+                                                        Foreground="Black"                                      
+                                                        BorderThickness="0" IsReadOnly="True" Height="30"
+                                                        IsSelectionEnabled="False" IsHitTestVisible="False" IsSpellCheckingEnabled="False"
+                                                        IsContextMenuEnabled="False" IsSelectionMiniToolBarEnabled="False"
+                                                        telerik:XamlDataProvider.Source="{Binding Comment, Mode=TwoWay}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+
+                </telerik:GridViewDataColumn>
+
+
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+
+
+        <telerik:RadGridView  x:Name="ordersToGoGrid"
+            
+                    RowHeight="23"
+                    Grid.Row="2" Grid.Column="0"
+                    RowIndicatorVisibility="Collapsed"
+                    Margin="0,0,0,10"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=OrdersToGo}"
+                    MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserFreezeColumns="False"
+                    FrozenColumnCount="3"
+                    IsFilteringAllowed="True" 
+                    IsScrolling="True"
+                    SelectedItem="{Binding CurentOrderToGo}"
+                             IsReadOnly="True"
+                             RowStyleSelector="{StaticResource StadiumCapacityStyle}" 
+            RightFrozenColumnsSplitterVisibility="Hidden"
+            FrozenColumnsSplitterVisibility="Hidden"
+                             
+                             local:FocusExtension.IsFocused="{Binding OrdersFocused, Mode=TwoWay}"
+            >
+
+
+            <telerik:RadGridView.InputBindings>
+
+                <KeyBinding Key="Return" Command="{Binding EditOrderCommand}" ></KeyBinding>
+            </telerik:RadGridView.InputBindings>
+            <telerik:RadGridView.Columns>
+
+                <telerik:GridViewDataColumn Header="№" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Id}" TextAlignment="Right" />
+                <telerik:GridViewDataColumn Header="№Old" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding OldId}" TextAlignment="Right" />
+                <telerik:GridViewDataColumn Header="Заказчик" Width="180" IsReadOnly="True"  DataMemberBinding="{Binding OrderCustomer.FullName}"/>
+                <telerik:GridViewDataColumn Header="Дата доставки" Width="auto" DataMemberBinding="{Binding DeliveryDate,StringFormat={}{0:dd/MM/yyyy HH:mm}}" />
+                <telerik:GridViewDataColumn Header="Телефон" Width="150"  DataMemberBinding="{Binding PhoneNumber}" />
+                <telerik:GridViewDataColumn Header="Адрес доставки" TextAlignment="Left" Width="400"  DataMemberBinding="{Binding Address.Address}"   />
+                <telerik:GridViewDataColumn Header="Канал продаж" TextAlignment="Left" Width="150"  DataMemberBinding="{Binding MarketingChannel.Name }" />
+                <telerik:GridViewDataColumn Header="Курьер" Width="auto"  IsReadOnly="True" DataMemberBinding="{Binding Driver.FullName}" />
+                <telerik:GridViewDataColumn Header="Сумма с доставкой" Width="auto"  IsReadOnly="True" DataMemberBinding="{Binding OrderTotalSumm, StringFormat={}{0:C}, ConverterCulture=ru-RU }" />
+                <telerik:GridViewDataColumn Header="Статус" Width="auto"  IsReadOnly="True" DataMemberBinding="{Binding OrderStatus}" />
+                <telerik:GridViewDataColumn Header="Вид оплаты" Width="auto"  IsReadOnly="True" DataMemberBinding="{Binding Payment.Name}" />
+
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+    </Grid>
+</UserControl>

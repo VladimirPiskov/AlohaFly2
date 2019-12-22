@@ -1,0 +1,119 @@
+﻿<telerik:RadWindow x:Class="AlohaFly.UI.WndChangeOrderStatus"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlohaFly.UI"
+        mc:Ignorable="d"
+        Header="{Binding Text}" Height="400" Width="500" WindowState="Normal" DataContextChanged="Window_DataContextChanged"
+                     WindowStartupLocation="CenterScreen"
+                   HideMaximizeButton="True"
+                   HideMinimizeButton="True"
+                   >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+       
+        <!--
+        <telerik:RadListBox x:Name="radListBox" Margin="5" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding LbData}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Height="auto" Width="400" />
+        </-->
+        <StackPanel Grid.ColumnSpan="2" Margin="5" Orientation="Vertical" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}" IsChecked="{Binding StatusInWork,Mode=TwoWay}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="В работе" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}"  IsChecked="{Binding StatusSent, Mode=TwoWay}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Отправлен" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}"  IsChecked="{Binding StatusRescheduled, Mode=TwoWay}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Перенесен" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}" IsChecked="{Binding StatusCancelled, Mode=TwoWay}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Отменен" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+            <telerik:RadRadioButton Style="{StaticResource RadioButtonsStyle}"  IsChecked="{Binding StatusCancelledWithRemains, Mode=TwoWay}">
+                <telerik:RadRadioButton.Content>
+                    <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                        <TextBlock Background="{Binding ElementName=Parent, Path=Background}" Text="Отменен с остатком" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadRadioButton.Content>
+            </telerik:RadRadioButton>
+
+        </StackPanel>
+        <telerik:RadButton  Grid.Column="0" Grid.Row="1" Style="{StaticResource MainButtonsStyle}"  Command="{Binding OkCommand}">
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/ok-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Сохранить" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+ 
+        <telerik:RadButton  Grid.Column="1" Grid.Row="1" Style="{StaticResource MainButtonsStyle}"  Command="{Binding CancelCommand}">
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/cancel-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Отмена" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+
+    </Grid>
+    
+</telerik:RadWindow>

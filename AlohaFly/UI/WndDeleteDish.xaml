@@ -1,0 +1,126 @@
+﻿<telerik:RadWindow x:Class="AlohaFly.UI.WndDeleteDish"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" DataContextChanged="RadWindow_DataContextChanged" WindowStartupLocation="CenterScreen" MaxWidth="810">
+    <telerik:RadWindow.Resources>
+        <Style x:Key="StRtb" TargetType="telerik:RadRichTextBox">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="DocumentInheritsDefaultStyleSettings" Value="True"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="IsSpellCheckingEnabled" Value="False"/>
+            <Setter Property="IsContextMenuEnabled" Value="True"/>
+            <Setter Property="IsSelectionMiniToolBarEnabled" Value="True"/>
+            <Setter Property="LayoutMode" Value="FlowNoWrap"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="AcceptsTab" Value="True"/>
+
+
+        </Style>
+    </telerik:RadWindow.Resources>
+<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding WndPromt}" Margin="10,10,10,30" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Grid.ColumnSpan="3" ></TextBlock>
+
+        <TextBox  Text="{Binding DeletedComment}" Margin="20,5,20,5" FontSize="14" Height="30" Visibility="Hidden" Grid.Row="1" Grid.ColumnSpan="3" ></TextBox>
+
+        <telerik:RadRichTextBox x:Name="radRichTextBox1" Margin="20,5,20,5"  Width="auto" Background="White" Height="30" MaxWidth="800" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Hidden"
+                                                                Style="{StaticResource StRtb}" BorderThickness="0"
+                                                        telerik:XamlDataProvider.Source="{Binding DeletedComment, Mode=TwoWay}">
+            <telerik:RadRichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </telerik:RadRichTextBox.Resources>
+        </telerik:RadRichTextBox>
+
+        <telerik:RadComboBox x:Name="TechnologySelection"  Margin="20,5,20,5"
+                            IsEnabled="{Binding Spis}"
+                             Grid.Row="2" Grid.ColumnSpan="3"
+                                          FontFamily="Segoe UI"
+                                         ClearSelectionButtonContent="Показать все" 
+                                         DisplayMemberPath="Name"
+                                         ItemsSource="{Binding SpisPayments }" 
+                                         SelectedValue="{Binding SelectedSpis,Mode=TwoWay}"
+                                         EmptyText="Причина списания"
+                                         OpenDropDownOnFocus="False"
+                                >
+
+            <telerik:RadComboBox.InputBindings>
+                <KeyBinding Key="Return" Command="{Binding ReturnCommand}" ></KeyBinding>
+            </telerik:RadComboBox.InputBindings>
+        </telerik:RadComboBox>
+
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Height=" 50" Margin="10,10,10,10">
+            <telerik:RadRadioButton Margin="5" Content="Со списанием" IsChecked="{Binding Spis}" />
+            <telerik:RadRadioButton Margin="5" Content="Без списания" IsChecked="{Binding NoSpis}"/>
+        </StackPanel>
+
+        <telerik:RadButton  Grid.Column="0" Grid.Row="4" Style="{StaticResource MainButtonsStyle}"  Command="{Binding OkCommand}">
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/ok-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Подтвердить удаление" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+
+
+        <telerik:RadButton  Grid.Column="1" Grid.Row="4" Style="{StaticResource MainButtonsStyle}"  Command="{Binding NoDeleteCommand}">
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/ok-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Отменить удаление" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+
+
+        <telerik:RadButton  Grid.Column="2" Grid.Row="4" Style="{StaticResource MainButtonsStyle}"  Command="{Binding CancelCommand}">
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/cancel-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Отмена" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+    </Grid>
+</telerik:RadWindow>

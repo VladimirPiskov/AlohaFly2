@@ -1,0 +1,32 @@
+﻿<telerik:RadWindow x:Class="AlohaFly.UI.WndCreateTmpDish"
+                     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+                    Width="600" 
+                   WindowStartupLocation="CenterScreen"
+                   Header="Добавить временное блюдо"
+                   
+                   HideMaximizeButton="False"
+                   HideMinimizeButton="False"
+                   DataContextChanged="RadWindow_DataContextChanged"
+                   
+                   >
+    <Grid>
+        <telerik:RadDataForm
+            x:Name="mDataForm"
+            
+            ItemsSource="{Binding Path=ItemsSource}"
+            AutoCommit="True" 
+            AutoEdit="True"
+            AutoGeneratingField="RadDataForm_AutoGeneratingField"
+            EditEnded="mDataForm_EditEnded"
+            >
+            
+        </telerik:RadDataForm>
+    </Grid>
+</telerik:RadWindow>

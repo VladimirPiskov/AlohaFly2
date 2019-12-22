@@ -1,0 +1,98 @@
+<t:RadDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:t="clr-namespace:Telerik.Windows.Documents.Model;assembly=Telerik.Windows.Documents" xmlns:s="clr-namespace:Telerik.Windows.Documents.Model.Styles;assembly=Telerik.Windows.Documents" xmlns:r="clr-namespace:Telerik.Windows.Documents.Model.Revisions;assembly=Telerik.Windows.Documents" xmlns:n="clr-namespace:Telerik.Windows.Documents.Model.Notes;assembly=Telerik.Windows.Documents" xmlns:th="clr-namespace:Telerik.Windows.Documents.Model.Themes;assembly=Telerik.Windows.Documents" version="1.4" LayoutMode="Paged" LineSpacing="1.15" LineSpacingType="Auto" ParagraphDefaultSpacingAfter="12" ParagraphDefaultSpacingBefore="0" SelectedBibliographicStyleName="\APA.XSL" StyleName="defaultDocumentStyle">
+  <t:RadDocument.Captions>
+    <t:CaptionDefinition IsDefault="True" IsLinkedToHeading="False" Label="Figure" LinkedHeadingLevel="0" NumberingFormat="Arabic" SeparatorType="Hyphen" />
+    <t:CaptionDefinition IsDefault="True" IsLinkedToHeading="False" Label="Table" LinkedHeadingLevel="0" NumberingFormat="Arabic" SeparatorType="Hyphen" />
+  </t:RadDocument.Captions>
+  <t:RadDocument.ProtectionSettings>
+    <t:DocumentProtectionSettings EnableDocumentProtection="False" Enforce="False" HashingAlgorithm="None" HashingSpinCount="0" ProtectionMode="ReadOnly" />
+  </t:RadDocument.ProtectionSettings>
+  <t:RadDocument.Styles>
+    <s:StyleDefinition DisplayName="defaultDocumentStyle" IsCustom="False" IsDefault="False" IsPrimary="True" Name="defaultDocumentStyle" Type="Default">
+      <s:StyleDefinition.ParagraphStyle>
+        <s:ParagraphProperties LineSpacing="1.15" SpacingAfter="12" />
+      </s:StyleDefinition.ParagraphStyle>
+      <s:StyleDefinition.SpanStyle>
+        <s:SpanProperties FontFamily="Verdana" FontSize="16" FontStyle="Normal" FontWeight="Normal" />
+      </s:StyleDefinition.SpanStyle>
+    </s:StyleDefinition>
+    <s:StyleDefinition DisplayName="Default Paragraph Font" IsCustom="True" IsDefault="False" IsPrimary="False" Name="DefaultParagraphFont" Type="Character" UIPriority="1" />
+    <s:StyleDefinition DisplayName="Normal" IsCustom="False" IsDefault="True" IsPrimary="True" Name="Normal" Type="Paragraph" UIPriority="0" />
+    <s:StyleDefinition DisplayName="Table Normal" IsCustom="False" IsDefault="True" IsPrimary="False" Name="TableNormal" Type="Table" UIPriority="59">
+      <s:StyleDefinition.TableStyle>
+        <s:TableProperties CellPadding="5,0,5,0">
+          <s:TableProperties.TableLook>
+            <t:TableLook />
+          </s:TableProperties.TableLook>
+        </s:TableProperties>
+      </s:StyleDefinition.TableStyle>
+    </s:StyleDefinition>
+  </t:RadDocument.Styles>
+  <t:Section>
+    <t:Paragraph  FontSize="18.6666666666667" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" FontWeight="Bold" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" FontWeight="Bold" Text="Компания: АВАНГАРД-АВИА&#x9;&#x9;&#x9;&#x9;" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="18.6666666666667" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" Text="Борт: DBAVG" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="18.6666666666667" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" Text="Дата: 25.07.2018 12:30" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="18.6666666666667" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" Text="Доставка: Внуково-3" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="18.6666666666667" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" Text="Контакты: Ekaterina Radkevich +79261669336" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="18.6666666666667" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="18.6666666666667" FontStyle="Italic" Text="Машина забирает: 10:00" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="24" SpacingAfter="0" TextAlignment="Center">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="24" FontStyle="Italic" FontWeight="Bold" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="24" FontStyle="Italic" FontWeight="Bold" Text="Готовность в ресторане в 09:00" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="16" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="16" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+    </t:Paragraph>
+    <t:Paragraph FontSize="26.6666666666667" SpacingAfter="0" TextAlignment="Center">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="26.6666666666667" FontWeight="Bold" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="26.6666666666667" FontWeight="Bold" Text="1-й Перелет. Упаковать отдельно, подписать!!!" />
+    </t:Paragraph>
+    <t:Paragraph FontSize="16" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="16" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+    </t:Paragraph>
+    <t:Paragraph FontSize="16" SpacingAfter="0">
+      <t:Paragraph.ParagraphSymbolPropertiesStyle>
+        <s:SpanProperties FontFamily="Times New Roman" FontSize="16" />
+      </t:Paragraph.ParagraphSymbolPropertiesStyle>
+      <t:Span FontFamily="Times New Roman" FontSize="16" Text="(7411) Классический салат из рукколы с креветками - 3 порц " />
+    </t:Paragraph>
+    
+    
+  </t:Section>
+</t:RadDocument>

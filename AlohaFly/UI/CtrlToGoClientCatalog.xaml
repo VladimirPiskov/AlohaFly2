@@ -1,0 +1,263 @@
+﻿<UserControl x:Class="AlohaFly.UI.CtrlToGoClientCatalog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                       xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="tbStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="13.333" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="wmStyle" TargetType="telerik:RadWatermarkTextBox">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="13.333" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+
+        <DataTemplate x:Key="ListBoxItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="/Icons/callback-96.png" Stretch="Fill" Visibility="{Binding IsPrimary, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Text="{Binding Phone}" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" />
+            </Grid>
+        </DataTemplate>
+
+
+
+        <DataTemplate x:Key="ListBoxAddressItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="/Icons/Shop-96.png" Stretch="Fill" Visibility="{Binding IsPrimary, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Text="{Binding Address}" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+      
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            
+        </Grid.ColumnDefinitions>
+        <telerik:RadGridView 
+            ShowSearchPanel="True" 
+            GroupRenderMode="Flat" Grid.RowSpan="2"
+             ItemsSource="{Binding Path=ItemsSource}"
+                             IsReadOnly="True"
+                             ShowGroupPanel="False"
+            SelectionChanging="RadGridView_SelectionChanging"
+             DragElementAction="None"
+             RowIndicatorVisibility="Collapsed"
+            FrozenColumnsSplitterVisibility="Hidden"
+             ColumnWidth="SizeToHeader"
+             AutoGenerateColumns="False"
+                             >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="№" Width="50"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Id}"/>
+                <telerik:GridViewDataColumn Header="Имя" Width="120" IsReadOnly="True"  DataMemberBinding="{Binding FullName}"/>
+                <telerik:GridViewDataColumn Header="Телефон" Width="120" IsReadOnly="True"  DataMemberBinding="{Binding PrimaryPhone}"/>
+                <telerik:GridViewDataColumn Header="E-mail" Width="120" IsReadOnly="True"  DataMemberBinding="{Binding Email}"/>
+                <telerik:GridViewDataColumn Header="Комментарий" Width="300" IsReadOnly="True"  DataMemberBinding="{Binding Comment}"/>
+                
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+
+        <GridSplitter x:Name="gridSplitter" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch"  HorizontalAlignment="Center" Width="8" ShowsPreview="True"/>
+        <!-- 
+        <local:CtrlToGoClientInfo Grid.Column="2"  DataContext="{Binding SelectedItemViewModel}" />
+-->
+        <ScrollViewer  Grid.Column="2" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid  x:Name="ToGoClientInfo" >
+
+
+                <telerik:GroupBox x:Name="ContatPerconBorder" Header="Клиент"   Margin="4" Padding="5" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <Grid >
+
+                        <Grid.RowDefinitions>
+
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+
+                        </Grid.RowDefinitions>
+
+                        <telerik:RadDataForm
+                     x:Name="radDataForm" Grid.Row="0"  ItemsSource="{Binding Path=ItemsSource}"   
+                             BeginningEdit="RadDataForm_BeginningEdit" 
+                             EditEnding="radDataForm_EditEnding"
+                             AddedNewItem="RadDataForm_AddedNewItem"
+                             DeletingItem="radDataForm_DeletingItem"
+                             AutoGeneratingField="RadDataForm_AutoGeneratingField"
+                              CommandButtonsVisibility="{Binding RadFormBtnVis}"
+                             AutoCommit="False"
+                    >
+
+                        </telerik:RadDataForm>
+
+
+                        <!-- 
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding SaveOrderCommand}" >
+                        <telerik:RadButton.Content>
+                            <Image Source="/Icons/callback-96.png" Stretch="Fill" />
+                        </telerik:RadButton.Content>
+                    </telerik:RadButton>
+                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding SaveOrderCommand}" >
+                        <telerik:RadButton.Content>
+                            <Image Source="/Icons/plus-96.png" Stretch="Fill" />
+                        </telerik:RadButton.Content>
+                    </telerik:RadButton>
+                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding SaveOrderCommand}" >
+                        <telerik:RadButton.Content>
+                            <Image Source="/Icons/minus-96.png" Stretch="Fill" />
+                        </telerik:RadButton.Content>
+                    </telerik:RadButton>
+
+                </StackPanel>
+            
+                <TextBlock Grid.Row="1" Grid.Column="0"  Text="Имя"  Style="{StaticResource tbStyle}" />
+                <telerik:RadWatermarkTextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}"  Style="{StaticResource wmStyle}"></telerik:RadWatermarkTextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0"  Text="Отчество"  Style="{StaticResource tbStyle}"/>
+                <telerik:RadWatermarkTextBox Grid.Row="2" Grid.Column="1" Text="{Binding MiddleName}"  Style="{StaticResource wmStyle}"></telerik:RadWatermarkTextBox>
+                <TextBlock Grid.Row="3" Grid.Column="0"  Text="Фамилия"   Style="{StaticResource tbStyle}" />
+                <telerik:RadWatermarkTextBox Grid.Row="3" Grid.Column="1" Text="{Binding SecondName}"  Style="{StaticResource wmStyle}" ></telerik:RadWatermarkTextBox>
+                <TextBlock Grid.Row="4" Grid.Column="0"  Text="E-mail"  Style="{StaticResource tbStyle}"  />
+                <telerik:RadWatermarkTextBox Grid.Row="4" Grid.Column="1" Text="{Binding Email}"  Style="{StaticResource wmStyle}" ></telerik:RadWatermarkTextBox>
+                <TextBlock Grid.Row="5" Grid.Column="0"  Text="Комментарий"   Style="{StaticResource tbStyle}" />
+                <telerik:RadWatermarkTextBox Grid.Row="5" Grid.Column="1" Height="150" Text="{Binding Comments}"  Style="{StaticResource wmStyle}"  
+                                              VerticalContentAlignment="Top" TextWrapping="Wrap"
+                                             AcceptsReturn="True"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                             ></telerik:RadWatermarkTextBox>
+
+                   -->
+
+                        <telerik:GroupBox x:Name="TelephonePerconBorder" Header="Контактные телефоны" Grid.Row="1" Margin="5,10,5,10" Padding="5" Height="200">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45"/>
+                                    <RowDefinition Height="*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="70"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+
+                                <telerik:RadWatermarkTextBox Grid.Column="0" Text="{Binding AddPhoneStr}" Margin="0,5,0,5" ></telerik:RadWatermarkTextBox>
+
+                                <telerik:RadButton Style="{StaticResource SmallButtonsStyle}"  Grid.Column="1" Command="{Binding AddPhoneToCustomer}"  IsEnabled="{Binding AddPhoneBntEnabled}">
+                                    <telerik:RadButton.Content>
+                                        <Image Source="/Icons/plus-96.png" Stretch="Fill" />
+                                    </telerik:RadButton.Content>
+                                </telerik:RadButton>
+
+
+
+                                <StackPanel Grid.Column="1" Grid.Row="1">
+                                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding SetPrimaryPhone}" IsEnabled="{Binding SetPrymaryPhoneBntEnabled}" >
+                                        <telerik:RadButton.Content>
+                                            <Image Source="/Icons/callback-96.png" Stretch="Fill" />
+                                        </telerik:RadButton.Content>
+                                    </telerik:RadButton>
+
+                                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding RemovePhoneFromCustomer}" Visibility="Hidden" IsEnabled="{Binding RemovePhoneBntEnabled}">
+                                        <telerik:RadButton.Content>
+                                            <Image Source="/Icons/minus-96.png" Stretch="Fill" />
+                                        </telerik:RadButton.Content>
+                                    </telerik:RadButton>
+                                </StackPanel>
+                                <telerik:RadListBox Grid.Row="1" AllowDrop="True" ItemsSource="{Binding PhonesCollection}"
+							ItemTemplate="{StaticResource ListBoxItemTemplate}" >
+                                    <telerik:RadListBox.DragVisualProvider>
+                                        <telerik:ScreenshotDragVisualProvider />
+                                    </telerik:RadListBox.DragVisualProvider>
+                                    <telerik:RadListBox.DragDropBehavior>
+                                        <telerik:ListBoxDragDropBehavior AllowReorder="True" telerik:TouchManager.DragStartTrigger="TapHoldAndMove"/>
+                                    </telerik:RadListBox.DragDropBehavior>
+                                </telerik:RadListBox>
+                            </Grid>
+                        </telerik:GroupBox>
+
+
+
+
+                        <telerik:GroupBox x:Name="AddressPerconBorder" Header="Адреса" Grid.Row="2"  Margin="5,10,5,10" Padding="5" Height="200">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45"/>
+                                    <RowDefinition Height="*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="70"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+
+                                <telerik:RadWatermarkTextBox Grid.Column="0" Text="{Binding AddAddressStr}" Margin="0,5,0,5" ></telerik:RadWatermarkTextBox>
+
+                                <telerik:RadButton Style="{StaticResource SmallButtonsStyle}"  Grid.Column="1" Command="{Binding AddAddressToCustomer}"  IsEnabled="{Binding AddAddressBntEnabled}">
+                                    <telerik:RadButton.Content>
+                                        <Image Source="/Icons/plus-96.png" Stretch="Fill" />
+                                    </telerik:RadButton.Content>
+                                </telerik:RadButton>
+
+
+
+                                <StackPanel Grid.Column="1" Grid.Row="1">
+                                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding SetPrimaryAddress}" IsEnabled="{Binding SetPrymaryAddressBntEnabled}" >
+                                        <telerik:RadButton.Content>
+                                            <Image Source="/Icons/shop-96.png" Stretch="Fill" />
+                                        </telerik:RadButton.Content>
+                                    </telerik:RadButton>
+
+                                    <telerik:RadButton Style="{StaticResource SmallButtonsStyle}" Command="{Binding RemoveAddressFromCustomer}" Visibility="Hidden" IsEnabled="{Binding RemoveAddressBntEnabled}">
+                                        <telerik:RadButton.Content>
+                                            <Image Source="/Icons/minus-96.png" Stretch="Fill" />
+                                        </telerik:RadButton.Content>
+                                    </telerik:RadButton>
+                                </StackPanel>
+                                <telerik:RadListBox Grid.Row="1" AllowDrop="True" ItemsSource="{Binding AddresssCollection}"
+							ItemTemplate="{StaticResource ListBoxAddressItemTemplate}" >
+                                    <telerik:RadListBox.DragVisualProvider>
+                                        <telerik:ScreenshotDragVisualProvider />
+                                    </telerik:RadListBox.DragVisualProvider>
+                                    <telerik:RadListBox.DragDropBehavior>
+                                        <telerik:ListBoxDragDropBehavior AllowReorder="True" telerik:TouchManager.DragStartTrigger="TapHoldAndMove"/>
+                                    </telerik:RadListBox.DragDropBehavior>
+                                </telerik:RadListBox>
+                            </Grid>
+                        </telerik:GroupBox>
+
+                    </Grid>
+                </telerik:GroupBox>
+            </Grid>
+
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AlohaFly.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DBAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> https://18.216.147.247/AlohaService/AlohaService.svc</Value>
+    </Setting>
+    <Setting Name="DBAddressRelease" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://18.216.147.247/AlohaServiceStaging/AlohaService.svc</Value>
+    </Setting>
+    <Setting Name="SHIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">195.13.163.36</Value>
+    </Setting>
+    <Setting Name="SHPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4049</Value>
+    </Setting>
+    <Setting Name="SHLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Aloha</Value>
+    </Setting>
+    <Setting Name="SHPass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">aloha123</Value>
+    </Setting>
+    <Setting Name="SHRidPlace" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="SHRidCatExp" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">667</Value>
+    </Setting>
+    <Setting Name="SHDocPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AlohaFly</Value>
+    </Setting>
+    <Setting Name="SHDocComment" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Test Document from AlohaFly</Value>
+    </Setting>
+    <Setting Name="IdFieldsVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LastDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="HotColdPrinterName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AlohaFlyKitchen</Value>
+    </Setting>
+    <Setting Name="UpackPrinterName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AlohaFlyPack</Value>
+    </Setting>
+    <Setting Name="ConditerPrinterName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AlohaFlyConditer</Value>
+    </Setting>
+    <Setting Name="SHRidPlaceSVO" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="SHRidPlaceToGo" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="SHToGoNotPaymentCatId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">112</Value>
+    </Setting>
+    <Setting Name="SHUnitId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="SHToFlyFolderId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="SHSharFolderId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="SHToGoFolderId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="SHNoCatFolderToFlyId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">76</Value>
+    </Setting>
+    <Setting Name="SHNoCatFolderToGoId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">75</Value>
+    </Setting>
+    <Setting Name="SHDeleveryToGo" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1812</Value>
+    </Setting>
+    <Setting Name="SHOpenDishFolderToFly" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">80</Value>
+    </Setting>
+    <Setting Name="SHOpenDishFolderToGo" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">79</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="AlohaFly.UI.CtrlCatalogView2"
+             
+                          xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <telerik:RadGridView 
+            ShowSearchPanel="True" 
+            GroupRenderMode="Flat" Grid.RowSpan="2"
+             ItemsSource="{Binding Path=ItemsSource}"
+                             IsReadOnly="True"
+                             ShowGroupPanel="False"
+             CanUserFreezeColumns="True"
+                             FrozenColumnCount="2"
+             DragElementAction="None"
+             RowIndicatorVisibility="Collapsed"
+             ColumnWidth="SizeToHeader"
+             SelectionChanging="RadGridView_SelectionChanging"
+                             AutoGeneratingColumn="RadGridView_AutoGeneratingColumn"
+                             />
+        
+
+        <GridSplitter x:Name="gridSplitter" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch"  HorizontalAlignment="Center" Width="8" ShowsPreview="True"/>
+        <telerik:RadDataForm x:Name="radDataForm" Grid.Row="0" Grid.Column="2" ItemsSource="{Binding Path=ItemsSource}"   
+                             BeginningEdit="RadDataForm_BeginningEdit" 
+                             EditEnding="radDataForm_EditEnding"
+                             AddedNewItem="RadDataForm_AddedNewItem"
+                             DeletingItem="radDataForm_DeletingItem"
+                             AutoGeneratingField="RadDataForm_AutoGeneratingField"
+                              CommandButtonsVisibility="{Binding RadFormBtnVis}"
+                             AutoCommit="False"
+                             
+                             />
+
+    </Grid>
+</UserControl>

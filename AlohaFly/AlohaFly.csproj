@@ -1,0 +1,865 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props')" />
+  <Import Project="..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.props')" />
+  <Import Project="..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props')" />
+  <Import Project="..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props')" />
+  <Import Project="..\packages\ReactiveUI.Fody.9.12.1\build\ReactiveUI.Fody.props" Condition="Exists('..\packages\ReactiveUI.Fody.9.12.1\build\ReactiveUI.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5FBA9070-F3C8-47EF-9C91-02D5587FCE8B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AlohaFly</RootNamespace>
+    <AssemblyName>AlohaFly</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>v2 %283%29.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DynamicData, Version=6.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicData.6.14.1\lib\net461\DynamicData.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.WPF, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.WPF.1.5.0.6\lib\net45\HtmlRenderer.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="ReactiveUI, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.11.0.1\lib\net461\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Fody.Helpers, Version=9.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveUI.Fody.9.12.1\lib\net461\ReactiveUI.Fody.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat, Version=9.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.9.2.11\lib\net461\Splat.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat.Drawing, Version=9.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.Drawing.9.2.11\lib\net461\Splat.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Primitives.4.3.0\lib\net45\System.Drawing.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Reactive, Version=4.3.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.3.1\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Pivot.Core, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Pivot.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Chart, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Chart.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Data, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Docking, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Docking.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.FileDialogs, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.FileDialogs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.ImageEditor, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.ImageEditor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Input.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Pivot, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Pivot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.PivotFieldList, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.PivotFieldList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.RibbonView, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.RibbonView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.RichTextBoxUI, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.RichTextBoxUI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Spreadsheet, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.Spreadsheet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.SpreadsheetUI, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Controls.SpreadsheetUI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Diagrams.Core, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Diagrams.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Core, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Fixed, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Fixed.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Flow, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Flow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Flow.FormatProviders.Pdf, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Flow.FormatProviders.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Html, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.FormatProviders.Html.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.MsRichTextBoxXaml, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.FormatProviders.MsRichTextBoxXaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.OpenXml, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.FormatProviders.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Pdf, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.FormatProviders.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Rtf, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.FormatProviders.Rtf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Xaml, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.FormatProviders.Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Proofing, Version=2019.3.1023.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Proofing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Spreadsheet, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Spreadsheet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.Spreadsheet.FormatProviders.Pdf, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Documents.Spreadsheet.FormatProviders.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Zip, Version=2019.3.1021.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\lib\RCWPF\2019.3.1023.45\Telerik.Windows.Zip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analytics\AirOrdersInfo.cs" />
+    <Compile Include="Analytics\CtrlMainAnalitics.xaml.cs">
+      <DependentUpon>CtrlMainAnalitics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analytics\CtrlPivotGridAirCompanies.xaml.cs">
+      <DependentUpon>CtrlPivotGridAirCompanies.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analytics\MainAnalyticsViewModel.cs" />
+    <Compile Include="Analytics\MenuItems.cs" />
+    <Compile Include="Analytics\PivotGridAirCompaniesViewModel.cs" />
+    <Compile Include="Analytics\RevenueInfo.cs" />
+    <Compile Include="Analytics\ServerData.cs" />
+    <Compile Include="Calc.cs" />
+    <Compile Include="CatalogSelector.cs" />
+    <Compile Include="DataExtension\DataCatalogs.cs" />
+    <Compile Include="DataExtension\DataClasses.cs" />
+    <Compile Include="DataExtension\DataExtensions.cs" />
+    <Compile Include="DataExtension\DataUpdaterFactory.cs" />
+    <Compile Include="DataExtension\FullyObservableDBData.cs" />
+    <Compile Include="DataExtension\RealTimeUpdater.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Fonts\FontInstall.cs" />
+    <Compile Include="Import\DataImportReader.cs" />
+    <Compile Include="Import\DataImportReaderFromExcel.cs" />
+    <Compile Include="Import\ExcelWorkBook.cs" />
+    <Compile Include="Import\IOrderImport.cs" />
+    <Compile Include="Import\OrderFlightImport.cs" />
+    <Compile Include="Interface\IMenuItem.cs" />
+    <Compile Include="Models\AddOrderCustomerViewModel.cs" />
+    <Compile Include="Models\ToGoOrder\AddToGoOrderViewModel.cs" />
+    <Compile Include="Models\ToGoClient\DDTest.cs" />
+    <Compile Include="Models\ToGoClient\ShowMapViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientEditViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientExtViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientFinderViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientsViewModel.cs" />
+    <Compile Include="Models\OrdersNonSHViewModel.cs" />
+    <Compile Include="Models\ToGoClientCatalogModel.cs" />
+    <Compile Include="Models\ToGoClientInfoModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientViewModel.cs" />
+    <Compile Include="Models\ToGoOrder\ToGoOrdersModelSingleton.cs" />
+    <Compile Include="Models\ToGoOrder\ToGoOrderViewModel.cs" />
+    <Compile Include="Models\WndDeleteDishModel.cs" />
+    <Compile Include="PrintRecieps\ctrlCheckVisual.xaml.cs">
+      <DependentUpon>ctrlCheckVisual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PrintRecieps\PrintOnWinPrinter.cs" />
+    <Compile Include="Reports\GKANReports.cs" />
+    <Compile Include="Reports\ExcelReports.cs" />
+    <Compile Include="Interface\INeedSave.cs" />
+    <Compile Include="LabelPrint.cs" />
+    <Compile Include="LabelsPrint\CtrlLabelImage.xaml.cs">
+      <DependentUpon>CtrlLabelImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LabelsPrint\CtrlLabelPapersVisual.xaml.cs">
+      <DependentUpon>CtrlLabelPapersVisual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LabelsPrint\CtrlLabelsPaper.xaml.cs">
+      <DependentUpon>CtrlLabelsPaper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LabelsPrint\LabelImageViewModel.cs" />
+    <Compile Include="LabelsPrint\LabelPapersVisualViewModel.cs" />
+    <Compile Include="Models\AddContactPersonViewModel.cs" />
+    <Compile Include="Models\AddLabelsViewModel.cs" />
+    <Compile Include="Models\AddOrderViewModel.cs" />
+    <Compile Include="Models\AirCompaniesOrdersViewModel.cs" />
+    <Compile Include="Models\AirOrdersViewModel.cs" />
+    <Compile Include="Models\CatalogComboBoxViewModel.cs" />
+    <Compile Include="Models\CatalogModel.cs" />
+    <Compile Include="Models\ChangeOrderRangeViewModel.cs" />
+    <Compile Include="Models\ChangeOrderStatusViewModel.cs" />
+    <Compile Include="Models\CreateTmpDishViewModel.cs" />
+    <Compile Include="Models\InvoiceGenerateModel.cs" />
+    <Compile Include="Models\MainViewModel.cs" />
+    <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\MenuItemsCollection.cs" />
+    <Compile Include="Models\MenuViewModel.cs" />
+    <Compile Include="Models\OrderFlightInfoViewModel.cs" />
+    <Compile Include="Models\PrintOrderKitchenToFly.cs" />
+    <Compile Include="Models\ViewModelBaseExt.cs" />
+    <Compile Include="Models\WndConfirmCloseModel.cs" />
+    <Compile Include="Reports\ExportProvider.cs" />
+    <Compile Include="Reports\PDFExport.cs" />
+    <Compile Include="Reports\WordReports.cs" />
+    <Compile Include="SH\SHWrapper.cs" />
+    <Compile Include="UI\AirCompaniesOrders.xaml.cs">
+      <DependentUpon>AirCompaniesOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlOrderCustomer.xaml.cs">
+      <DependentUpon>CtrlOrderCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlAddContactPerson.xaml.cs">
+      <DependentUpon>CtrlAddContactPerson.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlAddOrder.xaml.cs">
+      <DependentUpon>CtrlAddOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\CtrlAddToGoOrder.xaml.cs">
+      <DependentUpon>CtrlAddToGoOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlAirOrders.xaml.cs">
+      <DependentUpon>CtrlAirOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlCatalogAutoCompliteBox.xaml.cs">
+      <DependentUpon>CtrlCatalogAutoCompliteBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlCatalogComboBox.xaml.cs">
+      <DependentUpon>CtrlCatalogComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlCatalogView2.xaml.cs">
+      <DependentUpon>CtrlCatalogView2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlChangeOrderRange.xaml.cs">
+      <DependentUpon>CtrlChangeOrderRange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlInvoiceSpreadSheet.xaml.cs">
+      <DependentUpon>CtrlInvoiceSpreadSheet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlItemLabels.xaml.cs">
+      <DependentUpon>CtrlItemLabels.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlMain.xaml.cs">
+      <DependentUpon>CtrlMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlOrderFlightInfo.xaml.cs">
+      <DependentUpon>CtrlOrderFlightInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlOrdersNonSH.xaml.cs">
+      <DependentUpon>CtrlOrdersNonSH.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlPrintLabels.xaml.cs">
+      <DependentUpon>CtrlPrintLabels.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlPrintOrder.xaml.cs">
+      <DependentUpon>CtrlPrintOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlRightFuncs.xaml.cs">
+      <DependentUpon>CtrlRightFuncs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlSetPayment.xaml.cs">
+      <DependentUpon>CtrlSetPayment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\CtrlToGoClientFinder.xaml.cs">
+      <DependentUpon>CtrlToGoClientFinder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\CtrlClientToGoEditDetails .xaml.cs">
+      <DependentUpon>CtrlClientToGoEditDetails .xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\CtrlClientToGoDetails.xaml.cs">
+      <DependentUpon>CtrlClientToGoDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\CtrlToGoClientCatalog2.xaml.cs">
+      <DependentUpon>CtrlToGoClientCatalog2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlToGoClientCatalog.xaml.cs">
+      <DependentUpon>CtrlToGoClientCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlToGoClientInfo.xaml.cs">
+      <DependentUpon>CtrlToGoClientInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CtrlToGoOrders.xaml.cs">
+      <DependentUpon>CtrlToGoOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\CtrlToGoClientStat.xaml.cs">
+      <DependentUpon>CtrlToGoClientStat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UIModify.cs" />
+    <Compile Include="UI\WndChangeOrderStatus.xaml.cs">
+      <DependentUpon>WndChangeOrderStatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WndChangePass.xaml.cs">
+      <DependentUpon>WndChangePass.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WndChooseDir.xaml.cs">
+      <DependentUpon>WndChooseDir.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WndDeleteDish.xaml.cs">
+      <DependentUpon>WndDeleteDish.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WndConfirmClose.xaml.cs">
+      <DependentUpon>WndConfirmClose.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WndCreateTmpDish.xaml.cs">
+      <DependentUpon>WndCreateTmpDish.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WndShowMap.xaml.cs">
+      <DependentUpon>WndShowMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\AccessTypeConst.cs" />
+    <Compile Include="Utils\AttributeExtension.cs" />
+    <Compile Include="Utils\EditableTextBox.cs" />
+    <Compile Include="Utils\EditGastroPrices.cs" />
+    <Compile Include="Utils\EnumDescription.cs" />
+    <Compile Include="Utils\FullyObservableCollection.cs" />
+    <Compile Include="Utils\PropInfo.cs" />
+    <Compile Include="Utils\TextHelper.cs" />
+    <Compile Include="Utils\Transliter.cs" />
+    <Page Include="Analytics\CtrlMainAnalitics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analytics\CtrlPivotGridAirCompanies.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Authorization.cs" />
+    <Compile Include="DBProvider.cs" />
+    <Compile Include="MainClass.cs" />
+    <Compile Include="UI\wndLogin.xaml.cs">
+      <DependentUpon>wndLogin.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UI\ToGo\CtrlToGoClientStat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndShowMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Resource Include="Data\KitchenOrderTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="DictionaryStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LabelsPrint\CtrlLabelImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LabelsPrint\CtrlLabelPapersVisual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LabelsPrint\CtrlLabelsPaper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="PrintRecieps\ctrlCheckVisual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\AirCompaniesOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlOrderCustomer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\CtrlAddContactPerson.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlAddOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ToGo\CtrlAddToGoOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlAirOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlCatalogAutoCompliteBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\CtrlCatalogComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\CtrlCatalogView2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlChangeOrderRange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlInvoiceSpreadSheet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlItemLabels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlOrderFlightInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlOrdersNonSH.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlPrintLabels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlPrintOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlRightFuncs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlSetPayment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ToGo\CtrlToGoClientFinder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ToGo\CtrlClientToGoEditDetails .xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\ToGo\CtrlClientToGoDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ToGo\CtrlToGoClientCatalog2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\CtrlToGoClientCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlToGoClientInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CtrlToGoOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndChangeOrderStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndChangePass.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndChooseDir.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndDeleteDish.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\WndConfirmClose.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndCreateTmpDish.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\wndLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Resource Include="v2 %283%29.ico" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.Alert.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.Discount.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.DiscountRange.datasource" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Icons\data_recovery-96.png" />
+    <Resource Include="Icons\data_backup-96.png" />
+    <Resource Include="Icons\data_configuration-96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\cancel-96.png" />
+    <Resource Include="Icons\checkmark-96.png" />
+    <Resource Include="Icons\down-96.png" />
+    <Resource Include="Icons\edit_image-96.png" />
+    <Resource Include="Icons\inspection-96.png" />
+    <Resource Include="Icons\minus-96.png" />
+    <Resource Include="Icons\ok-96.png" />
+    <Resource Include="Icons\plus-96.png" />
+    <Resource Include="Icons\up-96.png" />
+    <Resource Include="Icons\shipped-96.png" />
+    <Resource Include="Icons\business_contact-96.png" />
+    <Resource Include="Icons\calendar-96.png" />
+    <Resource Include="Icons\data_sheet-96.png" />
+    <Resource Include="Icons\planner-96.png" />
+    <Resource Include="Icons\print-96.png" />
+    <Resource Include="Icons\multiple_inputs-96.png" />
+    <Resource Include="Icons\automotive-48.png" />
+    <Resource Include="Icons\next-48.png" />
+    <Resource Include="Icons\previous-48.png" />
+    <Resource Include="Icons\ToFlyLogo.png" />
+    <Resource Include="Icons\money_transfer-96.png" />
+    <Resource Include="Icons\callback-96.png" />
+    <Resource Include="Icons\shop-96.png" />
+    <Resource Include="Icons\ToGoLogo.png" />
+    <Resource Include="Icons\synchronize-96.png" />
+    <Resource Include="Icons\approve-96.png" />
+    <Resource Include="Icons\panorama-96.png" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="DejaVuSansMono.ttf" />
+    <None Include="Properties\DataSources\AlohaService.CompositeType.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.AirCompany.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.ContactPerson.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.Curier.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.DeliveryPerson.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.DeliveryPlace.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.Dish.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.DishPackageFlightOrder.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.DishPackageToGoOrder.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.Driver.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.ItemLabelInfo.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.OperationResult.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.OrderCustomer.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.OrderFlight.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.OrderToGo.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.User.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.UserFunc.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.UserGroup.datasource" />
+    <None Include="Properties\DataSources\AlohaService.ServiceDataContracts.UserGroupAccess.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlohaService\AlohaService.csproj">
+      <Project>{478CC079-A69E-4FE5-8E8F-A76DEAC4D86A}</Project>
+      <Name>AlohaService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Print\Print.csproj">
+      <Project>{1e096c96-896e-4e82-ab23-02e69732c750}</Project>
+      <Name>Print</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StoreHouse\StoreHouseConnect.csproj">
+      <Project>{479c8dba-b9dc-4d9b-b83e-7e7ac1a3a572}</Project>
+      <Name>StoreHouseConnect</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.4.0.2\build\Fody.targets" Condition="Exists('..\packages\Fody.4.0.2\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.4.0.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.0.2\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\ReactiveUI.Fody.9.12.1\build\ReactiveUI.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ReactiveUI.Fody.9.12.1\build\ReactiveUI.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets'))" />
+  </Target>
+  <Import Project="..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.75.1.142\build\CefSharp.Common.targets')" />
+  <Import Project="..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.75.1.142\build\CefSharp.Wpf.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

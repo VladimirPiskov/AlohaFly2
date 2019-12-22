@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 15, 14.875" name="DBToGo">
+  <DataContextMoniker Name="/DBToGoDataContext" />
+  <nestedChildShapes>
+    <classShape Id="a545ed2c-ecad-4c9d-a6ae-a41d029ec3c3" absoluteBounds="0.75, 0.75, 2, 2.5401025390625005">
+      <DataClassMoniker Name="/DBToGoDataContext/Address" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c22395fc-683e-43df-b4e7-55950cf9ae03" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="77454edf-ce04-483c-a696-dcb805aa953d" absoluteBounds="3.75, 0.75, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/DBToGoDataContext/Client" />
+      <nestedChildShapes>
+        <elementListCompartment Id="19d5aed5-ba16-4f66-b145-0fd21f156aef" absoluteBounds="3.765, 1.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="122f827e-9fe4-4f65-a94e-a4b0602bac6f" absoluteBounds="0.75, 4.75, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/DBToGoDataContext/ClientType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="956c6393-1ec1-446e-b65e-250873a634ea" absoluteBounds="0.765, 5.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6dfc8a39-058b-460d-89c9-ac710898ab99" absoluteBounds="3.75, 4.75, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/DBToGoDataContext/Couriers" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c91c6c33-b6c8-486d-8988-7eaf42611858" absoluteBounds="3.765, 5.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d34d0abe-2987-4f32-a8f7-664f051de52b" absoluteBounds="6.75, 0.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/DBToGoDataContext/DayTime" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7a4b21a6-94bb-426f-9c87-f726f754d3af" absoluteBounds="6.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="048ab709-10ad-47de-9bfe-7f3380761c9e" absoluteBounds="0.75, 6.75, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/DBToGoDataContext/DeliveryZone" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9222a0a5-961f-4eca-bf5c-bc39812fb14f" absoluteBounds="0.765, 7.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="75fb73a1-3fd0-44dd-85fa-f4f09b224750" absoluteBounds="6.75, 2.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/DBToGoDataContext/MeasureUnitNames" />
+      <nestedChildShapes>
+        <elementListCompartment Id="81938d5a-e45e-4a0f-9797-3a073f6d94c6" absoluteBounds="6.765, 3.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="80c0923b-4639-4b61-ac55-cf414fe45a06" absoluteBounds="3.75, 6.75, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/DBToGoDataContext/Menu" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1e8e53a6-3a4e-4a07-873a-e9dccf310e4e" absoluteBounds="3.765, 7.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7c3e3eb7-a982-4daa-8c39-8f1a83be7667" absoluteBounds="6.75, 4.75, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/DBToGoDataContext/Operators" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d11c06fc-b80e-4b0a-b937-1ae29b51d7f8" absoluteBounds="6.765, 5.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="329c4449-b579-4fff-9b95-187d548fe88c" absoluteBounds="6.75, 6.75, 2, 2.5401025390624996">
+      <DataClassMoniker Name="/DBToGoDataContext/OrderContent" />
+      <nestedChildShapes>
+        <elementListCompartment Id="abd4351a-495e-4da9-8ea8-ab401ea5c40f" absoluteBounds="6.765, 7.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e178b705-4446-4860-b223-9ab87c19cfb2" absoluteBounds="9.75, 0.75, 2, 4.4631168619791666">
+      <DataClassMoniker Name="/DBToGoDataContext/Orders" />
+      <nestedChildShapes>
+        <elementListCompartment Id="59f8ea87-39df-4bfe-9613-da6002f76de1" absoluteBounds="9.765, 1.21, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0ec8a356-41aa-4222-8d1e-69fe3ec5b5d9" absoluteBounds="9.75, 6.75, 2, 7.9245426432291657">
+      <DataClassMoniker Name="/DBToGoDataContext/RKeeperMenu" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b2119dcc-c4af-4c63-aebb-7b9b56f66841" absoluteBounds="9.765, 7.21, 1.9700000000000002, 7.3645426432291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d70720e7-8a3f-4ede-8ed2-e2d00cb04fde" absoluteBounds="0.75, 10.75, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/DBToGoDataContext/SaleChannel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="72c7fd3c-fa1c-4b45-80d0-8b213808d74a" absoluteBounds="0.765, 11.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1c86f683-9b0d-4db0-87ef-b84ee8c84cbf" absoluteBounds="3.75, 10.75, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/DBToGoDataContext/Status" />
+      <nestedChildShapes>
+        <elementListCompartment Id="02688890-6333-4c4f-b94e-184319f3e239" absoluteBounds="3.765, 11.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="eeb7955d-8c5b-4c0c-9380-f693d57798ce" absoluteBounds="12.75, 0.75, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/DBToGoDataContext/StickCatalog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d95b2ef4-ab0f-470f-a13e-88b6e35d6891" absoluteBounds="12.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c8a51d07-b644-4b71-90fe-6412cbc115a5" absoluteBounds="12.75, 3.75, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/DBToGoDataContext/StickContent" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6d064544-a4d1-4f2d-a570-a0a229197571" absoluteBounds="12.765, 4.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="42ac616e-e81b-4c19-93f5-aba3740deefb" absoluteBounds="12.75, 6.75, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/DBToGoDataContext/sysdiagrams" />
+      <nestedChildShapes>
+        <elementListCompartment Id="54e8b3e6-835a-4ec4-bb04-c4a2d2487fbb" absoluteBounds="12.765, 7.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f5200b2f-954d-4bbf-acd4-b4a32dcf1eb0" absoluteBounds="12.75, 9.75, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/DBToGoDataContext/Tel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="034df2ef-7923-41db-a06e-815634a71cd3" absoluteBounds="12.765, 10.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d43f3011-7050-47d5-96a6-aeb9261ade3c" absoluteBounds="12.75, 12.75, 2, 1.0016910807291666">
+      <DataClassMoniker Name="/DBToGoDataContext/Version" />
+      <nestedChildShapes>
+        <elementListCompartment Id="29193861-81cc-43c5-a08e-e52f1d3f7ffb" absoluteBounds="12.765, 13.21, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
