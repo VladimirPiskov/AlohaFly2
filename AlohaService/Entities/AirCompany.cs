@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlohaService.Entities
 {
-    public class AirCompany
+    public class AirCompany : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public string Code { get; set; }
@@ -33,6 +33,8 @@ namespace AlohaService.Entities
 
         public string Code1C { get; set; }
         public string Name1C { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
 
     }
 }

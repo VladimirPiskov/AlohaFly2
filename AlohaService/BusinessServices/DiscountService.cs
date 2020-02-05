@@ -23,6 +23,8 @@ namespace AlohaService.BusinessServices
             dr.End = discountRange.End;
             dr.Start = discountRange.Start;
 
+
+
             db.DiscountRanges.Add(dr);
             db.SaveChanges();
 
@@ -77,6 +79,10 @@ namespace AlohaService.BusinessServices
             var d = new Entities.Discount();
             d.Name = discount.Name;
             d.ToGo = discount.ToGo;
+
+            d.UpdatedDate = DateTime.Now;
+            d.LastUpdatedSession = discount.LastUpdatedSession;
+
             db.Discounts.Add(d);
             db.SaveChanges();
 
@@ -115,6 +121,9 @@ namespace AlohaService.BusinessServices
             var dToUpdate = db.Discounts.FirstOrDefault(d => d.Id == discount.Id);
             dToUpdate.Name = discount.Name;
             dToUpdate.ToGo = discount.ToGo;
+
+            dToUpdate.UpdatedDate = DateTime.Now;
+            dToUpdate.LastUpdatedSession = discount.LastUpdatedSession;
 
             db.SaveChanges();
         }

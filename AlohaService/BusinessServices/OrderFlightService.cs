@@ -21,7 +21,7 @@ namespace AlohaService.BusinessServices
         public OrderFlightService(AlohaDb databaseContext)
         {
             db = databaseContext;
-            
+
             LogHelper.Configure();
             log = LogHelper.GetLogger();
         }
@@ -39,7 +39,7 @@ namespace AlohaService.BusinessServices
                 {
                     of.AirCompanyId = orderFlight.AirCompanyId;
                 }
-                                
+
                 of.Comment = orderFlight.Comment;
                 of.ContactPersonId = orderFlight.ContactPersonId;
                 of.DeliveryDate = orderFlight.DeliveryDate;
@@ -83,6 +83,37 @@ namespace AlohaService.BusinessServices
                     CreatedObjectId = of.Id
                 };
             }
+            catch (Exception e)
+            {
+                log.Error("Error", e);
+                return new OperationResult
+                {
+                    Success = false,
+                    ErrorMessage = e.Message
+                };
+            }
+        }
+        public OperationResult CreateOrderFlightWithPackage(ServiceDataContracts.OrderFlight orderFlight)
+        {
+            try
+            {
+                log.Debug($"CreateOrderToGoWithPackage");
+                var otg = Mapper.Map<ServiceDataContracts.OrderFlight, Entities.OrderFlight>(orderFlight);
+                otg.UpdatedDate = DateTime.Now;
+                otg.LastUpdatedSession = orderFlight.LastUpdatedSession;
+                db.OrderFlight.Add(otg);
+                db.SaveChanges();
+
+                OrderCustomrInfoService srv = new OrderCustomrInfoService(db);
+                //srv.RecalcCustomerInfo(orderToGo.OrderCustomerId.GetValueOrDefault());
+                srv.RecalcCustomerAllInfo();
+                return new OperationResult
+                {
+                    Success = true,
+                    CreatedObjectId = otg.Id
+                };
+            }
+
             catch (Exception e)
             {
                 log.Error("Error", e);
@@ -495,7 +526,7 @@ namespace AlohaService.BusinessServices
             return result;
         }
 
-        private void UpdateDishesForOrder(ServiceDataContracts.OrderFlight orderFlight, Entities.OrderFlight originalOrder, long userId)
+        private void UpdateDishesForOrder(ServiceDataContracts.OrderFlight orderFlight, Entities.OrderFlight originalOrder, long userId=0)
         {
             log.Info("UpdateDishesForOrder");
 
@@ -521,7 +552,7 @@ namespace AlohaService.BusinessServices
                     log.Info("Add new packages");
                     log.Info("ADish Id: " + package.DishId);
 
-                    
+
                     ds.CreateDishPackageFlightOrder(package);
 
                     /*
@@ -546,7 +577,7 @@ namespace AlohaService.BusinessServices
             // Update presented packages
             foreach (var package in orderFlight.DishPackages.ToList())
             {
-                
+
                 ds.UpdateDishPackageFlightOrder(package);
                 /*
                 var packageToUpdate = db.DishPackagesFlightOrder.FirstOrDefault(p => p.Id == package.Id);
@@ -571,10 +602,26 @@ namespace AlohaService.BusinessServices
             }
         }
 
-        public OperationResultValue<ServiceDataContracts.OrderFlight> UpdateOrderFlight(ServiceDataContracts.OrderFlight orderFlight, long userId)
+
+       
+
+        public OperationResult UpdateOrderFlight2(ServiceDataContracts.OrderFlight orderFlight, long userId)
+        {
+            var res = UpdateOrderFlight(orderFlight, userId);
+            OperationResult r = new OperationResult()
+            {
+                Success = res.Success,
+                CreatedObjectId = res.Result.Id,
+                ErrorMessage = res.ErrorMessage
+            };
+            return r;
+
+        }
+
+            public OperationResultValue<ServiceDataContracts.OrderFlight> UpdateOrderFlight(ServiceDataContracts.OrderFlight orderFlight, long userId)
         {
             var user = db.Users.FirstOrDefault(usr => usr.Id == userId);
-            if(user == null)
+            if (user == null)
             {
                 return new OperationResultValue<ServiceDataContracts.OrderFlight> { Success = false, ErrorMessage = "User Not Found." };
             }
@@ -640,6 +687,10 @@ namespace AlohaService.BusinessServices
                 //log.StateAfter = GetOrderFlightString(orderFlight);
             }
 
+
+            order.UpdatedDate = DateTime.Now;
+            order.LastUpdatedSession = orderFlight.LastUpdatedSession;
+
             db.SaveChanges();
 
             log.Info("GetOrder Flight after update. Order Flight Id: " + orderFlight.Id);
@@ -655,7 +706,7 @@ namespace AlohaService.BusinessServices
                     db.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error(e);
             }
@@ -684,7 +735,7 @@ namespace AlohaService.BusinessServices
 
         public bool InsertOrderFlightFromAloha(ServiceDataContracts.OrderFlight orderFlight)
         {
-            if  (orderFlight.AlohaGuidId!=null && db.OrderFlight.Any(a => a.AlohaGuidId == orderFlight.AlohaGuidId))
+            if (orderFlight.AlohaGuidId != null && db.OrderFlight.Any(a => a.AlohaGuidId == orderFlight.AlohaGuidId))
             {
                 return true;
             }
@@ -837,7 +888,7 @@ namespace AlohaService.BusinessServices
                 if (filter.OrderStatus != null)
                 {
                     var statuses = new List<int>();
-                    if(filter.OrderStatus.Value.HasFlag(OrderStatus.Cancelled))
+                    if (filter.OrderStatus.Value.HasFlag(OrderStatus.Cancelled))
                     {
                         statuses.Add((int)OrderStatus.Cancelled);
                     }
@@ -901,82 +952,83 @@ namespace AlohaService.BusinessServices
 
                 //var result = query.ProjectTo<ServiceDataContracts.OrderFlight>().ToList();
 
-                var result  = query.Select(order =>
+                var result = query.Select(order =>
 
-                new ServiceDataContracts.OrderFlight
-                {
-                    Id = order.Id,
+               new ServiceDataContracts.OrderFlight
+               {
+                   Id = order.Id,
 
-                    AirCompanyId = order.AirCompanyId,
-                    Comment = order.Comment,
+                   AirCompanyId = order.AirCompanyId,
+                   Comment = order.Comment,
 
-                    ContactPersonId = order.ContactPersonId,
-                    DeliveryDate = order.DeliveryDate,
+                   ContactPersonId = order.ContactPersonId,
+                   DeliveryDate = order.DeliveryDate,
 
-                    DeliveryPlaceId = order.DeliveryPlaceId,
+                   DeliveryPlaceId = order.DeliveryPlaceId,
 
-                    Driver = order.Driver == null ? null :
-                        new ServiceDataContracts.Driver
-                        {
-                            Id = order.Driver.Id,
-                            FullName = order.Driver.FullName,
-                            Phone = order.Driver.Phone
-                        },
-                    DriverId = order.DriverId,
-                    ExportTime = order.ExportTime,
-                    ExtraCharge = order.ExtraCharge,
-                    FlightNumber = order.FlightNumber,
-                    NumberOfBoxes = order.NumberOfBoxes,
-                    OrderComment = order.OrderComment,
-                    OrderNumber = order.OrderNumber,
-                    OrderStatus = (OrderStatus)order.OrderStatus,
-                    PhoneNumber = order.PhoneNumber,
-                    ReadyTime = order.ReadyTime,
+                   Driver = order.Driver == null ? null :
+                       new ServiceDataContracts.Driver
+                       {
+                           Id = order.Driver.Id,
+                           FullName = order.Driver.FullName,
+                           Phone = order.Driver.Phone
+                       },
+                   DriverId = order.DriverId,
+                   ExportTime = order.ExportTime,
+                   ExtraCharge = order.ExtraCharge,
+                   FlightNumber = order.FlightNumber,
+                   NumberOfBoxes = order.NumberOfBoxes,
+                   OrderComment = order.OrderComment,
+                   OrderNumber = order.OrderNumber,
+                   OrderStatus = (OrderStatus)order.OrderStatus,
+                   PhoneNumber = order.PhoneNumber,
+                   ReadyTime = order.ReadyTime,
 
 
-                    CreatedById = order.CreatedById,
+                   CreatedById = order.CreatedById,
 
-                    SendById = order.SendById,
+                   SendById = order.SendById,
 
-                    CreationDate = order.CreationDate,
+                   CreationDate = order.CreationDate,
 
-                    DeliveryAddress = order.DeliveryAddress,
+                   DeliveryAddress = order.DeliveryAddress,
 
-                    Code = order.Code,
+                   Code = order.Code,
 
-                    DishPackages = order.DishPackages.Select(pack => new ServiceDataContracts.DishPackageFlightOrder() {
+                   DishPackages = order.DishPackages.Select(pack => new ServiceDataContracts.DishPackageFlightOrder()
+                   {
 
-                        Amount = pack.Amount,
-                        Code = pack.Code,
-                        Comment = pack.Comment,
+                       Amount = pack.Amount,
+                       Code = pack.Code,
+                       Comment = pack.Comment,
                        Deleted = pack.Deleted,
                        DeletedStatus = pack.DeletedStatus,
                        SpisPaymentId = pack.SpisPaymentId,
-                        Id =pack.Id,
+                       Id = pack.Id,
                        DishId = pack.DishId,
-                                        DishName = pack.DishName,
-                                        OrderFlightId = pack.OrderFlightId,
-                                        TotalPrice = pack.TotalPrice,
-                                        PositionInOrder = pack.PositionInOrder,
-                                        PassageNumber = pack.PassageNumber
+                       DishName = pack.DishName,
+                       OrderFlightId = pack.OrderFlightId,
+                       TotalPrice = pack.TotalPrice,
+                       PositionInOrder = pack.PositionInOrder,
+                       PassageNumber = pack.PassageNumber
 
 
-                    }).ToList(),
+                   }).ToList(),
 
-                    PaymentId = order.PaymentId,
+                   PaymentId = order.PaymentId,
 
-                    DiscountSumm = order.DiscountSumm,
-                    Closed = order.Closed,
-                    NeedPrintFR = order.NeedPrintFR,
-                    NeedPrintPrecheck = order.NeedPrintPrecheck,
-                    FRPrinted = order.FRPrinted,
-                    PreCheckPrinted = order.PreCheckPrinted,
-                    IsSHSent = order.IsSHSent
+                   DiscountSumm = order.DiscountSumm,
+                   Closed = order.Closed,
+                   NeedPrintFR = order.NeedPrintFR,
+                   NeedPrintPrecheck = order.NeedPrintPrecheck,
+                   FRPrinted = order.FRPrinted,
+                   PreCheckPrinted = order.PreCheckPrinted,
+                   IsSHSent = order.IsSHSent
 
-                }
+               }
 
 ).ToList();
-            
+
                 log.Info(String.Format("Result successfully created. Collection count: {0}", result.Count));
 
                 return new OperationResultValue<List<ServiceDataContracts.OrderFlight>>
@@ -1036,13 +1088,13 @@ namespace AlohaService.BusinessServices
                     new ServiceDataContracts.OrderFlight
                     {
                         Id = order.Id,
-                        
+
                         AirCompanyId = order.AirCompanyId,
                         Comment = order.Comment,
-                        
+
                         ContactPersonId = order.ContactPersonId,
                         DeliveryDate = order.DeliveryDate,
-                        
+
                         DeliveryPlaceId = order.DeliveryPlaceId,
 
                         Driver = order.Driver == null ? null :
@@ -1063,9 +1115,9 @@ namespace AlohaService.BusinessServices
                         PhoneNumber = order.PhoneNumber,
                         ReadyTime = order.ReadyTime,
 
-                       
+
                         CreatedById = order.CreatedById,
-                       
+
                         SendById = order.SendById,
 
                         CreationDate = order.CreationDate,
@@ -1081,7 +1133,7 @@ namespace AlohaService.BusinessServices
 
 
 
-                        DishPackages = order.DishPackages.Where(x=>!x.Deleted).Select(pack => new ServiceDataContracts.DishPackageFlightOrder()
+                        DishPackages = order.DishPackages.Where(x => !x.Deleted).Select(pack => new ServiceDataContracts.DishPackageFlightOrder()
                         {
 
                             Amount = pack.Amount,
@@ -1097,12 +1149,12 @@ namespace AlohaService.BusinessServices
                             TotalPrice = pack.TotalPrice,
                             PositionInOrder = pack.PositionInOrder,
                             PassageNumber = pack.PassageNumber,
-                            
+
 
                         }).ToList(),
 
                         PaymentId = order.PaymentId,
-                       
+
                         DiscountSumm = order.DiscountSumm,
                         Closed = order.Closed,
                         NeedPrintFR = order.NeedPrintFR,
@@ -1113,7 +1165,7 @@ namespace AlohaService.BusinessServices
 
                     }).ToList();
 
-                
+
 
 
 
@@ -1156,7 +1208,7 @@ namespace AlohaService.BusinessServices
             worksheet.Columns[colIndex].SetWidth(new ColumnWidth(120, false));
             worksheet.Cells[rowIndex, colIndex++].SetValue("Организация:");
 
-            CellIndex c11 = new CellIndex(rowIndex, colIndex-1);
+            CellIndex c11 = new CellIndex(rowIndex, colIndex - 1);
             CellIndex c22 = new CellIndex(rowIndex, colIndex);
             worksheet.Cells[c11, c22].Merge();
             colIndex++;
@@ -1167,7 +1219,7 @@ namespace AlohaService.BusinessServices
 
             CellIndex c111 = new CellIndex(rowIndex, colIndex - 1);
             CellIndex c222 = new CellIndex(rowIndex, colIndex);
-            CellIndex c333 = new CellIndex(rowIndex, colIndex+1);
+            CellIndex c333 = new CellIndex(rowIndex, colIndex + 1);
             CellIndex c444 = new CellIndex(rowIndex, colIndex + 1);
             CellIndex c555 = new CellIndex(rowIndex, colIndex + 1);
             worksheet.Cells[c111, c555].Merge();
@@ -1200,7 +1252,7 @@ namespace AlohaService.BusinessServices
 
             worksheet.Columns[colIndex].SetWidth(new ColumnWidth(120, false));
             worksheet.Cells[rowIndex, colIndex++].SetValue("Document" + Environment.NewLine + "Number");
-            worksheet.Cells[rowIndex, colIndex-1].SetIsWrapped(true);
+            worksheet.Cells[rowIndex, colIndex - 1].SetIsWrapped(true);
             worksheet.Rows[rowIndex].SetHeight(new RowHeight(35, true));
 
             CellIndex d1 = new CellIndex(rowIndex, colIndex - 1);
@@ -1305,8 +1357,8 @@ namespace AlohaService.BusinessServices
             worksheet.Cells[rowIndex, colIndex].SetBorders(new CellBorders(border1, border1, border1, border1, null, null, null, null));
             worksheet.Columns[colIndex].SetWidth(new ColumnWidth(50, false));
             worksheet.Cells[rowIndex, colIndex++].SetValue("№");
-            worksheet.Cells[rowIndex, colIndex-1].SetVerticalAlignment(RadVerticalAlignment.Center);
-            worksheet.Cells[rowIndex, colIndex-1].SetHorizontalAlignment(RadHorizontalAlignment.Center);
+            worksheet.Cells[rowIndex, colIndex - 1].SetVerticalAlignment(RadVerticalAlignment.Center);
+            worksheet.Cells[rowIndex, colIndex - 1].SetHorizontalAlignment(RadHorizontalAlignment.Center);
             worksheet.Rows[rowIndex].SetHeight(new RowHeight(35, true));
 
             worksheet.Cells[rowIndex, colIndex].SetBorders(new CellBorders(border1, border1, border1, border1, null, null, null, null));
@@ -1332,10 +1384,10 @@ namespace AlohaService.BusinessServices
             worksheet.Cells[rowIndex - 1, colIndex++].SetValue("Qnt");
             worksheet.Cells[rowIndex - 1, colIndex - 1].SetVerticalAlignment(RadVerticalAlignment.Center);
             worksheet.Cells[rowIndex - 1, colIndex - 1].SetHorizontalAlignment(RadHorizontalAlignment.Center);
-            c1 = new CellIndex(rowIndex, colIndex -1);
-            c2 = new CellIndex(rowIndex - 1, colIndex -1);
+            c1 = new CellIndex(rowIndex, colIndex - 1);
+            c2 = new CellIndex(rowIndex - 1, colIndex - 1);
             worksheet.Cells[c1, c2].Merge();
-            worksheet.Cells[rowIndex - 1, colIndex -1].SetBorders(new CellBorders(border1, border1, border1, null, null, null, null, null));
+            worksheet.Cells[rowIndex - 1, colIndex - 1].SetBorders(new CellBorders(border1, border1, border1, null, null, null, null, null));
 
             worksheet.Cells[rowIndex, colIndex].SetBorders(new CellBorders(border1, border1, border1, border1, null, null, null, null));
             worksheet.Columns[colIndex].SetWidth(new ColumnWidth(50, false));
@@ -1379,7 +1431,7 @@ namespace AlohaService.BusinessServices
 
                 worksheet.Cells[rowIndex, colIndex].SetBorders(new CellBorders(border1, border1, border1, border1, null, null, null, null));
                 worksheet.Cells[rowIndex, colIndex++].SetValue(package.Dish.EnglishName);
-                
+
                 worksheet.Cells[rowIndex, colIndex].SetBorders(new CellBorders(border1, border1, border1, border1, null, null, null, null));
                 worksheet.Cells[rowIndex, colIndex++].SetValue("порц");
 
@@ -1460,7 +1512,7 @@ namespace AlohaService.BusinessServices
                     Success = true
                 };
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error("Error", e);
                 return new OperationResultValue<decimal>

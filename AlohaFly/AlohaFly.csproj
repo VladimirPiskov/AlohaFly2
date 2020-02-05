@@ -826,7 +826,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlohaService\AlohaService.csproj">
-      <Project>{478CC079-A69E-4FE5-8E8F-A76DEAC4D86A}</Project>
+      <Project>{478cc079-a69e-4fe5-8e8f-a76deac4d86a}</Project>
       <Name>AlohaService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Print\Print.csproj">

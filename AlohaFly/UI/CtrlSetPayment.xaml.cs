@@ -18,7 +18,7 @@ namespace AlohaFly.UI
         }
         public void Init()
         {
-            var pps = DataExtension.DataCatalogsSingleton.Instance.Payments.Where(a => a.ToGo);
+            var pps = DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.ToGo);
             foreach (var p in pps)
             {
                 Button btn = new Button()

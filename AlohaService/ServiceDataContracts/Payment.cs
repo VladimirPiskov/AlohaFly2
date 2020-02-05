@@ -55,6 +55,11 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Активно")]
         public bool IsActive { get; set; } = true;
 
+
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public Guid LastUpdatedSession { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public override string ToString()

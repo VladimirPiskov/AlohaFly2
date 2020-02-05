@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlohaService.Entities
 {
-    public class OrderCustomerAddress
+    public class OrderCustomerAddress: Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public long OldId { get; set; }

@@ -34,8 +34,8 @@
 
         
     </UserControl.Resources>
-    
-        <Grid>
+
+    <Grid Background="{Binding ControlColor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -221,7 +221,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
-
                         </Grid.ColumnDefinitions>
                         <TextBox Style="{StaticResource  HeaderTextBoxBigStyle}" Text="{Binding Client.FullName,Mode=OneWay}"/>
                         <telerik:RadButton Width="44" Height="36" Grid.Column="2" Command="{Binding EditClientCommand}" >

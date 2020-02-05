@@ -106,7 +106,16 @@ namespace AlohaFly.DataExtension
                     }
                     if (orderKeySelector != null && outData != null)
                     {
-                        outData.Sort(orderKeySelector);
+                        int chIdx = outData.IndexOf(e.ItemSender as TOut);
+                        if (chIdx > 0)
+                        {
+                            int bIdx = Math.Max(0, chIdx - 1);
+                            int aIdx = Math.Min(outData.Count-1, chIdx + 1);
+                            if ((orderKeySelector(outData[chIdx]) < orderKeySelector(outData[bIdx])) || (orderKeySelector(outData[chIdx]) > orderKeySelector(outData[aIdx])))
+                            {
+                                outData.Sort(orderKeySelector);
+                            }
+                        }
                     }
                     if (itemSelector != null)
                     {
@@ -339,9 +348,8 @@ namespace AlohaFly.DataExtension
                 var updaterFactory = new DataDBUpdaterFactory<T>(KeySelector);
                 linkedData = updaterFactory.GetLinkedFullyObservableDBData();
             }
-            catch (Exception e)
+            catch 
             {
-
                 return;
             }
 
@@ -375,13 +383,11 @@ namespace AlohaFly.DataExtension
             fillUpdating = true;
             var dbRes = linkedData.DBListFunc.Invoke(startDate, edt);
 
-
             lock (fillUpdatingLock)
             {
                 fillUpdating = false;
                 if (dbRes.Success)
                 {
-
                     var res = dbRes.Result.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
                     changesIdsDuringFillUpdate.Clear();
                     foreach (var item in res)
@@ -430,20 +436,7 @@ namespace AlohaFly.DataExtension
                        CopyAllPrimitiveProp(item, val);
                        val = linkedData.DBChildrenDataUpdater(val);
 
-                       /*
-                       foreach (var subsriber in subsribers)
-                       {
-                           if (subsriber.Any(a =>
-
-                           KeySelector(a as T) == KeySelector(item)
-
-                           ))
-                           {
-                               var itm = subsriber.FirstOrDefault(a => KeySelector(a) == KeySelector(item));
-                               CopyAllPrimitiveProp(val, itm);
-                           }
-                       }
-                       */
+                      
                    }
                    else
                    {
@@ -561,9 +554,13 @@ namespace AlohaFly.DataExtension
             return res;
         }
 
+        /*
+        public FullyObservableDBDataUpdateResult<T> DeleteItem(Func<long,T> selector,)
+        {
 
-
-        public FullyObservableDBDataUpdateResult<T> DeleteItem(T item)
+        }
+        */
+            public FullyObservableDBDataUpdateResult<T> DeleteItem(T item)
         {
             lock (fillUpdatingLock)
             {

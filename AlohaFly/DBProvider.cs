@@ -424,6 +424,8 @@ namespace AlohaFly
 
         public static List<long> SharAirs = new List<long>() { 41, 44, 45, 46, 47, 48, 49 };
         public static int SharUserId = 10;
+
+        /*
         public static List<OrderFlight> GetOrders(DateTime startDt, DateTime endDt, out List<OrderFlight> SVOOrders)
         {
             SVOOrders = new List<OrderFlight>();
@@ -462,37 +464,33 @@ namespace AlohaFly
                 {
                     //if (ord.DeliveryPlaceId)
 
-                    ord.ContactPerson = DataExtension.DataCatalogsSingleton.Instance.ContactPerson.SingleOrDefault(a => a.Id == ord.ContactPersonId);
-                    ord.AirCompany = DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.SingleOrDefault(a => a.Id == ord.AirCompanyId);
-                    if (ord.DeliveryPlaceId != null)
-                    {
-                        ord.DeliveryPlace = DataExtension.DataCatalogsSingleton.Instance.DeliveryPlaces.SingleOrDefault(a => a.Id == ord.DeliveryPlaceId);
-                    }
-                    if (ord.CreatedById != null)
-                    {
-                        ord.CreatedBy = DataExtension.DataCatalogsSingleton.Instance.ManagerOperator.SingleOrDefault(a => a.Id == ord.CreatedById);
-                    }
-
-                    if (ord.SendById != null)
-                    {
-                        ord.SendBy = DataExtension.DataCatalogsSingleton.Instance.ManagerOperator.SingleOrDefault(a => a.Id == ord.SendById);
-                    }
-
-
-                    if (ord.DishPackages != null)
-                    {
-                        foreach (var d in ord.DishPackages)
+                        ord.ContactPerson = DataExtension.DataCatalogsSingleton.Instance.ContactPerson.SingleOrDefault(a => a.Id == ord.ContactPersonId);
+                        ord.AirCompany = DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.SingleOrDefault(a => a.Id == ord.AirCompanyId);
+                        if (ord.DeliveryPlaceId != null)
                         {
-                            d.Dish = DataExtension.DataCatalogsSingleton.Instance.Dishes.SingleOrDefault(a => a.Id == d.DishId);
-                            if (d.TotalPrice != d.Dish.PriceForFlight)
-                            {
-                                int i = 0;
-                                // UI.UIModify.ShowAlert($"{d.TotalPrice}");
-                            }
-                            d.Printed = true;
-                            if (d.Deleted && d.DeletedStatus == 1) { d.UpDateSpisPayment(); }
+                            ord.DeliveryPlace = DataExtension.DataCatalogsSingleton.Instance.DeliveryPlaces.SingleOrDefault(a => a.Id == ord.DeliveryPlaceId);
                         }
-                    }
+                        if (ord.CreatedById != null)
+                        {
+                            ord.CreatedBy = DataExtension.DataCatalogsSingleton.Instance.ManagerOperator.SingleOrDefault(a => a.Id == ord.CreatedById);
+                        }
+
+                        if (ord.SendById != null)
+                        {
+                            ord.SendBy = DataExtension.DataCatalogsSingleton.Instance.ManagerOperator.SingleOrDefault(a => a.Id == ord.SendById);
+                        }
+
+
+                        if (ord.DishPackages != null)
+                        {
+                            foreach (var d in ord.DishPackages)
+                            {
+                                d.Dish = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.SingleOrDefault(a => a.Id == d.DishId);
+                            
+                                d.Printed = true;
+                                if (d.Deleted && d.DeletedStatus == 1) { d.UpDateSpisPayment(); }
+                            }
+                        }
                 }
 
                 SVOOrders = result.Where(a => SharAirs.Contains(a.AirCompanyId.GetValueOrDefault())).ToList();
@@ -526,8 +524,10 @@ namespace AlohaFly
             }
         }
 
+            */
 
 
+        /*
 
         public static List<OrderFlight> GetOrdersSVO(DateTime startDt, DateTime endDt)
         {
@@ -615,93 +615,94 @@ namespace AlohaFly
             }
         }
 
+        */
 
-
-        public static List<OrderToGo> GetOrderToGoList(DateTime startDt, DateTime endDt)
+        /*
+    public static List<OrderToGo> GetOrderToGoList(DateTime startDt, DateTime endDt)
+    {
+        try
         {
-            try
+            logger.Debug($"GetOrderToGoList startDt {startDt}, endDt {endDt}");
+            var client = GetClient();
+            if (client == null) { return null; }
+            logger.Debug($"GetClient ok");
+
+            var res = client.GetOrderToGoList(
+              new OrderToGoFilter
+              {
+                  DeliveryDateStart = new DateTime(startDt.Year, startDt.Month, startDt.Day, 0, 0, 0),
+                  DeliveryDateEnd = new DateTime(endDt.Year, endDt.Month, endDt.Day, 23, 59, 59),
+              },
+              new AlohaService.ServiceDataContracts.PageInfo
+              {
+                  Skip = 0,
+                  Take = 10000
+              }
+              );
+            if (res == null) { logger.Debug($"res==null"); return new List<OrderToGo>(); ; }
+            logger.Debug($"data recived res {res.Success} err: {res.ErrorMessage}");
+            if (!res.Success)
             {
-                logger.Debug($"GetOrderToGoList startDt {startDt}, endDt {endDt}");
-                var client = GetClient();
-                if (client == null) { return null; }
-                logger.Debug($"GetClient ok");
-
-                var res = client.GetOrderToGoList(
-                  new OrderToGoFilter
-                  {
-                      DeliveryDateStart = new DateTime(startDt.Year, startDt.Month, startDt.Day, 0, 0, 0),
-                      DeliveryDateEnd = new DateTime(endDt.Year, endDt.Month, endDt.Day, 23, 59, 59),
-                  },
-                  new AlohaService.ServiceDataContracts.PageInfo
-                  {
-                      Skip = 0,
-                      Take = 10000
-                  }
-                  );
-                if (res == null) { logger.Debug($"res==null"); return new List<OrderToGo>(); ; }
-                logger.Debug($"data recived res {res.Success} err: {res.ErrorMessage}");
-                if (!res.Success)
-                {
-                    logger.Debug($"data recived err: {res.ErrorMessage}");
-                    DBError(res.ErrorMessage);
-                    return new List<OrderToGo>();
-                }
-                var result = res.Result.OrderByDescending(a => a.DeliveryDate).ToList();
-
-                if (!Authorization.IsDirector)
-                {
-                    result = result.Where(a => a.OrderStatus != OrderStatus.Cancelled).ToList();
-                    var NonAirs = new List<long>() { 41, 44, 45 };
-                }
-
-                foreach (var ord in result)
-                {
-                    ord.OrderCustomer = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerData.Data.SingleOrDefault(a => a.Id == ord.OrderCustomerId);
-                    if (ord.CreatedById != null)
-                    {
-                        ord.CreatedBy = DataExtension.DataCatalogsSingleton.Instance.ManagerOperator.SingleOrDefault(a => a.Id == ord.CreatedById);
-                    }
-
-                    if (ord.PaymentId != null)
-                    {
-                        ord.PaymentType = DataExtension.DataCatalogsSingleton.Instance.Payments.SingleOrDefault(a => a.Id == ord.PaymentId);
-                    }
-
-                    if (ord.MarketingChannelId != null)
-                    {
-                        ord.MarketingChannel = DataExtension.DataCatalogsSingleton.Instance.MarketingChannels.SingleOrDefault(a => a.Id == ord.MarketingChannelId);
-                    }
-
-                    if (ord.DriverId != null)
-                    {
-                        ord.Driver = DataExtension.DataCatalogsSingleton.Instance.Drivers.SingleOrDefault(a => a.Id == ord.DriverId);
-                    }
-                    if (ord.AddressId != 0)
-                    {
-                        ord.Address = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data.SingleOrDefault(a => a.Id == ord.AddressId);
-                    }
-                    if (ord.DishPackages != null)
-                    {
-                        foreach (var d in ord.DishPackages)
-                        {
-                            d.Printed = true;
-                            d.Dish = DataExtension.DataCatalogsSingleton.Instance.Dishes.SingleOrDefault(a => a.Id == d.DishId);
-                            if (d.Deleted && d.DeletedStatus == 1) { d.UpDateSpisPayment(); }
-                        }
-                    }
-                }
-                logger.Debug($"data recived return result {result.Count()} items ");
-                return result;
+                logger.Debug($"data recived err: {res.ErrorMessage}");
+                DBError(res.ErrorMessage);
+                return new List<OrderToGo>();
             }
-            catch (Exception e)
+            var result = res.Result.OrderByDescending(a => a.DeliveryDate).ToList();
+
+            if (!Authorization.IsDirector)
             {
-                logger.Debug($"GetOrders error {e.Message}");
-                return new List<OrderToGo>(); ;
+                result = result.Where(a => a.OrderStatus != OrderStatus.Cancelled).ToList();
+                var NonAirs = new List<long>() { 41, 44, 45 };
             }
+
+            foreach (var ord in result)
+            {
+                ord.OrderCustomer = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerData.Data.SingleOrDefault(a => a.Id == ord.OrderCustomerId);
+                if (ord.CreatedById != null)
+                {
+                    ord.CreatedBy = DataExtension.DataCatalogsSingleton.Instance.ManagerOperator.SingleOrDefault(a => a.Id == ord.CreatedById);
+                }
+
+                if (ord.PaymentId != null)
+                {
+                    ord.PaymentType = DataExtension.DataCatalogsSingleton.Instance.Payments.SingleOrDefault(a => a.Id == ord.PaymentId);
+                }
+
+                if (ord.MarketingChannelId != null)
+                {
+                    ord.MarketingChannel = DataExtension.DataCatalogsSingleton.Instance.MarketingChannels.SingleOrDefault(a => a.Id == ord.MarketingChannelId);
+                }
+
+                if (ord.DriverId != null)
+                {
+                    ord.Driver = DataExtension.DataCatalogsSingleton.Instance.Drivers.SingleOrDefault(a => a.Id == ord.DriverId);
+                }
+                if (ord.AddressId != 0)
+                {
+                    ord.Address = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data.SingleOrDefault(a => a.Id == ord.AddressId);
+                }
+                if (ord.DishPackages != null)
+                {
+                    foreach (var d in ord.DishPackages)
+                    {
+                        d.Printed = true;
+                        d.Dish = DataExtension.DataCatalogsSingleton.Instance.Dishes.SingleOrDefault(a => a.Id == d.DishId);
+                        if (d.Deleted && d.DeletedStatus == 1) { d.UpDateSpisPayment(); }
+                    }
+                }
+            }
+            logger.Debug($"data recived return result {result.Count()} items ");
+            return result;
         }
+        catch (Exception e)
+        {
+            logger.Debug($"GetOrders error {e.Message}");
+            return new List<OrderToGo>(); ;
+        }
+    }
 
-
-
+    */
+        /*
         #region DeliveryPerson
         public static List<DeliveryPerson> GetDeliveryPersonList()
         {
@@ -720,7 +721,9 @@ namespace AlohaFly
 
             return null;
         }
+        
         #endregion
+        */
 
         #region ContactPerson
         public static List<ContactPerson> GetContactPerson()

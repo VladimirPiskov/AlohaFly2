@@ -32,6 +32,9 @@ namespace AlohaService.BusinessServices
                 ili.ParenItemId = itemlabelInfo.ParenItemId;
                 ili.SerialNumber = itemlabelInfo.SerialNumber;
 
+                ili.UpdatedDate = DateTime.Now;
+                ili.LastUpdatedSession = itemlabelInfo.LastUpdatedSession;
+
                 db.ItemLabelInfos.Add(ili);
                 db.SaveChanges();
 
@@ -100,6 +103,9 @@ namespace AlohaService.BusinessServices
             label.NameRus = itemlabelInfo.NameRus;
             label.ParenItemId = itemlabelInfo.ParenItemId;
             label.SerialNumber = itemlabelInfo.SerialNumber;
+
+            label.UpdatedDate = DateTime.Now;
+            label.LastUpdatedSession = itemlabelInfo.LastUpdatedSession;
 
             db.SaveChanges();
 

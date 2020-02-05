@@ -1,4 +1,5 @@
-﻿using AlohaService.ServiceDataContracts;
+﻿using AlohaFly.DataExtension;
+using AlohaService.ServiceDataContracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,15 +38,16 @@ namespace AlohaFly.Models
 
             PrintReestr = new DelegateCommand((_) =>
             {
-                (new Reports.ExcelReports()).OrdersToExcelByComp(CurentAirCompanyOrders, Models.AirOrdersModelSingleton.Instance.StartDt, Models.AirOrdersModelSingleton.Instance.EndDt);
+                (new Reports.ExcelReports()).OrdersToExcelByComp(CurentAirCompanyOrders, DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt);
             });
             PrintReestrAll = new DelegateCommand((_) =>
             {
-                (new Reports.ExcelReports()).AllOrdersToExcelByComps(Models.AirOrdersModelSingleton.Instance.AirCompanyOrders.ToList(), Models.AirOrdersModelSingleton.Instance.StartDt, Models.AirOrdersModelSingleton.Instance.EndDt);
+                (new Reports.ExcelReports()).AllOrdersToExcelByComps(Models.AirOrdersModelSingleton.Instance.AirCompanyOrders.ToList(), DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt);
             });
-            AirOrdersModelSingleton.Instance.orders.CollectionChanged += Orders_CollectionChanged;
+          //  AirOrdersModelSingleton.Instance.orders.CollectionChanged += Orders_CollectionChanged;
         }
 
+        /*
         private void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             // RaisePropertyChanged("_airCompanies");
@@ -54,7 +56,7 @@ namespace AlohaFly.Models
 
             RaisePropertyChanged("AirCompanies");
         }
-
+        */
         public Models.ChangeOrderRangeViewModel changeOrderRangeViewModel { set; get; } = new ChangeOrderRangeViewModel();
 
         public ICommand GoToOrdersCommand { get; set; }
@@ -190,22 +192,22 @@ namespace AlohaFly.Models
         public AirCompanyOrders(long AirId)
         {
             Id = AirId;
-            AirOrdersModelSingleton.Instance.orders.CollectionChanged += Orders_CollectionChanged;
+            //AirOrdersModelSingleton.Instance.orders.CollectionChanged += Orders_CollectionChanged;
         }
 
         public AirCompany AirCompany
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.SingleOrDefault(a => a.Id == Id);
+                return DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.SingleOrDefault(a => a.Id == Id);
             }
         }
-
+        /*
         private void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             RaisePropertyChanged("Orders");
         }
-
+        */
         [Display(AutoGenerateField = false)]
         public IEnumerable<OrderFlight> Orders
         {
@@ -218,7 +220,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.Single(a => a.Id == Id).Name;
+                return DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.SingleOrDefault(a => a.Id == Id).Name;
             }
         }
         public int OrdersCount

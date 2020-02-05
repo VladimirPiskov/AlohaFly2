@@ -32,6 +32,10 @@ namespace AlohaService.BusinessServices
                 d.SHIdSh = group.SHIdSh;
                 d.SHIdToFly = group.SHIdToFly;
                 d.SHIdToGo = group.SHIdToGo;
+
+                d.UpdatedDate = DateTime.Now;
+                d.LastUpdatedSession = group.LastUpdatedSession;
+
                 db.DishKitchenGroups.Add(d);
                 db.SaveChanges();
 
@@ -80,6 +84,8 @@ namespace AlohaService.BusinessServices
             ud.SHIdSh = dishKitchenGroup.SHIdSh;
             ud.SHIdToFly = dishKitchenGroup.SHIdToFly;
             ud.SHIdToGo = dishKitchenGroup.SHIdToGo;
+            ud.UpdatedDate = DateTime.Now;
+            ud.LastUpdatedSession = dishKitchenGroup.LastUpdatedSession;
 
             db.SaveChanges();
 

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlohaService.Entities
 {
-    public class OrderToGo
+    public class OrderToGo : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public long OldId { get; set; }
@@ -78,10 +78,10 @@ namespace AlohaService.Entities
         public bool Closed { get; set; }
 
         public bool IsSHSent { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-        public Guid LastUpdatedSession { get; set; }
-
+        
+            public DateTime? UpdatedDate { get; set; }
+            public Guid LastUpdatedSession { get; set; }
+        
         public OrderToGo()
         {
             DishPackages = new HashSet<DishPackageToGoOrder>();

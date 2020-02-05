@@ -1,4 +1,5 @@
-﻿using AlohaFly.Models;
+﻿using AlohaFly.DataExtension;
+using AlohaFly.Models;
 using AlohaService.ServiceDataContracts;
 using CefSharp;
 using CefSharp.Wpf;
@@ -34,28 +35,25 @@ namespace AlohaFly
 
         }
 
-        internal static void Init(MainWindow mw)
+        async internal static void Init(MainWindow mw)
         {
             _logger.Trace("App Init");
             UIActivate(mw);
             Fonts.FontInstall.Install();
-            //DataExtension.DataCatalogsSingleton.Instance.BindCollections();
-            DateTime startDt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            DateTime endDt = DateTime.Now.Date.AddMonths(1);
-            //  AirOrdersModelSingleton.Instance.EnableCollectionSynchronization();
-            //Models.AirOrdersModelSingleton.Instance.SetNewOrdersRange(startDt, endDt);
+
+            mainUIModel.StartBusy();
             var t = new Task(() =>
             {
                 LoadInitData();
+
+                DateTime startDt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                DateTime endDt = DateTime.Now.Date.AddMonths(1);
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(startDt, endDt);
             });
             t.Start();
-            //Task.WaitAll(t);
+            await Task.WhenAll(t);
+            mainUIModel.StopBusy();
             UIInit();
-            //UIInit();
-            //DataExtension.DataCatalogsSingleton.Instance.FillAllData(); ;
-            //UI.UIModify.ShowCtrlAddOrder();
-            //DateTime startDt = new DateTime(2009, 10,21);
-            //DateTime endDt = new DateTime(2009, 10, 23);
         }
 
 
@@ -95,7 +93,7 @@ namespace AlohaFly
             long pId = sp.Pid;
             if (pId > 0)
             {
-                var p = DataExtension.DataCatalogsSingleton.Instance.Payments.Where(a => a.ToGo).SingleOrDefault(a => a.Id == pId);
+                var p = DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.ToGo).SingleOrDefault(a => a.Id == pId);
                 string promtStr = $"Закрыть чек {ord.Id}. {Environment.NewLine} Вид оплаты: {p.Name} {Environment.NewLine} На сумму: {ord.OrderTotalSumm}? ";
                 ord.PaymentId = pId;
                 ord.PaymentType = p;
@@ -209,7 +207,7 @@ namespace AlohaFly
             try
             {
 
-                mainUIModel.StartBusy();
+                
 
                 try
                 {
@@ -226,17 +224,23 @@ namespace AlohaFly
                 {
                     mainUIModel.SendBusyContent(s);
                 });
-
-                DataExtension.RealTimeUpdaterSingleton.Instance.Init();
-                DataExtension.DataCatalogsSingleton.Instance.DataCatalogsFill();
-
                 mainUIModel.SendBusyContent("Загружаю заказы");
+
+                
+                   DataExtension.RealTimeUpdaterSingleton.Instance.Init();
+                   DataExtension.DataCatalogsSingleton.Instance.DataCatalogsFill();
+               
+
+                //await Task.WhenAll(t1, t2);
+
                 //AirOrdersModelSingleton.Instance.Init();
+                /*
                 if (Authorization.IsDirector)
                 {
                     AirOrdersModelSingleton.Instance.SetNewOrdersRange(-1);
                 }
                 AirOrdersModelSingleton.Instance.SetNewOrdersRange();
+                */
                 /*
                 if (Authorization.CurentUser.UserName != "sh.user")
                 {
@@ -244,7 +248,7 @@ namespace AlohaFly
                     ToGoOrdersModelSingleton.Instance.SetNewOrdersRange();
                 }
                 */
-                mainUIModel.StopBusy();
+                
                 //if (tmpvm != null) { tmpvm.MoveCurrentToFirst(); }
 
                 Dispatcher.Invoke(() =>

@@ -19,7 +19,7 @@ namespace AlohaFly.Models
             {
 
 
-                Result = DataExtension.DataCatalogsSingleton.Instance.AddContactPerson(CP);
+                Result = DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.EndEdit(CP).Succeess;
                 //long Id  =DBDataExtractor<ContactPerson>.AddItem(DBProvider.Client.CreateContactPerson, CP);
 
                 if (Result)

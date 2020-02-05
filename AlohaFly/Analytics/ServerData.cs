@@ -336,7 +336,7 @@ namespace AlohaFly.Analytics
             {
                 tmp.Add(new AirCompanyRevenueInfo()
                 {
-                    Cname = DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.SingleOrDefault(a => a.Id == compN)?.Name,
+                    Cname = DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.SingleOrDefault(a => a.Id == compN)?.Name,
                     Revenue = Orderstmp.Where(a => a.AirCompanyId == compN).Sum(a => a.OrderTotalSumm),
                 });
             }

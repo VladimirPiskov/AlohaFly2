@@ -5,7 +5,7 @@ using System.Web;
 
 namespace AlohaService.Entities
 {
-    public class User
+    public class User : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
 
@@ -26,5 +26,8 @@ namespace AlohaService.Entities
         public int UserRole { get; set; }
 
         public bool IsActive { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
     }
 }

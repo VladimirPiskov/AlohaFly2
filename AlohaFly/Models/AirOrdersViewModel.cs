@@ -2,6 +2,7 @@
 using AlohaFly.Utils;
 using AlohaService.ServiceDataContracts;
 using NLog;
+using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,8 +20,8 @@ namespace AlohaFly.Models
         public AirOrdersViewModel()
         {
             Logger logger = LogManager.GetCurrentClassLogger();
-            EnableCollectionSynchronization();
-            AirOrdersModelSingleton.Instance.OnOrderAdded += new AirOrdersModelSingleton.OrderAddedHandler(ord => { AfterAddOrder(); });
+            
+            //AirOrdersModelSingleton.Instance.OnOrderAdded += new AirOrdersModelSingleton.OrderAddedHandler(ord => { AfterAddOrder(); });
             AddNewOrderCommand = new DelegateCommand(_ => { MainClass.ShowUC(UI.UIModify.GetCtrlAddOrder()); });
             EditOrderCommand = new DelegateCommand(_ =>
             {
@@ -88,9 +89,11 @@ namespace AlohaFly.Models
 
             RefreshCommand = new DelegateCommand(_ =>
             {
+
                 if (!MainClass.AddAirOrderPaneOpen())
                 {
-                    AirOrdersModelSingleton.Instance.RefreshOrdersRange();
+                    //AirOrdersModelSingleton.Instance.RefreshOrdersRange();
+                    RealTimeUpdaterSingleton.Instance.UpdateData();
                 }
                 else
                 {
@@ -352,10 +355,7 @@ namespace AlohaFly.Models
             }
         }
 
-        public void EnableCollectionSynchronization()
-        {
-            BindingOperations.EnableCollectionSynchronization(Orders, AirOrdersModelSingleton.Instance.StocksLock);
-        }
+        
 
         ICollectionView _orders;
         public ICollectionView Orders
@@ -375,6 +375,7 @@ namespace AlohaFly.Models
                 return _orders;
             }
         }
+        /*
         public void AfterAddOrder()
         {
             Orders.SortDescriptions.Clear();
@@ -392,7 +393,7 @@ namespace AlohaFly.Models
             }
             );
         }
-
+        */
         public bool ordersFocused { set; get; }
         public bool OrdersFocused
         {
@@ -418,17 +419,57 @@ namespace AlohaFly.Models
 
     public sealed class AirOrdersModelSingleton
     {
+        Logger _logger = LogManager.GetCurrentClassLogger();
         private AirOrdersModelSingleton()
         {
             /*
             var tmpData = DBProvider.GetOrdersFlightAsync(startDt, endDt);
             tmpData.ContinueWith(tsk => EndDataLoad(tsk));
-            */
+            
             StartDt = GetMonth(DateTime.Now);
             EndDt = GetMonth(DateTime.Now).AddMonths(1);
+            */
 
 
+            Orders = new FullyObservableCollection<OrderFlight>();
+            ordersConnector.OrderByDesc(a => a.DeliveryDate)
+                            .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, Orders);
+                            //.SubsribeAction(DataCatalogsSingleton.Instance.OrdersFlightData,);
+
+            OrdersNonSH = new FullyObservableCollection<OrderFlight>();
+            ordersNonSHConnector.Select(a => !a.IsSHSent && a.OrderStatus != OrderStatus.InWork)
+                .OrderByDesc(a => a.DeliveryDate)
+                            .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, OrdersNonSH);
+
+            SVOorders = new FullyObservableCollection<OrderFlight>();
+            svoOrdersConnector.Select(a => DBProvider.SharAirs.Contains(a.AirCompanyId.GetValueOrDefault()))
+                .OrderByDesc(a => a.DeliveryDate)
+                            .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, SVOorders);
+
+
+            
         }
+
+
+        /*
+        FullyObservableDBDataSubsriber<OrderFlight, AirCompanyOrders> airCompanyOrdersConnector = new FullyObservableDBDataSubsriber<OrderFlight, AirCompanyOrders>(a => a.Id);
+
+        [Reactive] public FullyObservableCollection<AirCompanyOrders> AirCompanyOrders { set; get; }
+        */
+
+        FullyObservableDBDataSubsriber<OrderFlight, OrderFlight> ordersConnector = new FullyObservableDBDataSubsriber<OrderFlight, OrderFlight>(a => a.Id);
+
+        [Reactive] public FullyObservableCollection<OrderFlight> Orders { set; get; }
+
+
+        FullyObservableDBDataSubsriber<OrderFlight, OrderFlight> svoOrdersConnector = new FullyObservableDBDataSubsriber<OrderFlight, OrderFlight>(a => a.Id);
+
+        [Reactive] public FullyObservableCollection<OrderFlight> SVOorders { set; get; }
+
+        FullyObservableDBDataSubsriber<OrderFlight, OrderFlight> ordersNonSHConnector = new FullyObservableDBDataSubsriber<OrderFlight, OrderFlight>(a => a.Id);
+        [Reactive] public FullyObservableCollection<OrderFlight> OrdersNonSH { set; get; }
+
+
 
 
         static AirOrdersModelSingleton instance;
@@ -445,13 +486,76 @@ namespace AlohaFly.Models
             }
         }
 
-
-        public void Init()
+        public List<OrderFlight> GetOrdersOfMonth(DateTime month)
         {
-            GetOrdersOfMonth(DateTime.Now);
-
+            DateTime dt = new DateTime(month.Year, month.Month, 1);
+            DataCatalogsSingleton.Instance.OrdersFlightData.ChangeStartDate(month);
+            return    DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(a=>a.DeliveryDate>= dt && a.DeliveryDate < dt.AddDays(1)).ToList();
+            
 
         }
+        /*
+        public DateTime StartDt { set; get; }
+        public DateTime EndDt { set; get; }
+        */
+        public void UpdateDateRange(DateTime startDt, DateTime endDt)
+        {
+            
+            ordersConnector.Select(a => (Authorization.IsDirector || a.OrderStatus != OrderStatus.Cancelled) && (a.DeliveryDate >= startDt && a.DeliveryDate < endDt));
+        }
+
+        public bool UpdateOrder(OrderFlight order)
+        {
+
+            var res = DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(order);
+            return res.Succeess;
+        }
+
+
+        public bool DeleteOrder(OrderFlight order)
+        {
+            try
+            {
+                order.OrderStatus = OrderStatus.Cancelled;
+                var res = DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(order);
+                return res.Succeess;
+            }
+            catch (Exception e)
+            {
+                _logger.Error($"ToGoOrdersModelSingleton.DeleteOrder: {e.Message}");
+                return false;
+            }
+
+        }
+
+
+        
+        public ReadOnlyObservableCollection<AirCompanyOrders> AirCompanyOrders
+        {
+            get
+            {
+
+                FullyObservableCollection<AirCompanyOrders> airCompanyOrders = new FullyObservableCollection<AirCompanyOrders>();
+                foreach (var r in Orders.Where(a => a.AirCompanyId != null).Select(a => a.AirCompanyId.Value).Distinct())
+                {
+                    airCompanyOrders.Add(new Models.AirCompanyOrders(r));
+                }
+                return new ReadOnlyObservableCollection<AirCompanyOrders>(airCompanyOrders);
+            }
+        }
+        /*
+        public void SetNewOrdersRange(int m = 0)
+        {
+            DateTime dt = DateTime.Now.AddMonths(m);
+            StartDt = GetMonth(dt);
+            EndDt = GetMonth(dt).AddMonths(1).AddDays(-1);
+            UpdateOrders(GetOrdersOfMonth(dt));
+            Calc.CalkDiscounts(orders.ToList());
+
+            DataCatalogsSingleton.Instance.ChangeOrderDateRange(StartDt, EndDt.AddDays(1));
+
+        }
+        */
 
         /*
         public List<OrderFlight> GetOrdersOfRange(DateTime StartDt, DateTime EndDt)
@@ -467,7 +571,7 @@ namespace AlohaFly.Models
             }
             return res;
         }
-        */
+        
 
         private object dOrdersLock = new object();
         public List<OrderFlight> GetOrdersOfMonth(DateTime month)
@@ -539,14 +643,7 @@ namespace AlohaFly.Models
                     orders.Add(r);
                 }
             }
-            /*
-            airCompanyOrders.Clear();
-
-            foreach (var r in ordersList.Where(a=>a.AirCompanyId!=null).Select(a=>a.AirCompanyId.Value).Distinct())
-            {
-                airCompanyOrders.Add(new Models.AirCompanyOrders(r));
-            }
-            */
+           
 
             // orders.UnSetEventsFreeze();
         }
@@ -734,10 +831,11 @@ namespace AlohaFly.Models
                 return new ReadOnlyObservableCollection<OrderFlight>(new FullyObservableCollection<OrderFlight>(orders.Where(a => !a.IsSHSent)));
             }
         }
+        */
     }
 
 
-   
+
 
 
 

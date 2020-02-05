@@ -324,15 +324,18 @@
 
 
         <StackPanel x:Name="SecondColumnPanel"  Orientation="Vertical"  Grid.Row="0" Grid.Column="1" Margin="10">
-            <!--  <Label Content="Время вывоза"   /> </-->
-            <telerik:Label Content="Время вывоза"  />
-            <telerik:RadDateTimePicker  SelectedValue="{Binding Path=ExportTime, Mode=TwoWay }"   TabIndex="7"
+            <!--
+            <telerik:Label Content="Время вывоза" />
+            <telerik:RadDateTimePicker  SelectedValue="{Binding Path=ExportTime, Mode=TwoWay }"   TabIndex="7" 
                                         OpenDropDownOnFocus="False" 
                                          >
 
             </telerik:RadDateTimePicker>
-            <Label Content="Готовность на кухне"   />
+            <Label Content="Готовность на кухне"  />
             <telerik:RadDateTimePicker  SelectedValue="{Binding Path=ReadyTime, Mode=TwoWay}" OpenDropDownOnFocus="False"   TabIndex="8" />
+             /-->
+
+            
             <local:CtrlCatalogComboBox DataContext="{Binding DeliveryPerconVM}" />
             <Grid>
                 <Grid.ColumnDefinitions>

@@ -102,6 +102,9 @@ namespace AlohaService.BusinessServices
             ac.Inn = airCompany.Inn;
             ac.RussianCode = airCompany.RussianCode;
             ac.IkaoCode = airCompany.IkaoCode;
+            ac.UpdatedDate = DateTime.Now;
+            ac.LastUpdatedSession = airCompany.LastUpdatedSession;
+
 
             db.AirCompanies.Add(ac);
             db.SaveChanges();
@@ -172,6 +175,9 @@ namespace AlohaService.BusinessServices
             airCompanyToUpdate.Inn = airCompany.Inn;
             airCompanyToUpdate.RussianCode = airCompany.RussianCode;
             airCompanyToUpdate.IkaoCode = airCompany.IkaoCode;
+
+            airCompanyToUpdate.UpdatedDate = DateTime.Now;
+            airCompanyToUpdate.LastUpdatedSession = airCompany.LastUpdatedSession;
 
             db.SaveChanges();
         }

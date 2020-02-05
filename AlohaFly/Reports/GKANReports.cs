@@ -117,7 +117,7 @@ namespace AlohaFly.Reports
             {
                 var data = AirOrdersModelSingleton.Instance.SVOorders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
                 var dataCats = new GKANReportCats();
-                foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.Where(x => x.IsActive && DBProvider.SharAirs.Contains(x.Id)))
+                foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.Where(x => x.IsActive && DBProvider.SharAirs.Contains(x.Id)))
                 {
                     var dataCat = new GKANReportCat()
                     {
@@ -148,7 +148,7 @@ namespace AlohaFly.Reports
                 };
                 dataCats.Cats.Add(dataCatd);
                 */
-                foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup.Where(x => x.IsActive))
+                foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.Where(x => x.IsActive))
                 {
                     var dataCat = new GKANReportCat()
                     {
@@ -229,7 +229,7 @@ namespace AlohaFly.Reports
         {
             var data = AirOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
             var dataCats = new GKANReportCats();
-            foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.Payments.Where(x => !x.ToGo && x.IsActive && x.PaymentGroup != null))
+            foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(x => !x.ToGo && x.IsActive && x.PaymentGroup != null))
             {
                 var dataCat = new GKANReportCat()
                 {
@@ -261,7 +261,7 @@ namespace AlohaFly.Reports
             };
             dataCats.Cats.Add(dataCatd);
 
-            foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup.Where(x => x.IsActive))
+            foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.Where(x => x.IsActive))
             {
                 var dataCat = new GKANReportCat()
                 {
@@ -304,7 +304,7 @@ namespace AlohaFly.Reports
                 var dataToFly = AirOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt).ToList();
                 dataToFly.AddRange(AirOrdersModelSingleton.Instance.SVOorders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt).ToList());
                 var dataCats = new GKANReportCats();
-                foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.Payments.Where(x => x.IsActive && x.PaymentGroup != null && !x.PaymentGroup.Sale))
+                foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(x => x.IsActive && x.PaymentGroup != null && !x.PaymentGroup.Sale))
                 {
                     var cat = new GKANReportRemovedCat()
                     {
@@ -461,7 +461,7 @@ namespace AlohaFly.Reports
         {
             var data = ToGoOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
             var dataCats = new GKANReportCats();
-            foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.Payments.Where(x => x.ToGo && x.IsActive && x.PaymentGroup != null))
+            foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(x => x.ToGo && x.IsActive && x.PaymentGroup != null))
             {
                 var dataCat = new GKANReportCat()
                 {
@@ -493,7 +493,7 @@ namespace AlohaFly.Reports
             };
             dataCats.Cats.Add(dataCatd);
 
-            foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup.Where(x => x.IsActive))
+            foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.Where(x => x.IsActive))
             {
                 var dataCat = new GKANReportCat()
                 {

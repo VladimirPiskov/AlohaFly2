@@ -8,101 +8,104 @@
               xmlns:telerikGrid="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1600">
-    <Grid x:Name="MainGr">
-        <Grid.RowDefinitions>
+    <Grid >
+        <telerik:RadBusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy, Mode=TwoWay}">
+            <Grid x:Name="MainGr">
+                <Grid.RowDefinitions>
 
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
-            <ColumnDefinition Width="20"></ColumnDefinition>
-            <ColumnDefinition Width="2*" MinWidth="300"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="300"></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                    <ColumnDefinition Width="2*" MinWidth="300"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
 
-        <telerik:RadGridView x:Name="GrOrderDishGridVis" Grid.Column="0" Grid.RowSpan="4" Grid.Row="0"
+                <telerik:RadGridView x:Name="GrOrderDishGridVis" Grid.Column="0" Grid.RowSpan="4" Grid.Row="0"
                              Visibility="{Binding OrderDishGridVis}"
                         ShowGroupPanel="False"
              ItemsSource="{Binding Path=OrdersDishes}"
-                             SelectedItem="{Binding Path=OrderDish}"
+
              MaxColumnWidth="500"    DragElementAction="None"
             ScrollMode="RealTime"   VerticalAlignment="Stretch"
                     AutoGenerateColumns="False"
                     IsFilteringAllowed="False"
-                    IsScrolling="True"
+                    
                     IsManipulationEnabled="False"
                          RowIndicatorVisibility="Collapsed"
                              CanUserFreezeColumns="False"
+                    
             >
-            <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="№" Width="40"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding PositionInOrder}" TextAlignment="Right"/>
-                
-                <telerik:GridViewDataColumn Header="Наименование" Width="*" IsReadOnly="True" DataMemberBinding="{Binding DishName}"/>
-                <telerik:GridViewDataColumn Header="Баркод" Width="80"  IsReadOnly="True"  DataMemberBinding="{Binding Dish.Barcode}" TextAlignment="Right"/>
-                <telerik:GridViewCheckBoxColumn  Header="Печать" Width="80"  DataMemberBinding="{Binding PrintLabel, Mode=TwoWay}" TextAlignment="Right"  EditTriggers="CellClick" AutoSelectOnEdit="True" />
-                <telerik:GridViewDataColumn Width="80" IsReadOnly="True" DataMemberBinding="{Binding Amount, StringFormat=\{0:#.##\}, ConverterCulture=ru-Ru}" TextAlignment="Right">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Кол-во порций" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Width="80" DataMemberBinding="{Binding LabelSeriesCount, Mode=TwoWay}" TextAlignment="Right">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Кол-во серий" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-            </telerik:RadGridView.Columns>
-        </telerik:RadGridView>
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="№" Width="40"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding PositionInOrder}" TextAlignment="Right"/>
+
+                        <telerik:GridViewDataColumn Header="Наименование" Width="*" IsReadOnly="True" DataMemberBinding="{Binding DishName}"/>
+                        <telerik:GridViewDataColumn Header="Баркод" Width="80"  IsReadOnly="True"  DataMemberBinding="{Binding Dish.Barcode}" TextAlignment="Right"/>
+                        <telerik:GridViewCheckBoxColumn  Header="Печать" Width="80"  DataMemberBinding="{Binding PrintLabel, Mode=TwoWay}" TextAlignment="Right"  EditTriggers="CellClick" AutoSelectOnEdit="True" />
+                        <telerik:GridViewDataColumn Width="80" IsReadOnly="True" DataMemberBinding="{Binding Amount, StringFormat=\{0:#.##\}, ConverterCulture=ru-Ru}" TextAlignment="Right">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Кол-во порций" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="80" DataMemberBinding="{Binding LabelSeriesCount, Mode=TwoWay}" TextAlignment="Right">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Кол-во серий" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
 
 
 
 
-        <telerik:RadGridView x:Name="GrAllDish"  Grid.Column="0" Grid.RowSpan="4" Grid.Row="0"
+                <telerik:RadGridView x:Name="GrAllDish"  Grid.Column="0" Grid.RowSpan="4" Grid.Row="0"
              ShowSearchPanel="True"
              AutoGenerateColumns="False"
              Visibility="{Binding AllDishGridVis}"
              GroupRenderMode="Flat"
              ItemsSource="{Binding Path=DishItemsSource}"
-             SelectedItem="{Binding Path=LabelDish}"
+             
              ShowGroupPanel="False"
              CanUserFreezeColumns="False"
              DragElementAction="None"
              RowIndicatorVisibility="Collapsed"
              ColumnWidth="SizeToHeader"
              >
-            <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="Баркод" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Barcode}" TextAlignment="Right"/>
-                <telerik:GridViewDataColumn Header="Наименование" Width="*" IsReadOnly="True" DataMemberBinding="{Binding Name}"/>
-                <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding ToFlyLabelSeriesCount}" Width="100" TextAlignment="Right">
-                    <telerik:GridViewDataColumn.Header>
-                    <TextBlock Text="Максимум блюд на одну наклейку" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Width="100" IsReadOnly="True" DataMemberBinding="{Binding LabelsCount}" TextAlignment="Right">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Кол-во наклеек" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="Баркод" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Barcode}" TextAlignment="Right"/>
+                        <telerik:GridViewDataColumn Header="Наименование" Width="*" IsReadOnly="True" DataMemberBinding="{Binding Name}"/>
+                        <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding ToFlyLabelSeriesCount}" Width="100" TextAlignment="Right">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Максимум блюд на одну наклейку" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="100" IsReadOnly="True" DataMemberBinding="{Binding LabelsCount}" TextAlignment="Right">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Кол-во наклеек" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
 
-            </telerik:RadGridView.Columns>
-        </telerik:RadGridView>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
 
-        <GridSplitter x:Name="gridSplitter"  HorizontalAlignment="Center"  VerticalAlignment="Stretch" Width="4" ShowsPreview="True" Margin="0,3,0,3"
+                <GridSplitter x:Name="gridSplitter"  HorizontalAlignment="Center"  VerticalAlignment="Stretch" Width="4" ShowsPreview="True" Margin="0,3,0,3"
                       Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" />
-        <Grid x:Name="GrDNameAndBtns" Grid.Row="0"  Grid.Column="2" Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="auto" ></ColumnDefinition>
-                <ColumnDefinition Width="80"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Блюдо: " Margin="5,0,5,0" TextWrapping="Wrap" VerticalAlignment="Center"  Foreground="Black"></TextBlock>
-                <TextBlock Text="{Binding DishName}"  Margin="5,0,5,0" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold"></TextBlock>
-            </StackPanel>
-            <TextBlock Text="Максимум блюд на одну серию:" Grid.Column="1" Margin="0,3,10,0" TextWrapping="Wrap" HorizontalAlignment="Center" Foreground="Black" ></TextBlock>
-            <telerik:RadNumericUpDown 
+                <Grid x:Name="GrDNameAndBtns" Grid.Row="0"  Grid.Column="2" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto" ></ColumnDefinition>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Блюдо: " Margin="5,0,5,0" TextWrapping="Wrap" VerticalAlignment="Center"  Foreground="Black"></TextBlock>
+                        <TextBlock Text="{Binding LabelDish.Name}"  Margin="5,0,5,0" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold"></TextBlock>
+                    </StackPanel>
+                    <TextBlock Text="Максимум блюд на одну серию:" Grid.Column="1" Margin="0,3,10,0" TextWrapping="Wrap" HorizontalAlignment="Center" Foreground="Black" ></TextBlock>
+                    <telerik:RadNumericUpDown 
                                         Grid.Column="2"
                                         Margin="0,0,0,0"
                                         Value="{Binding CurentDishMaxSerCount, Mode=TwoWay}" 
@@ -110,77 +113,100 @@
                                         Minimum="1" ValueFormat="Numeric" IsInteger="True"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         />
-        </Grid>
-        <Grid x:Name="GrLabelNames" Grid.Row="1" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"> </ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <StackPanel Orientation="Vertical" Margin="0,0,5,0">
-                <TextBlock Text="Русское название наклейки: " Grid.Column="1" Margin="0,0,10,0" TextWrapping="Wrap" Foreground="Black"></TextBlock>
-                <telerik:RadWatermarkTextBox Text="{Binding LabelRussianName, Mode=TwoWay}" Grid.Column="0" VerticalAlignment="Center" Foreground="Black" ></telerik:RadWatermarkTextBox>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
-                <TextBlock Text="Английское название наклейки: " Grid.Column="1" Margin="5,0,5,0" TextWrapping="Wrap" Foreground="Black"></TextBlock>
-                <telerik:RadWatermarkTextBox Text="{Binding LabelEnglishName, Mode=TwoWay}" Grid.Column="0" VerticalAlignment="Center" Foreground="Black" ></telerik:RadWatermarkTextBox>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Row="2"  Grid.Column="2" x:Name="GrButtons" Height="70">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding PrintCommand}" Grid.Column="1" >
-                <telerik:RadButton.Content>
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Icons/print-96.png" Stretch="Fill" />
+                </Grid>
+                <Grid x:Name="GrLabelNames" Grid.Row="1" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Печать" Style="{StaticResource MainButtonsTextBlockStyle}" />
-                    </Grid>
-                </telerik:RadButton.Content>
-            </telerik:RadButton>
-            <StackPanel Orientation="Horizontal" Grid.Row="0"  Grid.Column="0"
+                    <StackPanel Orientation="Vertical" Margin="0,0,5,0">
+                        <TextBlock Text="Русское название наклейки: " Grid.Column="1" Margin="0,0,10,0" TextWrapping="Wrap" Foreground="Black"></TextBlock>
+                        <telerik:RadWatermarkTextBox Text="{Binding CurentRunTimeLabelInfo.RussianName , Mode=TwoWay}" Grid.Column="0" VerticalAlignment="Center" Foreground="Black" ></telerik:RadWatermarkTextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="Английское название наклейки: " Grid.Column="1" Margin="5,0,5,0" TextWrapping="Wrap" Foreground="Black"></TextBlock>
+                        <telerik:RadWatermarkTextBox Text="{Binding CurentRunTimeLabelInfo.EnglishName, Mode=TwoWay}" Grid.Column="0" VerticalAlignment="Center" Foreground="Black" ></telerik:RadWatermarkTextBox>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="2"  Grid.Column="2" x:Name="GrButtons" Height="70">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0"  Grid.Column="1"
 					HorizontalAlignment="Center"
 					Margin="0,5,0,0">
-                <telerik:RadButton Width="150" Style="{StaticResource MainButtonsStyle}"
+                        <telerik:RadButton Style="{StaticResource MainButtonsStyle}" 
+                                   IsEnabled="{Binding SaveCommandEnable}"
+                                   Command="{Binding SaveCommand}" 
+                                   Width="150"
+                                   >
+
+                            <telerik:RadButton.Content>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/Icons/ok-96.png" Stretch="Fill" />
+
+                                    <TextBlock Text="Сохранить изменения"  Style="{StaticResource MainButtonsTextBlockStyle}" />
+                                </Grid>
+                            </telerik:RadButton.Content>
+                        </telerik:RadButton>
+                        <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding PrintCommand}" >
+                            <telerik:RadButton.Content>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/Icons/print-96.png" Stretch="Fill" />
+
+                                    <TextBlock Text="Печать " Style="{StaticResource MainButtonsTextBlockStyle}" />
+                                </Grid>
+                            </telerik:RadButton.Content>
+                        </telerik:RadButton>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0"  Grid.Column="0"
+					HorizontalAlignment="Center"
+					Margin="0,5,0,0">
+                        <telerik:RadButton Width="150" Style="{StaticResource MainButtonsStyle}"
 							   IsEnabled="{Binding RemoveLabelCommandEnable}"
 							   
 							  Command="{Binding RemoveLabelCommand}" >
-                    <telerik:RadButton.Content>
-                        <TextBlock Text="Удалить выделенную наклейку"  TextAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    </telerik:RadButton.Content>
-                </telerik:RadButton>
-                <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Width="150" 
+                            <telerik:RadButton.Content>
+                                <TextBlock Text="Удалить выделенную наклейку"  TextAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                            </telerik:RadButton.Content>
+                        </telerik:RadButton>
+                        <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Width="150" 
 							 
 							   
 							   Command="{Binding AddLabelCommand}"
 							    >
-                    <telerik:RadButton.Content>
-                        <TextBlock Text="Добавить новую наклейку" TextAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    </telerik:RadButton.Content>
+                            <telerik:RadButton.Content>
+                                <TextBlock Text="Добавить новую наклейку" TextAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                            </telerik:RadButton.Content>
 
-                </telerik:RadButton>
-                <telerik:RadButton Width="150" Visibility="Collapsed"
+                        </telerik:RadButton>
+                        <telerik:RadButton Width="150" Visibility="Collapsed"
 							   Content="Сохранить"
 							   Margin="0,0,5,0"
 							   Command="{Binding SaveLabelCommand}" />
-                <telerik:RadButton Width="150" Visibility="Collapsed"
+                        <telerik:RadButton Width="150" Visibility="Collapsed"
 							   Content="Отменить"
 							   Command="{Binding CancelLabelCommand}" />
-            </StackPanel>
-        </Grid>
-        
-        
-        <telerik:RadGridView x:Name="LabelsEditGridView" Grid.Column="2"
+                    </StackPanel>
+                </Grid>
+
+
+                <telerik:RadGridView x:Name="LabelsEditGridView" Grid.Column="2"
             Grid.Row="3"
              GroupRenderMode="Flat"
-             ItemsSource="{Binding Path=ItemsSource}"
-                             
+             ItemsSource="{Binding Path=CurentRunTimeLabelInfo.Labels}"
+                             SelectedItem="{Binding Path=CurentLabelInfo}"
              ShowGroupPanel="False"
              CanUserFreezeColumns="False"
              DragElementAction="None"
@@ -189,32 +215,35 @@
                              CanUserDeleteRows="True"
                              CanUserInsertRows="True"
                              AutoGenerateColumns="False"
+                             
                             
              >
-            <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="Id" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Id}" TextAlignment="Right"/>
+                    <telerik:RadGridView.Columns>
 
-                <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding SerialNumber}" Width="100" TextAlignment="Right">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Порядковый номер на листе" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding NameRus}" TextAlignment="Left">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Русскоязычное наименование" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding NameEng}" TextAlignment="Left">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Англоязычное наименование" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Width="*"  DataMemberBinding="{Binding Message}" TextAlignment="Left">
-                    <telerik:GridViewDataColumn.Header>
-                        <TextBlock Text="Сообщение" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </telerik:GridViewDataColumn.Header>
-                </telerik:GridViewDataColumn>
-            </telerik:RadGridView.Columns>
-        </telerik:RadGridView>
+
+                        <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding SerialNumber}" Width="100" TextAlignment="Right">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Порядковый номер на листе" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding NameRus}" TextAlignment="Left">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Русскоязычное наименование" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding NameEng}" TextAlignment="Left">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Англоязычное наименование" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="*"  DataMemberBinding="{Binding Message}" TextAlignment="Left">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Сообщение" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+            </Grid>
+        </telerik:RadBusyIndicator>
     </Grid>
 </UserControl>

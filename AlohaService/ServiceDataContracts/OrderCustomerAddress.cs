@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
-using System.ComponentModel;
+
 using System.ComponentModel.DataAnnotations;
 using AlohaService.Interfaces;
 

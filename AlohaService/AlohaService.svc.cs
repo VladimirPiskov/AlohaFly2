@@ -1,5 +1,5 @@
 ﻿using System;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -63,8 +63,63 @@ namespace AlohaService
                  
                     Mapper.Initialize(cfg =>
                     {
-                    //cfg.CreateMap<ServiceDataContracts.Dish, Entities.Dish>().ReverseMap();
-                    cfg.CreateMap<ServiceDataContracts.Dish, Entities.Dish>().ReverseMap();
+                        //cfg.CreateMap<ServiceDataContracts.Dish, Entities.Dish>().ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.User, Entities.User>()
+                        .ForMember(m => m.UserRole, opt => opt.Ignore())
+                        .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.Driver, Entities.Driver>()
+                        .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.ContactPerson, Entities.ContactPerson>()
+                        .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.DishLogicGroup, Entities.DishLogicGroup>()
+                        .ReverseMap();
+                        cfg.CreateMap<ServiceDataContracts.DishKitchenGroup, Entities.DishKitchenGroup>()
+                        .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.PaymentGroup, Entities.PaymentGroup>()
+                        .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.Payment, Entities.Payment>()
+                            .ForMember(m => m.PaymentGroup, opt => opt.Ignore());
+                        cfg.CreateMap<Entities.Payment, ServiceDataContracts.Payment>()
+                            .ForMember(m => m.PaymentGroup, opt => opt.Ignore());
+
+                        cfg.CreateMap<ServiceDataContracts.Discount, Entities.Discount>()
+                       .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.DeliveryPlace, Entities.DeliveryPlace>()
+                       .ReverseMap();
+
+                        cfg.CreateMap<ServiceDataContracts.AirCompany, Entities.AirCompany>()
+                            .ForMember(m => m.DiscountType, opt => opt.Ignore())
+                            .ForMember(m => m.PaymentType, opt => opt.Ignore());
+
+                        cfg.CreateMap< Entities.AirCompany, ServiceDataContracts.AirCompany>()
+                            .ForMember(m => m.DiscountType, opt => opt.Ignore())
+                            .ForMember(m => m.PaymentType, opt => opt.Ignore());
+
+                        cfg.CreateMap<ServiceDataContracts.Dish, Entities.Dish>();
+                            
+
+                        cfg.CreateMap<Entities.Dish, ServiceDataContracts.Dish>()
+                            .ForMember(m => m.DishKitсhenGroup, opt => opt.Ignore())
+                            .ForMember(m => m.DishLogicGroup, opt => opt.Ignore());
+
+                        cfg.CreateMap<ServiceDataContracts.ItemLabelInfo, Entities.ItemLabelInfo>()
+                            .ForMember(m => m.Dish, opt => opt.Ignore());
+                        cfg.CreateMap<Entities.ItemLabelInfo, ServiceDataContracts.ItemLabelInfo>()
+                            .ForMember(m => m.Dish, opt => opt.Ignore());
+
+                        cfg.CreateMap<Entities.MarketingChannel, ServiceDataContracts.MarketingChannel>()
+                            .ReverseMap();
+
+
+
+
                         cfg.CreateMap<ServiceDataContracts.DishPackageToGoOrder, Entities.DishPackageToGoOrder>()
                         .ForMember(m => m.Dish, opt => opt.Ignore())
                         .ForMember(m => m.OrderToGo, opt => opt.Ignore());
@@ -76,25 +131,20 @@ namespace AlohaService
 
                         cfg.CreateMap<ServiceDataContracts.DishPackageFlightOrder, Entities.DishPackageFlightOrder>()
                         .ForMember(m => m.Dish, opt => opt.Ignore())
-                        .ForMember(m => m.OrderFlight, opt => opt.Ignore())
-                        .ReverseMap();
+                        .ForMember(m => m.OrderFlight, opt => opt.Ignore());
 
-                        cfg.CreateMap<ServiceDataContracts.User, Entities.User>()
-                        .ForMember(m => m.UserRole, opt => opt.Ignore())
-                        //.ForMember(m => m.OrderFlight, opt => opt.Ignore())
-                        .ReverseMap();
 
-                    /*
-                    cfg.CreateMap<ServiceDataContracts.OrderToGo, Entities.OrderToGo>()
-                    //.ForMember(m => m., opt => opt.Ignore())
-                    //.ForMember(m => m.OrderFlight, opt => opt.Ignore())
-                    .ReverseMap();
-                    */
-                        cfg.CreateMap<ServiceDataContracts.Driver, Entities.Driver>()
-                        .ReverseMap();
 
+                        cfg.CreateMap<Entities.DishPackageFlightOrder, ServiceDataContracts.DishPackageFlightOrder>()
+                        .ForMember(m => m.Dish, opt => opt.Ignore())
+                        .ForMember(m => m.OrderFlight, opt => opt.Ignore());
+
+
+
+                        
 
                         cfg.CreateMap<ServiceDataContracts.OrderFlight, Entities.OrderFlight>()
+
                         .ForMember(m => m.AirCompany, opt => opt.Ignore())
                         .ForMember(m => m.ContactPerson, opt => opt.Ignore())
                         .ForMember(m => m.CreatedBy, opt => opt.Ignore())
@@ -102,12 +152,26 @@ namespace AlohaService
                         .ForMember(m => m.PaymentType, opt => opt.Ignore())
                         .ForMember(m => m.SendBy, opt => opt.Ignore())
                         .ForMember(m => m.WhoDeliveredPersonPerson, opt => opt.Ignore())
-                        .ReverseMap();
+                        .ForMember(m => m.DishPackages, opt => opt.MapFrom(a => a.DishPackages.ToList()));
+
+
+
+
+                        cfg.CreateMap<Entities.OrderFlight, ServiceDataContracts.OrderFlight>()
+
+                        .ForMember(m => m.AirCompany, opt => opt.Ignore())
+                        .ForMember(m => m.ContactPerson, opt => opt.Ignore())
+                        .ForMember(m => m.CreatedBy, opt => opt.Ignore())
+                        .ForMember(m => m.DeliveryPlace, opt => opt.Ignore())
+                        .ForMember(m => m.PaymentType, opt => opt.Ignore())
+                        .ForMember(m => m.SendBy, opt => opt.Ignore())
+                        .ForMember(m => m.WhoDeliveredPersonPerson, opt => opt.Ignore())
+                        .ForMember(m => m.DishPackages, opt => opt.MapFrom(a => a.DishPackages.ToList()));
+
+
 
                         cfg.CreateMap<ServiceDataContracts.OrderToGo, Entities.OrderToGo>()
                         .ForMember(m => m.DishPackages, opt => opt.MapFrom(a=>a.DishPackages.ToList()))
-                        
-                        //.ForMember(m => m.DishPackages, a=> a.MapFrom<List<Entities.DishPackageToGoOrder>, List<ServiceDataContracts.DishPackageToGoOrder>>(a.))
                         .ReverseMap();
 
 
@@ -121,11 +185,6 @@ namespace AlohaService
                         .ReverseMap();
                     });
 
-                    //Mapper.Initialize(cfg => cfg.CreateMap<ServiceDataContracts.DishPackageFlightOrder, Entities.DishPackageFlightOrder>().ReverseMap());
-                    //Mapper.Initialize(cfg => cfg.CreateMap<ServiceDataContracts.DishPackageToGoOrder, Entities.DishPackageToGoOrder>().ReverseMap());
-
-                    //Mapper.Initialize(cfg => cfg.CreateMap<ServiceDataContracts.Dish, Entities.Dish>().ReverseMap());
-                    //Mapper.Initialize(cfg => cfg.CreateMap<Entities.Dish, ServiceDataContracts.Dish>());
 
                     MapperInited = true;
                     log.Debug("Mapper.Initialize ok");
@@ -673,6 +732,11 @@ namespace AlohaService
             return orderFlightService.CreateOrderFlight(orderFlight);
         }
 
+        public OperationResult CreateOrderFlightWithPackage(ServiceDataContracts.OrderFlight orderFlight)
+        {
+            return orderFlightService.CreateOrderFlightWithPackage(orderFlight);
+        }
+
         public OperationResultValue<ServiceDataContracts.OrderFlight> GetOrderFlight(long orderFlightId)
         {
             return orderFlightService.GetOrderFlight(orderFlightId);
@@ -686,6 +750,11 @@ namespace AlohaService
         public OperationResultValue<ServiceDataContracts.OrderFlight> UpdateOrderFlight(ServiceDataContracts.OrderFlight orderFlight, long userId)
         {
             return orderFlightService.UpdateOrderFlight(orderFlight, userId);
+        }
+
+        public OperationResult UpdateOrderFlight2(ServiceDataContracts.OrderFlight orderFlight, long userId)
+        {
+            return orderFlightService.UpdateOrderFlight2(orderFlight, userId);
         }
 
         public OperationResult DeleteOrderFlight(long orderFlightId)

@@ -5,11 +5,14 @@ using System.Web;
 
 namespace AlohaService.Entities
 {
-    public class MarketingChannel
+    public class MarketingChannel : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
 
     }
 }

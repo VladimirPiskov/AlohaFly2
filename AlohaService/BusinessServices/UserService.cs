@@ -49,6 +49,11 @@ namespace AlohaService.BusinessServices
                 user.UserName = userInfo.UserName;
                 user.UserRole = (int)userInfo.UserRole;
                 user.IsActive = userInfo.IsActive;
+
+
+                user.UpdatedDate = DateTime.Now;
+                //user.LastUpdatedSession = userInfo.LastUpdatedSession;
+
                 dbContext.Users.Add(user);
                 dbContext.SaveChanges();
 

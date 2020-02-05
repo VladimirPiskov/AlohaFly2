@@ -66,23 +66,7 @@ namespace AlohaService.ServiceDataContracts
         [DataMember]
         [Display(Name = "Name1C")]
         public string Name1C { get; set; }
-        /*
-        [Display(Name = "Схема скидок")]
-        public string DiscountTypeStr
-        {
-            get
-            {
-                if (DiscountType == null)
-                {
-                    return "нет";
-                }
-                else
-                {
-                    return DiscountType.Name;
-                }
-            }
-        }
-        */
+      
         [DataMember]
         public long? PaymentId { get; set; }
 
@@ -90,21 +74,11 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Вид платежа")]
         public Payment PaymentType { get; set; }
 
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public Guid LastUpdatedSession { get; set; }
 
-        /*
-        [Display(Name = "Вид платежа")]
-        public Payment Payment
-        {
-            get
-            {
-                return PaymentType;
-            }
-            set
-            {
-                PaymentType = value;
-            }
-        }
-        */
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

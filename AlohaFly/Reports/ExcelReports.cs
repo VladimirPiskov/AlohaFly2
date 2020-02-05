@@ -944,7 +944,7 @@ namespace AlohaFly.Reports
                         DiscPrice = ord.ExtraChargeSumm,
                         Price = ord.ExtraChargeSumm,
                         Count = 1,
-                        GroupeName = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup.FirstOrDefault(a => a.Id == MainClass.DopLogikCatId).Name,
+                        GroupeName = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.FirstOrDefault(a => a.Id == MainClass.DopLogikCatId).Name,
                     };
 
                     try { RD.TenderType = ord.AirCompany.PaymentId.GetValueOrDefault(); } catch { }
@@ -1022,7 +1022,7 @@ namespace AlohaFly.Reports
                         DiscPrice = ord.DeliveryPrice,
                         Price = ord.DeliveryPrice,
                         Count = 1,
-                        GroupeName = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup.FirstOrDefault(a => a.Id == MainClass.DopLogikCatId).Name,
+                        GroupeName = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.FirstOrDefault(a => a.Id == MainClass.DopLogikCatId).Name,
                     };
 
                     RD.TenderType = (ord.PaymentId == null ? 999 : ord.PaymentId.GetValueOrDefault());
@@ -1190,15 +1190,15 @@ namespace AlohaFly.Reports
 
                     Ws.Cells[Row, 3] = "Итого самолеты списание";
                     (Ws.Cells[Row, 10] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    Ws.Cells[Row, 10] = Rtnd.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                    Ws.Cells[Row, 10] = Rtnd.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                     Row++;
                     Ws.Cells[Row, 3] = "Итого самолеты выручка";
                     (Ws.Cells[Row, 11] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    Ws.Cells[Row, 11] = Rtnd.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                    Ws.Cells[Row, 11] = Rtnd.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                     Row++;
                     Ws.Cells[Row, 3] = "Итого самолеты (SH)";
                     (Ws.Cells[Row, 12] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    Ws.Cells[Row, 12] = Rtnd.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                    Ws.Cells[Row, 12] = Rtnd.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                     Row++;
 
 
@@ -1219,11 +1219,11 @@ namespace AlohaFly.Reports
                     }
                     Ws.Cells[Row, 3] = "Итого ToGo списание";
                     (Ws.Cells[Row, 10] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    Ws.Cells[Row, 10] = RtndToGo.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                    Ws.Cells[Row, 10] = RtndToGo.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                     Row++;
                     Ws.Cells[Row, 3] = "Итого ToGo выручка";
                     (Ws.Cells[Row, 11] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    Ws.Cells[Row, 11] = RtndToGo.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                    Ws.Cells[Row, 11] = RtndToGo.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                     Row++;
                     Ws.Cells[Row, 3] = "Итого ToGo (включает незакрытые)";
                     (Ws.Cells[Row, 12] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
@@ -1244,14 +1244,14 @@ namespace AlohaFly.Reports
                 (Ws.Cells[Row, 3] as Range).Font.Bold = true;
                 (Ws.Cells[Row, 10] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                 (Ws.Cells[Row, 10] as Range).Font.Bold = true;
-                Ws.Cells[Row, 10] = Tmp.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                Ws.Cells[Row, 10] = Tmp.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                 Row++;
 
                 Ws.Cells[Row, 3] = "Итого самолеты выручка";
                 (Ws.Cells[Row, 3] as Range).Font.Bold = true;
                 (Ws.Cells[Row, 11] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                 (Ws.Cells[Row, 11] as Range).Font.Bold = true;
-                Ws.Cells[Row, 11] = Tmp.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                Ws.Cells[Row, 11] = Tmp.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                 Row++;
                 Ws.Cells[Row, 3] = "Итого самолеты (SH)";
                 (Ws.Cells[Row, 3] as Range).Font.Bold = true;
@@ -1263,13 +1263,13 @@ namespace AlohaFly.Reports
                 (Ws.Cells[Row, 3] as Range).Font.Bold = true;
                 (Ws.Cells[Row, 10] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                 (Ws.Cells[Row, 10] as Range).Font.Bold = true;
-                Ws.Cells[Row, 10] = TmpToGo.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                Ws.Cells[Row, 10] = TmpToGo.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && !a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                 Row++;
                 Ws.Cells[Row, 3] = "Итого ToGo выручка";
                 (Ws.Cells[Row, 3] as Range).Font.Bold = true;
                 (Ws.Cells[Row, 11] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                 (Ws.Cells[Row, 11] as Range).Font.Bold = true;
-                Ws.Cells[Row, 11] = TmpToGo.Where(c => DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
+                Ws.Cells[Row, 11] = TmpToGo.Where(c => DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroup != null && a.PaymentGroup.Sale).Select(b => b.Id).Contains(c.Id)).Sum(a => a.Summ);
                 Row++;
                 Ws.Cells[Row, 3] = "Итого ToGo ";
                 (Ws.Cells[Row, 3] as Range).Font.Bold = true;
@@ -1418,7 +1418,7 @@ namespace AlohaFly.Reports
                                 {
                                     Id = d.DishId,
                                     BarCode = d.Dish.Barcode,
-                                    Name = DataExtension.DataCatalogsSingleton.Instance.Dishes.SingleOrDefault(a => a.Id == d.DishId).Name
+                                    Name = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.SingleOrDefault(a => a.Id == d.DishId).Name
 
                                 };
                                 Tmp.Add(rd);
@@ -1460,7 +1460,7 @@ namespace AlohaFly.Reports
                         {
                             Id = d.DishId,
                             BarCode = d.Code.GetValueOrDefault(),
-                            Name = DataExtension.DataCatalogsSingleton.Instance.Dishes.SingleOrDefault(a => a.Id == d.DishId).Name
+                            Name = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.SingleOrDefault(a => a.Id == d.DishId).Name
 
                         };
                         Tmp.Add(rd);
@@ -1745,14 +1745,14 @@ namespace AlohaFly.Reports
                 int Row = 9;
                 decimal allSumm = 0;
                 decimal allCount = 0;
-                foreach (var pg in DataExtension.DataCatalogsSingleton.Instance.PaymentGroups.Where(a => !a.Sale))
+                foreach (var pg in DataExtension.DataCatalogsSingleton.Instance.PaymentGroupData.Data.Where(a => !a.Sale))
                 {
 
-                    foreach (var p in DataExtension.DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroupId == pg.Id))
+                    foreach (var p in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroupId == pg.Id))
                     {
                         if (!p.ToGo)
                         {
-                            foreach (var air in DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.Where(a => a.PaymentId == p.Id))
+                            foreach (var air in DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.Where(a => a.PaymentId == p.Id))
                             {
 
                                 Ws.Cells[Row, 3] = air.Name;
@@ -1944,10 +1944,10 @@ namespace AlohaFly.Reports
 
                 int Row = 10;
                 decimal allSumm = 0;
-                foreach (var pg in DataExtension.DataCatalogsSingleton.Instance.PaymentGroups.Where(a => a.Sale))
+                foreach (var pg in DataExtension.DataCatalogsSingleton.Instance.PaymentGroupData.Data.Where(a => a.Sale))
                 {
                     decimal pgSumm = 0;
-                    foreach (var p in DataExtension.DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroupId == pg.Id))
+                    foreach (var p in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroupId == pg.Id))
                     {
                         Ws.Cells[Row, 1] = p.Id.ToString();
                         Ws.Cells[Row, 2] = p.Name;
@@ -2065,11 +2065,11 @@ namespace AlohaFly.Reports
                 int Row = 9;
                 decimal allSumm = 0;
                 decimal allCount = 0;
-                foreach (var pg in DataExtension.DataCatalogsSingleton.Instance.PaymentGroups.Where(a => a.Sale))
+                foreach (var pg in DataExtension.DataCatalogsSingleton.Instance.PaymentGroupData.Data.Where(a => a.Sale))
                 {
                     decimal pgSumm = 0;
                     decimal pgCount = 0;
-                    foreach (var p in DataExtension.DataCatalogsSingleton.Instance.Payments.Where(a => a.PaymentGroupId == pg.Id))
+                    foreach (var p in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.PaymentGroupId == pg.Id))
                     {
                         decimal s2Summ = AirOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != OrderStatus.Cancelled && a.AirCompany.PaymentId == p.Id).Sum(a => a.OrderTotalSumm) +
                             ToGoOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != OrderStatus.Cancelled && a.PaymentId == p.Id).Sum(a => a.OrderTotalSumm);

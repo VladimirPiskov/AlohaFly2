@@ -29,6 +29,10 @@ namespace AlohaService.BusinessServices
                 d.Name = group.Name;
                 d.PositionForPrint = group.PositionForPrint;
 
+
+                d.UpdatedDate = DateTime.Now;
+                d.LastUpdatedSession = group.LastUpdatedSession;
+
                 db.DishLogicGroups.Add(d);
                 db.SaveChanges();
 
@@ -70,7 +74,8 @@ namespace AlohaService.BusinessServices
             ud.IsActive = dishLogicGroup.IsActive;
             ud.Name = dishLogicGroup.Name;
             ud.PositionForPrint = dishLogicGroup.PositionForPrint;
-
+            ud.UpdatedDate = DateTime.Now;
+            ud.LastUpdatedSession = dishLogicGroup.LastUpdatedSession;
             db.SaveChanges();
 
             return new OperationResult { Success = true };

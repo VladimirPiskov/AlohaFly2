@@ -1,9 +1,14 @@
-﻿using AlohaFly.Utils;
+﻿using AlohaFly.DataExtension;
+using AlohaFly.Utils;
 using AlohaService.Interfaces;
 using AlohaService.ServiceDataContracts;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
@@ -13,36 +18,29 @@ using Telerik.Windows.Data;
 namespace AlohaFly.Models
 {
 
-    public class AddLabelsViewModel : ViewModelPane
+    public class AddLabelsViewModel  : ViewModelPaneReactiveObject
     {
         IOrderLabel CurentOrder;
+        FullyObservableDBDataSubsriber<ItemLabelInfo, ItemLabelInfo> itemLabelInfoConnector = new FullyObservableDBDataSubsriber<ItemLabelInfo, ItemLabelInfo>(a => a.Id);
+        FullyObservableCollection<IDishPackageLabel> DishPackages { set; get; }
         public AddLabelsViewModel(IOrderLabel order)
         {
             CurentOrder = order;
             DishPackages = new FullyObservableCollection<IDishPackageLabel>();
             foreach (var dp in order.DishPackagesForLab)
             {
-                dp.PrintLabel = DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == dp.DishId).Count() > 0;
+                dp.PrintLabel = DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == dp.DishId).Count() > 0;
                 dp.LabelSeriesCount = dp.LabelsCount;
                 DishPackages.Add(dp);
 
             }
-
-
             order.PropertyChanged += Order_PropertyChanged;
-            OrderDish = DishPackages.First();
             AllDishGridVis = Visibility.Collapsed;
             OrderDishGridVis = Visibility.Visible;
             Init();
         }
 
-        /*
-        public override void Dispose(bool disposing)
-        {
-
-            base.Dispose(disposing);
-        }
-        */
+       
 
         private void Order_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -53,12 +51,12 @@ namespace AlohaFly.Models
                     DishPackages.Clear();
                     foreach (var dp in ((IOrderLabel)sender).DishPackagesForLab)
                     {
-                        dp.PrintLabel = DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == dp.DishId).Count() > 0;
+                        dp.PrintLabel = DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == dp.DishId).Count() > 0;
                         dp.LabelSeriesCount = dp.LabelsCount;
                         DishPackages.Add(dp);
 
                     }
-                    OrderDish = DishPackages.First();
+                   // OrderDish = DishPackages.First();
                 }
             }
             catch (Exception ee)
@@ -74,148 +72,232 @@ namespace AlohaFly.Models
             AllDishGridVis = Visibility.Visible;
             OrderDishGridVis = Visibility.Collapsed;
             Init();
+        }
 
+
+        bool openItemsOnly = false;
+        ICollectionView _dishitemsSource;
+        public ICollectionView DishItemsSource
+        {
+            get
+            {
+                if (_dishitemsSource == null)
+                {
+                    if (openItemsOnly)
+                    {
+                        QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.DishFilter.OpenDishes);
+                        _dishitemsSource = collectionViewSource;
+                        _dishitemsSource.MoveCurrentToFirst();
+                    }
+                    else
+                    {
+                        QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.DishFilter.ActiveDishesAll);
+                        _dishitemsSource = collectionViewSource;
+                        _dishitemsSource.MoveCurrentToFirst();
+                    }
+                    _dishitemsSource.CurrentChanging += _dishitemsSource_CurrentChanging;
+                    _dishitemsSource.CurrentChanged += _dishitemsSource_CurrentChanged;
+                }
+
+                return _dishitemsSource;
+            }
+        }
+
+        private void _dishitemsSource_CurrentChanged(object sender, EventArgs e)
+        {
+            if (DishItemsSource.CurrentItem != null)
+            {
+                LabelDish = (Dish)DishItemsSource.CurrentItem;
+            }
+        }
+
+        private void _dishitemsSource_CurrentChanging(object sender, CurrentChangingEventArgs e)
+        {
+            if (IsBusy) return; //Обход глюка. CurrentChanging генерируется когда меняешь LabelSeriesCount при SaveChanged.
+            if (SaveCommandEnable)
+            {
+                if (UI.UIModify.ShowConfirm($"Сохранить изменения для блюда {LabelDish?.Name}?").DialogResult.GetValueOrDefault())
+                {
+                    SaveChanged();
+                }
+                else
+                {
+                    CancelChanged();
+                }
+            }
+
+        }
+
+        private void SaveChanged()
+        {
+            BusyContent = "Сохраняю наклейку";
+            IsBusy = true;
+
+            //Иначе Busy  не работает 
+            Task.Run(() =>
+            {
+                foreach (var cD in ChangedLabels.Values)
+                {
+                    SaveDishLabel(cD);
+                }
+                if (!ChangedLabels.TryGetValue(CurentRunTimeLabelInfo.ParentItemId, out RunTimeLabelInfo lbl))
+                {
+                    SaveDishLabel(CurentRunTimeLabelInfo);
+                }
+                ChangedLabels.Clear();
+
+                SaveCommandEnable = false;
+                IsBusy = false;
+            }
+            );
+        }
+
+
+
+        private void SaveDishLabel(RunTimeLabelInfo curentData)
+        {
+
+            if (curentData == null || curentData.ParentItemId == 0) return;
+            var oldLabels = DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == curentData.ParentItemId);
+            List<ItemLabelInfo> delItems = new List<ItemLabelInfo>();
+            if (oldLabels != null && oldLabels.Count() > 0)
+            {
+                foreach (var l in oldLabels)
+                {
+                    if (!curentData.Labels.Any(a => a.Id == l.Id))
+                    {
+                        delItems.Add(l);
+                    }
+                }
+            }
+            DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.EndEditMany(delItems, curentData.Labels.ToList());
+
+            if (DataExtension.DataCatalogsSingleton.Instance.DishData.Data.Any(a => a.Id == curentData.ParentItemId))
+            {
+                var d = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Id == curentData.ParentItemId);
+                if ((d.LabelEnglishName != curentData.EnglishName) || (d.LabelRussianName != curentData.RussianName))
+                {
+                    d.LabelEnglishName = curentData.EnglishName;
+                    d.LabelRussianName = curentData.RussianName;
+                    DataExtension.DataCatalogsSingleton.Instance.DishData.EndEdit(d);
+                }
+                d.LabelsCount = DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.Id).Count();
+            }
+}
+
+
+        private void CancelChanged()
+        {
+            SaveCommandEnable = false;
         }
 
         void Init()
         {
-            ItemsSource.CurrentChanged += ItemsSource_CurrentChanged1; ;
-            DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((_, __) =>
-            {
-                UpdateLabels();
-                RaisePropertyChanged("ItemsSource");
-            });
 
-            DataExtension.DataCatalogsSingleton.Instance.Dishes.ItemPropertyChanged += new EventHandler<ItemPropertyChangedEventArgs>((sender, e) =>
-            {
-                RaisePropertyChanged("DishName");
-                RaisePropertyChanged("CurentDishMaxSerCount");
-                RaisePropertyChanged("ItemsSource");
-                RaisePropertyChanged("OrdersDishes");
-                RaisePropertyChanged("LabelRussianName");
-                RaisePropertyChanged("LabelEnglishName");
-
-            });
+            this.WhenAnyValue(a => a.LabelDish).Subscribe(_ => { UpdateLabels(); });
+            //this.WhenAnyValue(a => a.SelectedDishPackage).Subscribe(_ => { if (SelectedDishPackage != null) { LabelDish = SelectedDishPackage.Dish; } });
+            this.WhenAnyValue(a => a.CurentLabelInfo).Subscribe(_ => {UpdateCurentLabelInfo(); });
+         
 
             AddLabelCommand = new DelegateCommand(_ =>
             {
-                if (DataExtension.DataCatalogsSingleton.Instance.AddLabelInfo(LabelDish.Id))
+                CurentRunTimeLabelInfo.Labels.Add(new ItemLabelInfo()
                 {
-                    ItemsSource.MoveCurrentToLast();
-                }
-
+                    ParenItemId = LabelDish.Id,
+                    SerialNumber = CurentRunTimeLabelInfo.Labels.Count() + 1
+                });
+                
             });
+
             RemoveLabelCommand = new DelegateCommand(_ =>
             {
-                if (ItemsSource.CurrentItem != null)
+                if (CurentLabelInfo != null)
                 {
-                    DataExtension.DataCatalogsSingleton.Instance.RemoveLabelInfo((ItemLabelInfo)ItemsSource.CurrentItem);
-
-                    ItemsSource.MoveCurrentToLast();
+                    int pos = CurentRunTimeLabelInfo.Labels.IndexOf(CurentLabelInfo);
+                    CurentRunTimeLabelInfo.Labels.Remove(CurentLabelInfo);
+                    if (CurentRunTimeLabelInfo.Labels.Count > 0)
+                    {
+                        CurentLabelInfo = CurentRunTimeLabelInfo.Labels[Math.Min(pos, CurentRunTimeLabelInfo.Labels.Count - 1)];
+                    }
+                    else
+                    {
+                        CurentLabelInfo = null;
+                    }
                 }
             });
 
             PrintCommand = new DelegateCommand(_ =>
             {
+
+                var curLabs = new Dictionary<long, RunTimeLabelInfo>();
+
+                
+                if (ChangedLabels != null)
+                {
+                    curLabs = ChangedLabels.ToDictionary(entry => entry.Key, entry => entry.Value);
+                    if (!curLabs.TryGetValue(LabelDish.Id, out var val))
+                    {
+                        curLabs.Add(LabelDish.Id, CurentRunTimeLabelInfo);
+                    }
+                }
+                /*
+                var pvm = new LabelsPrint.LabelPapersVisualViewModel(CurentOrder, curLabs);
+                pvm.ShowMe();
+                */
+                //List<ItemLabelInfo> labels=new List<ItemLabelInfo>();
                 if (OrderDishGridVis == Visibility.Visible)
                 {
-                    var pvm = new LabelsPrint.LabelPapersVisualViewModel(CurentOrder);
+                    //labels = GetLabels();
+                    //    var pvm = new LabelsPrint.LabelPapersVisualViewModel(CurentOrder, ChangedLabels);
+                    var pvm = new LabelsPrint.LabelPapersVisualViewModel(CurentOrder, curLabs);
                     pvm.ShowMe();
                 }
                 else
                 {
-                    var pvm = new LabelsPrint.LabelPapersVisualViewModel(LabelDish);
+                    //labels = CurentRunTimeLabelInfo.Labels.ToList();
+
+
+                    var pvm = new LabelsPrint.LabelPapersVisualViewModel(LabelDish, curLabs);
+                    //var pvm = new LabelsPrint.LabelPapersVisualViewModel(LabelDish, CurentRunTimeLabelInfo);
                     pvm.ShowMe();
                 }
+                
             });
+            UpdateLabels();
+        }
 
 
-            /*
-            PrintCommand = new DelegateCommand(_ =>
+        private List<ItemLabelInfo> GetLabels()
+        {
+            var tmp = new List<ItemLabelInfo>();
+            foreach (var d in CurentOrder.DishPackagesForLab.Where(a => a.PrintLabel))
             {
-                Print.OrderPrintInfo oi = new Print.OrderPrintInfo()
+                if (d.DishId == LabelDish.Id)
                 {
-                    BoardName = CurentOrder.FlightNumber,
-                    OrderNumber = CurentOrder.Id,
-                    OrderTime = CurentOrder.DeliveryDate,
-                    OrderType = 0,
-                    PrepearingTime = CurentOrder.DeliveryDate,
-                    Labels = new List<Print.LabelPrintInfo>()
-
-                };
-                //int num = 0;
-
-
-                foreach (var d in CurentOrder.DishPackages.OrderBy(a=>a.PositionInOrder))
+                    tmp.AddRange(CurentRunTimeLabelInfo.Labels);
+                }
+                else
                 {
-                    if (!d.PrintLabel) { continue; }
-                    //foreach(var l in d.DishId)
-                    for (int sNum = 0; sNum < d.LabelSeriesCount; sNum++)
+                    if (ChangedLabels.TryGetValue(d.DishId, out RunTimeLabelInfo lbl))
                     {
-                        int nCount = DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == d.DishId).Count();
-                        foreach (var l in DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == d.DishId).OrderBy(a => a.SerialNumber))
-                        {
-                            oi.Labels.Add(
-                            new Print.LabelPrintInfo()
-                            {
-                                BarCode = d.Dish.Barcode,
-                                Comment = l.Message,
-                                ItemName1 = (d.Dish.RussianName != null) ? d.Dish.RussianName : "",
-                                ItemName2 = (d.Dish.EnglishName != null) ? d.Dish.EnglishName : "",
-                                Order = l.SerialNumber,
-                                SubItemmName2 = (l.NameEng != null) ? l.NameEng : "",
-                                SubItemName1 = (l.NameRus != null) ? l.NameRus : "",
-                                CountStr = nCount.ToString()
-
-                            }
-                            );
-                        }
+                        tmp.AddRange(lbl.Labels.ToList());
+                    }
+                    else
+                    {
+                        tmp.AddRange(DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.DishId).OrderBy(a => a.SerialNumber));
                     }
                 }
-
-                Print.Print_label p = new Print.Print_label();
-                p.Print(oi, true);
-            });
-            */
+                }
+            return tmp;
         }
 
 
-        FullyObservableCollection<IDishPackageLabel> DishPackages { set; get; }
+        
+        [Reactive] public Visibility AllDishGridVis { set; get; }
 
+        [Reactive] public Visibility OrderDishGridVis { set; get; }
 
-        Visibility allDishGridVis { set; get; }
-        public Visibility AllDishGridVis
-        {
-            set
-            {
-
-                allDishGridVis = value;
-                RaisePropertyChanged("AllDishGridVis");
-            }
-            get
-
-            {
-                return allDishGridVis;
-
-            }
-        }
-
-        Visibility orderDishGridVis { set; get; }
-        public Visibility OrderDishGridVis
-        {
-            set
-            {
-
-                orderDishGridVis = value;
-                RaisePropertyChanged("OrderDishGridVis");
-            }
-            get
-
-            {
-                return orderDishGridVis;
-
-            }
-        }
+       // [Reactive] public IDishPackageLabel SelectedDishPackage { set; get; }
 
 
         ICollectionView _orderDishes;
@@ -229,140 +311,118 @@ namespace AlohaFly.Models
                     {
                         QueryableCollectionView collectionViewSource = new QueryableCollectionView(DishPackages);
                         _orderDishes = collectionViewSource;
+                        _orderDishes.CurrentChanged += _orderDishes_CurrentChanged;
                         _orderDishes.MoveCurrentToFirst();
+                       // _orderDishes.CurrentChanging += _orderDishes_CurrentChanging;
+                        
+
+
                     }
                 }
                 return _orderDishes;
             }
         }
 
-        private void ItemsSource_CurrentChanged1(object sender, EventArgs e)
+        private void _orderDishes_CurrentChanged(object sender, EventArgs e)
         {
-            RaisePropertyChanged("RemoveLabelCommandEnable");
+            if ((SaveCommandEnable)&&(LabelDish!=null))
+            {
+                if (!ChangedLabels.TryGetValue(LabelDish.Id, out var val))
+                {
+                    ChangedLabels.Add(LabelDish.Id, CurentRunTimeLabelInfo);
+                }
+            }
+            if (_orderDishes.CurrentItem != null)
+            {
+                LabelDish = ((IDishPackageLabel)_orderDishes.CurrentItem).Dish;
+            }
         }
 
-        private void ItemsSource_CurrentChanged(object sender, EventArgs e)
+        private void _orderDishes_CurrentChanging(object sender, CurrentChangingEventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        private void ItemLabelsInfo_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            throw new NotImplementedException();
+            
+            if (SaveCommandEnable)
+            {
+                if (!ChangedLabels.TryGetValue(LabelDish.Id, out var val))
+                {
+                    ChangedLabels.Add(LabelDish.Id, CurentRunTimeLabelInfo);
+                }
+            }
+            LabelDish = ((IDishPackageLabel)_orderDishes.CurrentItem).Dish;
         }
 
         public ICommand AddLabelCommand { get; set; }
         public ICommand RemoveLabelCommand { get; set; }
         public ICommand PrintCommand { get; set; }
 
-
-        public bool RemoveLabelCommandEnable
+        public ICommand SaveCommand
         {
             get
             {
-                return (ItemsSource.CurrentItem != null);
+                return new DelegateCommand(_ =>
+                {
+
+                    SaveChanged();
+                }
+                );
             }
         }
 
+        [Reactive] public string BusyContent { set; get; } = "Сохраняю заказ";
+        [Reactive] public bool IsBusy { set; get; } = false ;
+        [Reactive] public bool RemoveLabelCommandEnable { set; get; }
+
+        [Reactive] public Dish LabelDish { set; get; }
+
+        [Reactive] public bool SaveCommandEnable { set; get; } = false;
+
+        [Reactive] public RunTimeLabelInfo CurentRunTimeLabelInfo { set; get; }
+
+        [Reactive] public ItemLabelInfo CurentLabelInfo { set; get; }
+        public Dictionary<long, RunTimeLabelInfo> ChangedLabels{ set; get; } = new Dictionary<long, RunTimeLabelInfo>();
 
 
+        void UpdateCurentLabelInfo()
+        {
+            RemoveLabelCommandEnable = (CurentLabelInfo != null);
+            
+        }
         void UpdateLabels()
         {
-
-            long Did = 0;
-            /*
-            if (AllDishGridVis == Visibility.Visible) {
-                Did = LabelDish.Id;
-            }
-            else
+            if (LabelDish != null)
             {
-                Did = OrderDish.DishId;
-            }
-            */
-            Did = LabelDish.Id;
-            Labels.Clear();
-            if (Labels != null)
-            {
-
-                foreach (var l in DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == Did).OrderBy(a => a.Id))
+                if (ChangedLabels.TryGetValue(LabelDish.Id, out var val))
                 {
-                    Labels.Add(l);
+                    SaveCommandEnable = true;
+                    CurentRunTimeLabelInfo = val;
+                    //Labels = val;
+                }
+                else
+                {
+                    if (DishPackages == null) { SaveCommandEnable = false; };
+                    CurentRunTimeLabelInfo = new RunTimeLabelInfo(LabelDish.Id,DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == LabelDish?.Id).OrderBy(a => a.SerialNumber));
+                    CurentRunTimeLabelInfo.EnglishName = LabelDish.LabelEnglishName;
+                    CurentRunTimeLabelInfo.RussianName = LabelDish.LabelRussianName;
+                    //CurentRunTimeLabelInfo.Labels = new FullyObservableCollection<ItemLabelInfo>();
+                    CurentRunTimeLabelInfo.PropertyChanged += CurentRunTimeLabelInfo_PropertyChanged;
                 }
             }
+        
+
+        
+        
         }
 
-        FullyObservableCollection<ItemLabelInfo> labels = new FullyObservableCollection<ItemLabelInfo>();
-        public FullyObservableCollection<ItemLabelInfo> Labels
+        private void CurentRunTimeLabelInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-
-            get
-            {
-
-
-
-                return labels;
-            }
-        }
-
-        Dish labelDish;
-        public Dish LabelDish
-        {
-            set
-            {
-                if (value == null)
-                {
-                    labelDish = null;
-                    return;
-                }
-                if ((labelDish == null) || (value.Id != labelDish.Id))
-                {
-                    labelDish = value;
-                    UpdateLabels();
-                    RaisePropertyChanged("LabelDish");
-                    RaisePropertyChanged("DishName");
-                    RaisePropertyChanged("CurentDishMaxSerCount");
-                    RaisePropertyChanged("ItemsSource");
-                    RaisePropertyChanged("LabelRussianName");
-                    RaisePropertyChanged("LabelEnglishName");
-                }
-            }
-            get
-            {
-                return labelDish;
-            }
-
+            SaveCommandEnable = true;
         }
 
 
-        IDishPackageLabel orderDish;
-        public IDishPackageLabel OrderDish
-        {
-            set
-            {
-                if (value == null)
-                {
-                    orderDish = null;
-                    LabelDish = null;
-                    return;
-                }
-                if ((orderDish == null) || (value.DishId != labelDish.Id))
-                {
-                    orderDish = value;
-                    LabelDish = DataExtension.DataCatalogsSingleton.Instance.Dishes.Single(a => a.Id == orderDish.DishId);
-                    UpdateLabels();
-                    RaisePropertyChanged("OrderDish");
-                    RaisePropertyChanged("LabelDish");
-                    RaisePropertyChanged("DishName");
-                    RaisePropertyChanged("CurentDishMaxSerCount");
-                    RaisePropertyChanged("ItemsSource");
-                }
-            }
-            get
-            {
-                return orderDish;
-            }
 
-        }
+
+
+        /*
 
         public string DishName
         {
@@ -372,40 +432,14 @@ namespace AlohaFly.Models
             }
         }
 
-
         //public string labelRussianName;
-        public string LabelRussianName
-        {
-            get
-            {
-                return LabelDish?.LabelRussianName;
-            }
-            set
-            {
-                if (LabelDish != null && LabelDish?.LabelRussianName != value)
-                {
-                    LabelDish.LabelRussianName = value;
-                    RaisePropertyChanged("LabelRussianName");
-                }
-            }
-        }
+        [Reactive] public string LabelRussianName { set; get; }
 
-        public string LabelEnglishName
-        {
-            get
-            {
-                return LabelDish?.LabelEnglishName;
-            }
-            set
-            {
-                if (LabelDish != null && LabelDish?.LabelEnglishName != value)
-                {
-                    LabelDish.LabelEnglishName = value;
-                    RaisePropertyChanged("LabelEnglishName");
-                }
-            }
-        }
 
+        [Reactive] public string LabelEnglishName { set; get; }
+        */
+
+        /*
         bool curentDishEdited = false;
         public int CurentDishMaxSerCount
         {
@@ -422,6 +456,7 @@ namespace AlohaFly.Models
                     DBDataExtractor<Dish>.EditItem(DBProvider.Client.UpdateDish, LabelDish);
 
                     RaisePropertyChanged("CurentDishMaxSerCount");
+                    
 
                     if ((OrdersDishes != null) && (OrdersDishes.CurrentItem != null))
                     {
@@ -432,66 +467,53 @@ namespace AlohaFly.Models
                 }
             }
         }
+        */
 
-        bool openItemsOnly = false;
 
-        ICollectionView _dishitemsSource;
-        public ICollectionView DishItemsSource
-        {
-            get
-            {
-                if (_dishitemsSource == null)
-                {
-                    if (openItemsOnly)
-                    {
-                        QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.GetOpenDishes());
-                        _dishitemsSource = collectionViewSource;
-                        _dishitemsSource.MoveCurrentToFirst();
-                    }
-                    else
-                    {
-                        QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.ActiveDishesAll);
-                        _dishitemsSource = collectionViewSource;
-                        _dishitemsSource.MoveCurrentToFirst();
-                    }
-                }
-
-                return _dishitemsSource;
-            }
-        }
-
-        ICollectionView _itemsSource;
-        public ICollectionView ItemsSource
-        {
-            get
-            {
-                if (_itemsSource == null)
-                {
-                    QueryableCollectionView collectionViewSource = new QueryableCollectionView(Labels);
-                    _itemsSource = collectionViewSource;
-                    _itemsSource.MoveCurrentToFirst();
-                }
-
-                return _itemsSource;
-            }
-        }
 
     }
 
-    /*
-    public static class DishExt
+    public class RunTimeLabelInfo: ReactiveObject
     {
-
-
-        public static int GetLabelsCount(this DishPackageFlightOrder d)
+        public RunTimeLabelInfo(long parentItemId, IEnumerable<ItemLabelInfo> labels)
         {
-            //  if (labelSeriesCount != -1) return labelSeriesCount;
-            if (d.Dish == null) return 0;
-            // if (!d.PrintLabel) return 0;
-            return (int)Math.Ceiling(d.Amount / (decimal)d.Dish.ToFlyLabelSeriesCount);
+            ParentItemId = parentItemId;
+            Labels = new FullyObservableCollection<ItemLabelInfo>(labels);
+            Labels.CollectionChanged += Labels_CollectionChanged;
+            Labels.ItemPropertyChanged += Labels_ItemPropertyChanged;
+            
 
-            //return DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == Id).Count();
         }
+
+        public long ParentItemId { set; get; }
+
+        private void Labels_ItemPropertyChanged(object sender, ItemPropertyChangedEventArgs e)
+        {
+            if (blockItemChanged) return;
+            this.RaisePropertyChanged();
+        }
+
+        bool blockItemChanged = false;
+        private void Labels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (Labels != null)
+            {
+                int c = 1;
+                blockItemChanged = true;
+                foreach (var l in Labels.OrderBy(a => a.SerialNumber))
+                {
+                    l.SerialNumber = c;
+                    c++;
+                }
+                blockItemChanged = false;
+            }
+            
+            this.RaisePropertyChanged();
+        }
+
+
+        [Reactive] public FullyObservableCollection<ItemLabelInfo> Labels { set; get; } 
+        [Reactive] public string RussianName { set; get; }
+        [Reactive] public string EnglishName { set; get; }
     }
-    */
 }

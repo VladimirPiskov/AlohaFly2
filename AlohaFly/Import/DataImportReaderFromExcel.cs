@@ -36,7 +36,7 @@ namespace AlohaFly.Import
                         foreach (var order in of)
                         {
 
-                            if (Models.AirOrdersModelSingleton.Instance.AddOrder(order, order.DishPackages))
+                            if (Models.AirOrdersModelSingleton.Instance.UpdateOrder(order))
                             {
                                 res += $"Создал заказ №{order.Id} Дата: {order.DeliveryDate} {Environment.NewLine}";
                             }
@@ -139,9 +139,9 @@ namespace AlohaFly.Import
                             order = new OrderFlight()
                             {
                                 AirCompanyId = 67,
-                                AirCompany = DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.SingleOrDefault(a => a.Id == 67),
+                                AirCompany = DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.SingleOrDefault(a => a.Id == 67),
                                 FlightNumber = dt.ToString("dd.MM.yyyy"),
-                                DeliveryPlace = DataExtension.DataCatalogsSingleton.Instance.DeliveryPlaces.SingleOrDefault(a => a.Id == 4),
+                                DeliveryPlace = DataExtension.DataCatalogsSingleton.Instance.DeliveryPlaceData.Data.SingleOrDefault(a => a.Id == 4),
                                 DeliveryDate = dt,
                                 CreatedById = Authorization.CurentUser.Id,
                                 DishPackages = new List<DishPackageFlightOrder>(),
@@ -157,7 +157,7 @@ namespace AlohaFly.Import
                             {
                                 int rCode = Convert.ToInt32(GetExcelCellValue(ws, row, sColumn + 1));
                                 decimal count = GetExcelCellValueDec(ws, row, sColumn + 3);
-                                if (!DataExtension.DataCatalogsSingleton.Instance.Dishes.Any(a => a.SHGastroId == rCode))
+                                if (!DataExtension.DataCatalogsSingleton.Instance.DishData.Data.Any(a => a.SHGastroId == rCode))
                                 {
                                     string name = GetExcelCellValue(ws, row, sColumn + 2);
                                     var qres = UI.UIModify.ShowPromt($"Нашел неопознанное блюдо {Environment.NewLine}" +
@@ -175,7 +175,7 @@ namespace AlohaFly.Import
                                     row++;
                                     continue;
                                 }
-                                var dish = DataExtension.DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.SHGastroId == rCode);
+                                var dish = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.SHGastroId == rCode);
                                 var d = new DishPackageFlightOrder()
                                 {
                                     DishId = dish.Id,

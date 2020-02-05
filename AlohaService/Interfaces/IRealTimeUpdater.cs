@@ -8,6 +8,7 @@ namespace AlohaService.Interfaces
 {
     public interface IRealTimeUpdater
     {
-        DateTime UpdatedDate { get; set; }
+        DateTime? UpdatedDate { get; set; }
+        Guid LastUpdatedSession { get; set; }
     }
 }

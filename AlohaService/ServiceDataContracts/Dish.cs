@@ -23,14 +23,9 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "SHId", AutoGenerateField = false )]
         public long SHId { get; set; }
 
-
-        
-
         [DataMember]
         [Display(Name = "Наименование")]
         public string Name { get; set; }
-
-        
         
         [DataMember]
         [Display(Name = "Наименование на русском", AutoGenerateField =false)]
@@ -154,7 +149,9 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "SHRid", AutoGenerateField = true)]
         public long SHIdNewBase { get; set; }
 
-
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public Guid LastUpdatedSession { get; set; }
 
 
         public object Clone()

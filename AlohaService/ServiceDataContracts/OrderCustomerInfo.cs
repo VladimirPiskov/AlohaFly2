@@ -17,6 +17,10 @@ namespace AlohaService.ServiceDataContracts
         [DataMember]
         public decimal MoneyCount { get; set; }
 
+
+        [DataMember]
+        public decimal MoneyCount2 { get; set; }
+
         public decimal AvgCheck
         {
             get {

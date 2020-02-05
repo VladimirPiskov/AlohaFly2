@@ -99,11 +99,26 @@ namespace AlohaFly.DataExtension
                 {
                     lastUpdatetime = res.Result.UpdatesTime;
 
-                   
+                    DataCatalogsSingleton.Instance.ManagerData.UpdateItems(res.Result.Users);
+                    DataCatalogsSingleton.Instance.ContactPersonData.UpdateItems(res.Result.ContactPerson);
+                    DataCatalogsSingleton.Instance.DishLogicGroupData.UpdateItems(res.Result.DishLogicGroup);
+                    DataCatalogsSingleton.Instance.DishKitchenGroupData.UpdateItems(res.Result.DishKitchenGroup);
+                    DataCatalogsSingleton.Instance.PaymentGroupData.UpdateItems(res.Result.PaymentGroup);
+                    DataCatalogsSingleton.Instance.PaymentData.UpdateItems(res.Result.Payment);
+                    DataCatalogsSingleton.Instance.DiscountData.UpdateItems(res.Result.Discount);
+                    DataCatalogsSingleton.Instance.DriverData.UpdateItems(res.Result.Driver);
+                    DataCatalogsSingleton.Instance.DeliveryPlaceData.UpdateItems(res.Result.DeliveryPlace);
+                    DataCatalogsSingleton.Instance.AirCompanyData.UpdateItems(res.Result.AirCompany);
+                    DataCatalogsSingleton.Instance.DishData.UpdateItems(res.Result.Dish);
+                    DataCatalogsSingleton.Instance.ItemLabelInfoData.UpdateItems(res.Result.ItemLabelInfo);
+                    DataCatalogsSingleton.Instance.MarketingChannelData.UpdateItems(res.Result.MarketingChannel);
+
+
                     DataCatalogsSingleton.Instance.OrderCustomerAddressData.UpdateItems(res.Result.OrderCustomerAddresss);
                     DataCatalogsSingleton.Instance.OrderCustomerPhoneData.UpdateItems(res.Result.OrderCustomerPhones);
                     DataCatalogsSingleton.Instance.OrderCustomerData.UpdateItems(res.Result.OrderCustomers);
                     DataCatalogsSingleton.Instance.OrdersToGoData.UpdateItems(res.Result.OrderToGos);
+                    DataCatalogsSingleton.Instance.OrdersFlightData.UpdateItems(res.Result.OrderFlight);
                 }
                 
             }

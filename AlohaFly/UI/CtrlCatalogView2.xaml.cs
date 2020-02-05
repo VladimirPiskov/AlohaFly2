@@ -74,7 +74,7 @@ namespace AlohaFly.UI
 
         private void RadDataForm_AddedNewItem(object sender, Telerik.Windows.Controls.Data.DataForm.AddedNewItemEventArgs e)
         {
-
+            
             if (!((Models.CatalogViewModel)DataContext).AddItem())
             {
                 radDataForm.CancelEdit();
@@ -83,6 +83,7 @@ namespace AlohaFly.UI
             {
                 IsNew = true;
             }
+            
         }
 
         private void radDataForm_DeletingItem(object sender, System.ComponentModel.CancelEventArgs e)

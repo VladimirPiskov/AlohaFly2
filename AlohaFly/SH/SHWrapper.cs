@@ -841,7 +841,7 @@ namespace AlohaFly.SH
                     foreach (var p in order.DishPackagesSpis.Where(a => a.DeletedStatus == 1).Select(x => x.SpisPaymentId).Distinct())
                     {
                         prefix += "_Annul";
-                        catExp = (int)DataExtension.DataCatalogsSingleton.Instance.GetPayment(p)?.SHId;
+                        catExp = (int)DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.SingleOrDefault(a=>a.Id==p)?.SHId;
 
                         res &= CreateSalesInvoiceSyncSale(order, order.DishPackagesSpis.Where(x => x.SpisPaymentId == p).ToList(), docNum, catExp, ridPlace, prefix, comment, out string ErrMesg);
                         ErrMesssage += ErrMesg + Environment.NewLine;

@@ -55,7 +55,10 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Активно")]
         public bool IsActive { get; set; } = true;
 
-        
+        [DataMember]
+        public Guid LastUpdatedSession { get; set; }
+
+
 
         #region INotifyPropertyChanged we do use Foody https://github.com/Fody/PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

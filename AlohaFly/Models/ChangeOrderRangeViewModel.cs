@@ -5,82 +5,99 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using AlohaFly.DataExtension;
 
 namespace AlohaFly.Models
 {
-    class ChangeOrderRangeViewModel : ViewModelBase
+    class ChangeOrderRangeViewModel : ViewModelPaneReactiveObject
     {
+
+
+
         public ChangeOrderRangeViewModel()
         {
-            StartDt = AirOrdersModelSingleton.Instance.StartDt;
-            StopDt = AirOrdersModelSingleton.Instance.EndDt;
+
+            DataCatalogsSingleton.Instance.ChangeOrdersDateRangeEvent += Instance_ChangeOrdersDateRangeEvent;
+            this.WhenAnyValue(a => a.StartDt, b => b.StopDt).Subscribe(_ => DateChanged());
+            StartDt = DataCatalogsSingleton.Instance.StartDt;
+            StopDt = DataCatalogsSingleton.Instance.EndDt;
+            DatePanelVis = Visibility.Collapsed;
+
             TodayCommand = new DelegateCommand(_ =>
             {
                 DatePanelVis = Visibility.Collapsed;
-                AirOrdersModelSingleton.Instance.SetNewOrdersRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(1));
+
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(1));
+                //AirOrdersModelSingleton.Instance.SetNewOrdersRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(1));
                 //ToGoOrdersModelSingleton.Instance.SetNewOrdersRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(1));
 
             });
             ThisMonthCommand = new DelegateCommand(_ =>
             {
                 DatePanelVis = Visibility.Collapsed;
-                AirOrdersModelSingleton.Instance.SetNewOrdersRange();
+
+                var dt = DateTime.Now;
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(new DateTime(dt.Year, dt.Month, 1), new DateTime(dt.Year, dt.Month, 1).AddMonths(1));
+                //AirOrdersModelSingleton.Instance.SetNewOrdersRange();
               // ToGoOrdersModelSingleton.Instance.SetNewOrdersRange();
 
             });
             LastMonthCommand = new DelegateCommand(_ =>
             {
                 DatePanelVis = Visibility.Collapsed;
-                AirOrdersModelSingleton.Instance.SetNewOrdersRange(-1);
-               // ToGoOrdersModelSingleton.Instance.SetNewOrdersRange(-1);
+                var dt = DateTime.Now;
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(new DateTime(dt.Year, dt.Month, 1).AddMonths(-1), new DateTime(dt.Year, dt.Month, 1));
+
+                //AirOrdersModelSingleton.Instance.SetNewOrdersRange(-1);
+                // ToGoOrdersModelSingleton.Instance.SetNewOrdersRange(-1);
             });
             FreeRangeCommand = new DelegateCommand(_ =>
             {
                 DatePanelVis = Visibility.Visible;
-                //AirOrdersModelSingleton.Instance.SetNewOrdersRange(StartDt, StopDt);
+                
+                
 
             });
             FreeRangeOkCommand = new DelegateCommand(_ =>
             {
                 DatePanelVis = Visibility.Collapsed;
-                AirOrdersModelSingleton.Instance.SetNewOrdersRange(StartDt, StopDt);
-              //  ToGoOrdersModelSingleton.Instance.SetNewOrdersRange(StartDt, StopDt);
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(StartDt, StopDt);
+                //  ToGoOrdersModelSingleton.Instance.SetNewOrdersRange(StartDt, StopDt);
 
             });
-            AirOrdersModelSingleton.Instance.orders.CollectionChanged += Orders_CollectionChanged;
+            //AirOrdersModelSingleton.Instance.orders.CollectionChanged += Orders_CollectionChanged;
         }
 
+        private void Instance_ChangeOrdersDateRangeEvent(object sender, EventArgs e)
+        {
+            StartDt = DataCatalogsSingleton.Instance.StartDt;
+            StopDt = DataCatalogsSingleton.Instance.EndDt;
+        }
+
+        /*
         private void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             RaisePropertyChanged("CurentRangeDatesStr");
             RaisePropertyChanged("OrderRangeSumm");
         }
-
+        */
         public ICommand TodayCommand { get; set; }
         public ICommand ThisMonthCommand { get; set; }
         public ICommand LastMonthCommand { get; set; }
         public ICommand FreeRangeCommand { get; set; }
         public ICommand FreeRangeOkCommand { get; set; }
 
-        public DateTime StartDt { set; get; }
-        public DateTime StopDt { set; get; }
+        [Reactive] public DateTime StartDt { set; get; }
+        [Reactive] public DateTime StopDt { set; get; }
 
 
-        public Visibility datePanelVis = Visibility.Collapsed;
+        
 
-        public Visibility DatePanelVis
-        {
-            set
-            {
-                datePanelVis = value;
-                RaisePropertyChanged("DatePanelVis");
-            }
-            get
-            {
-                return datePanelVis;
-            }
-        }
-
+        [Reactive] public Visibility DatePanelVis { set; get; }
+        
+        /*
         public bool ThisMonthisChecked
         {
             get
@@ -95,15 +112,23 @@ namespace AlohaFly.Models
                 return AirOrdersModelSingleton.Instance.LastMonth;
             }
         }
-
-        public string CurentRangeDatesStr
+        */
+        private void DateChanged()
         {
-            get { return $"Выбранный диапазон {AirOrdersModelSingleton.Instance.StartDt.ToString("dd MMMM")} - {AirOrdersModelSingleton.Instance.EndDt.ToString("dd MMMM yyyy")}"; }
+            CurentRangeDatesStr = GetCurentRangeDatesStr();
+            OrderRangeSumm = GetOrderRangeSumm();
         }
-        public string OrderRangeSumm
+
+        [Reactive] public string CurentRangeDatesStr { set; get; }
+        [Reactive] public string OrderRangeSumm { set; get; }
+        string GetCurentRangeDatesStr()
         {
-            //get { return $"Cумма всех заказов {AirOrdersModelSingleton.Instance.Orders.Sum(a=>a.OrderTotalSumm).ToString("C", new CultureInfo("ru-RU"))}"; }
-            get { return $"Кол-во заказов {AirOrdersModelSingleton.Instance.Orders.Sum(a => a.OrderTotalSumm).ToString("C", new CultureInfo("ru-RU"))}"; }
+            return $"Выбранный диапазон {StartDt.ToString("dd MMMM")} - {StopDt.ToString("dd MMMM yyyy")}"; 
+        }
+        string GetOrderRangeSumm()
+        {
+        
+            return $"Кол-во заказов {AirOrdersModelSingleton.Instance.Orders.Sum(a => a.OrderTotalSumm).ToString("C", new CultureInfo("ru-RU"))}"; 
         }
 
 

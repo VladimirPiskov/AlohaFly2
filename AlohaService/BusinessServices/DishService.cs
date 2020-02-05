@@ -26,30 +26,9 @@ namespace AlohaService.BusinessServices
         {
             try
             {
-                /*
-                var d = new Entities.Dish();
-                d.Barcode = dish.Barcode;
-                d.EnglishName = dish.EnglishName;
-                d.IsActive = dish.IsActive;
-                d.IsTemporary = dish.IsTemporary;
-                d.IsToGo = dish.IsToGo;
-                d.IsAlcohol = dish.IsAlcohol;
-                d.PriceForDelivery = dish.PriceForDelivery;
-                d.PriceForFlight = dish.PriceForFlight;
-                d.RussianName = dish.RussianName;
-                d.DishKitсhenGroupId = dish.DishKitсhenGroupId;
-                d.DishLogicGroupId = dish.DishLogicGroupId;
-                d.ToFlyLabelSeriesCount = dish.ToFlyLabelSeriesCount;
-                d.ToGoLabelSeriesCount = dish.ToGoLabelSeriesCount;
-                d.SHId = dish.SHId;
-                d.SHIdNewBase = dish.SHIdNewBase;
-                d.Name = dish.Name;
-                d.LabelEnglishName = dish.LabelEnglishName;
-                d.LabelRussianName = dish.LabelRussianName;
-                d.NeedPrintInMenu = dish.NeedPrintInMenu;
-                */
+                
                 var d = Mapper.Map<ServiceDataContracts.Dish, Entities.Dish>(dish);
-
+                d.UpdatedDate = DateTime.Now;
                 db.Dish.Add(d);
                 db.SaveChanges();
 
@@ -127,35 +106,13 @@ namespace AlohaService.BusinessServices
             {
                 var ud = db.Dish.First(d => d.Id == dish.Id);
                 Mapper.Map(dish, ud);
-
-                /*
-                ud.Barcode = dish.Barcode;
-                ud.EnglishName = dish.EnglishName;
-                ud.IsActive = dish.IsActive;
-                ud.IsTemporary = dish.IsTemporary;
-                ud.IsToGo = dish.IsToGo;
-                ud.IsShar = dish.IsShar;
-                ud.IsAlcohol = dish.IsAlcohol;
-                ud.PriceForDelivery = dish.PriceForDelivery;
-                ud.PriceForFlight = dish.PriceForFlight;
-                ud.RussianName = dish.RussianName;
-                ud.LabelEnglishName = dish.LabelEnglishName;
-                ud.LabelRussianName = dish.LabelRussianName;
-                ud.DishKitсhenGroupId = dish.DishKitсhenGroupId;
-                ud.DishLogicGroupId = dish.DishLogicGroupId;
-                ud.SHId = dish.SHId;
-                ud.Name = dish.Name;
-                ud.SHIdNewBase = dish.SHIdNewBase;
-                ud.NeedPrintInMenu = dish.NeedPrintInMenu;
-                ud.ToFlyLabelSeriesCount = dish.ToFlyLabelSeriesCount;
-                ud.ToGoLabelSeriesCount = dish.ToGoLabelSeriesCount;
-                */
+                
 
                 if (ud == null)
                 {
                     return new OperationResult { Success = false, ErrorMessage = "Dish Not Found." };
                 }
-
+                ud.UpdatedDate = DateTime.Now;
                 db.SaveChanges();
 
                 return new OperationResult { Success = true };

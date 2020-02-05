@@ -6,7 +6,7 @@ using System.Web;
 
 namespace AlohaService.Entities
 {
-    public class OrderCustomer
+    public class OrderCustomer : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public long OldId { get; set; }

@@ -5,6 +5,8 @@ using AlohaService.ServiceDataContracts;
 using AutoMapper;
 using DynamicData;
 using NLog;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,79 +16,102 @@ using System.Threading.Tasks;
 
 namespace AlohaFly.DataExtension
 {
-    /*
-        public class DateTimeTypeConverter : ITypeConverter<List<OrderCustomerPhone>, ToGoClientPhonesViewModel>
-        {
-            public ToGoClientPhonesViewModel Convert(List<OrderCustomerPhone> source, ToGoClientPhonesViewModel destination, ResolutionContext context)
-            {
-                SourceCache<OrderCustomer, long> phonesSource = new SourceCache<OrderCustomer, long>(cust => cust.Id);
-                source
-
-                return System.Convert.ToDateTime(source);
-            }
-        }
-        */
+    
 
 
-
-    public sealed class DataCatalogsSingleton : INotifyPropertyChanged
+    public sealed class DataCatalogsSingleton
     {
         Logger _logger = LogManager.GetCurrentClassLogger();
-        /*
-        private static readonly Lazy<DataCatalogsSingleton> instanceHolder =
-            new Lazy<DataCatalogsSingleton>(() => new DataCatalogsSingleton());
-            */
         private DataCatalogsSingleton()
         {
-            // DataCatalogsFill();
             InitMapers();
+            /*
             Dishes.CollectionChanged += (sender, eventArgs) =>
              {
                  NotifyPropertyChanged("Dishes");
              };
-
-
-            //BindCollections();
+             */
         }
 
         #region ToGoClients
 
-        
+        public FullyObservableDBData<User> ManagerData = new FullyObservableDBData<User>();
+        public FullyObservableDBData<ContactPerson> ContactPersonData = new FullyObservableDBData<ContactPerson>();
+        public FullyObservableDBData<DishLogicGroup> DishLogicGroupData = new FullyObservableDBData<DishLogicGroup>();
+        public FullyObservableDBData<DishKitchenGroup> DishKitchenGroupData = new FullyObservableDBData<DishKitchenGroup>();
+        public FullyObservableDBData<PaymentGroup> PaymentGroupData = new FullyObservableDBData<PaymentGroup>();
+        public FullyObservableDBData<Payment> PaymentData = new FullyObservableDBData<Payment>();
+        public FullyObservableDBData<Discount> DiscountData = new FullyObservableDBData<Discount>();
+        public FullyObservableDBData<Driver> DriverData = new FullyObservableDBData<Driver>();
+        public FullyObservableDBData<DeliveryPlace> DeliveryPlaceData = new FullyObservableDBData<DeliveryPlace>();
+        public FullyObservableDBData<AirCompany> AirCompanyData = new FullyObservableDBData<AirCompany>();
+        public FullyObservableDBData<Dish> DishData = new FullyObservableDBData<Dish>();
+        public FullyObservableDBData<ItemLabelInfo> ItemLabelInfoData = new FullyObservableDBData<ItemLabelInfo>();
+        public FullyObservableDBData<MarketingChannel> MarketingChannelData = new FullyObservableDBData<MarketingChannel>();
         public FullyObservableDBData<OrderCustomerAddress> OrderCustomerAddressData = new FullyObservableDBData<OrderCustomerAddress>();
         public FullyObservableDBData<OrderCustomerPhone> OrderCustomerPhoneData = new FullyObservableDBData<OrderCustomerPhone>();
         public FullyObservableDBData<OrderCustomer> OrderCustomerData = new FullyObservableDBData<OrderCustomer>();
 
         public FullyObservableDBData<OrderToGo> OrdersToGoData = new FullyObservableDBData<OrderToGo>();
+        public FullyObservableDBData<OrderFlight> OrdersFlightData = new FullyObservableDBData<OrderFlight>();
+
 
         DateTime GetMonth(DateTime dt) { return new DateTime(dt.Year, dt.Month, 1); }
 
         void RefreshDynamicData()
         {
-           // RealTimeUpdaterSingleton.Instance.Init(DateTime.Now.AddMonths(-2));
+
+            StartDt = GetMonth(DateTime.Now.AddDays(-2));
+            EndDt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            ManagerData.Fill(a => a.Id);
+            ContactPersonData.Fill(a => a.Id);
+            DishLogicGroupData.Fill(a => a.Id);
+            DishKitchenGroupData.Fill(a => a.Id);
+            PaymentGroupData.Fill(a => a.Id);
+            PaymentData.Fill(a => a.Id);
+            DiscountData.Fill(a => a.Id);
+            DriverData.Fill(a => a.Id);
+            DeliveryPlaceData.Fill(a => a.Id);
+            AirCompanyData.Fill(a => a.Id);
+            DishData.Fill(a => a.Id);
+            ItemLabelInfoData.Fill(a => a.Id);
+            MarketingChannelData.Fill(a => a.Id);
             OrderCustomerData.Fill(a => a.Id);
             OrderCustomerAddressData.Fill(a => a.Id);
             OrderCustomerPhoneData.Fill(a => a.Id);
             OrdersToGoData.Fill(a => a.Id, GetMonth(DateTime.Now.AddDays(-2)));
-            //RealTimeUpdaterSingleton.Instance.StartQueue();
+            OrdersFlightData.Fill(a => a.Id, GetMonth(DateTime.Now.AddDays(-2)));
+            DishFilter = new DishFilter();
+
         }
 
+        public  DishFilter DishFilter;
 
+        public DateTime StartDt { get; private set; }
+        public DateTime EndDt { get; private set; }
         public void ChangeOrderDateRange(DateTime dt1, DateTime dt2)
         {
-            
+            StartDt = dt1;
+            EndDt = dt2;
+
             OrdersToGoData.ChangeStartDate(dt1);
             ToGoOrdersModelSingleton.Instance.UpdateDateRange(dt1, dt2);
-
+            OrdersFlightData.ChangeStartDate(dt1);
+            AirOrdersModelSingleton.Instance.UpdateDateRange(dt1, dt2);
+            RaiseChangeOrdersDateRangeEvent();
         }
 
+        public delegate void ChangeOrdersDateRangeEventHandler(object sender, EventArgs e);
 
-        /*
-        void InitDynamicData()
+        public event ChangeOrdersDateRangeEventHandler ChangeOrdersDateRangeEvent;
+        
+        void RaiseChangeOrdersDateRangeEvent()
         {
-            FullyObservableDBData<OrderCustomer>.Instance.Fill(a => a.Id);
-
+            // Raise the event in a thread-safe manner using the ?. operator.
+            ChangeOrdersDateRangeEvent?.Invoke(this, new EventArgs());
         }
-        */
+
         void InitMapers()
         {
             Mapper.Initialize(cfg =>
@@ -99,52 +124,10 @@ namespace AlohaFly.DataExtension
                 //.ForMember(a => a.PhonesVM, m => m.Ignore());
                 cfg.CreateMap<OrderCustomerPhone, OrderCustomerPhone>();
                 cfg.CreateMap<OrderCustomerAddress, OrderCustomerAddress>();
-
-
-
-
-
             });
-
-
-
-
-
-
         }
-
-
+        
         #endregion
-        /*
-        public void BindCollections()
-        {
-            Mapper.Initialize(cfg => {
-                cfg.CreateMap<List<OrderCustomerPhone>, ToGoClientPhonesViewModel>().;
-                cfg.CreateMap<OrderCustomer, ToGoClientViewModel>()
-                .ForMember(a => a.PhonesVM, m => m.MapFrom(src => new ToGoClientViewModel(
-
-                       new Func<List<OrderCustomerPhone>, ReadOnlyObservableCollection<ToGoClientPhoneViewModel>>(a => { return new ReadOnlyObservableCollection<ToGoClientPhoneViewModel>()});
-
-                }
-                    
-                    
-                    ));
-
-                cfg.CreateMap<OrderCustomerAddress, ToGoClientAddressViewModel>();
-            });
-            var cancellation = toGoClientsSource
-                .Connect()
-                .Transform(orderCustomer => Mapper.Map<ToGoClientViewModel>(orderCustomer))
-                .Sort(SortExpressionComparer<ToGoClientViewModel>.Descending(toGoClientViewModel => toGoClientViewModel.Name))
-                .ObserveOnDispatcher()
-                .Bind(out ToGoClients)
-                .DisposeMany()
-                .Subscribe();
-        }
-
-       
-
-            */
 
         static DataCatalogsSingleton instance;
         public static DataCatalogsSingleton Instance
@@ -177,20 +160,6 @@ namespace AlohaFly.DataExtension
 
 
         /*
-        public Models.CatalogModel<ContactPerson> ContactPersonCatalogModel = new Models.CatalogModel<ContactPerson>(
-            new Models.EditCatalogDataFuncs<ContactPerson>()
-            {
-                AddItemFunc = DBProvider.Client.CreateContactPerson,
-                EditItemFunc = DBProvider.Client.UpdateContactPerson,
-                CancelAddItemFunc = DBProvider.Client.DeleteContactPerson,
-                GetAllDataFunc = DBProvider.Client.GetContactPersonList,
-                //AllDataList = Instance.ContactPerson
-            }
-            );
-
-
-            */
-
         FullyObservableCollection<Dish> dishes = new FullyObservableCollection<Dish>();
         public FullyObservableCollection<Dish> Dishes
         {
@@ -204,11 +173,14 @@ namespace AlohaFly.DataExtension
                 NotifyPropertyChanged("Dishes");
             }
         }
+        */
 
-
+            /*
         public bool AddLabelInfo(long ParenDishId)
         {
             ItemLabelInfo l = new ItemLabelInfo() { ParenItemId = ParenDishId, SerialNumber = ItemLabelsInfo.Where(a => a.ParenItemId == ParenDishId).Count() + 1 };
+
+
             var res = DBDataExtractor<ItemLabelInfo>.AddItem(DBProvider.Client.CreateItemLabelInfo, l);
             if (res > 0)
             {
@@ -219,7 +191,8 @@ namespace AlohaFly.DataExtension
             }
             return false;
         }
-
+        */
+        /*
         public bool RemoveLabelInfo(ItemLabelInfo l)
         {
             var res = DBDataExtractor<ItemLabelInfo>.DeleteItem(DBProvider.Client.DeleteItemLabelInfo, l.Id);
@@ -237,8 +210,8 @@ namespace AlohaFly.DataExtension
             return DBDataExtractor<ItemLabelInfo>.EditItem(DBProvider.Client.UpdateItemLabelInfo, l);
         }
 
-
-
+            */
+            /*
         FullyObservableCollection<ItemLabelInfo> itemLabelInfo = new FullyObservableCollection<ItemLabelInfo>();
         public FullyObservableCollection<ItemLabelInfo> ItemLabelsInfo
         {
@@ -252,15 +225,15 @@ namespace AlohaFly.DataExtension
                 NotifyPropertyChanged("ItemLabelsInfo");
             }
         }
+        */
 
-
-
+            /*
 
         public FullyObservableCollection<Dish> ActiveDishesAll
         {
             get
             {
-                return new FullyObservableCollection<Dish>(dishes.Where(a => a.IsActive & !a.IsTemporary));
+                return new FullyObservableCollection<Dish>(DishData.Where(a => a.IsActive & !a.IsTemporary));
             }
 
         }
@@ -281,7 +254,9 @@ namespace AlohaFly.DataExtension
             }
 
         }
+        */
 
+            /*
         FullyObservableCollection<AirCompany> airCompanies;
         public FullyObservableCollection<AirCompany> AirCompanies
         {
@@ -311,8 +286,8 @@ namespace AlohaFly.DataExtension
             }
 
         }
-
-
+        */
+        /*
         FullyObservableCollection<Discount> mdiscounts;
         public FullyObservableCollection<Discount> mDiscounts
         {
@@ -328,7 +303,8 @@ namespace AlohaFly.DataExtension
             }
 
         }
-
+        */
+        /*
         FullyObservableCollection<DeliveryPlace> deliveryPlaces = new FullyObservableCollection<DeliveryPlace>();
         public FullyObservableCollection<DeliveryPlace> DeliveryPlaces
         {
@@ -372,32 +348,12 @@ namespace AlohaFly.DataExtension
 
         }
 
-        /*
-        FullyObservableCollection<DeliveryPerson> deliveryPerson;
-        public FullyObservableCollection<DeliveryPerson> DeliveryPerson
-        {
-            get
-            {
-                return deliveryPerson;
-            }
+            */
 
-        }
-        */
+        /*
 
         public bool AddOpenDish(Dish d)
         {
-            /*
-            var od = new Dish()
-            {
-                Barcode = barcode,
-                Name = Name,
-                RussianName = Name,
-                EnglishName = EnglishName,
-                IsTemporary = true,
-                PriceForFlight = Price,
-                IsActive = true 
-            };
-            */
             bool res = DBProvider.AddDish(d);
             if (res)
             {
@@ -406,8 +362,8 @@ namespace AlohaFly.DataExtension
             }
             return res;
         }
-
-
+        */
+        /*
         public FullyObservableCollection<Dish> GetOpenDishes(long OwnerBc)
         {
             return new FullyObservableCollection<Dish>(dishes.Where(a => a.IsActive && a.IsTemporary && a.Barcode == OwnerBc));
@@ -417,6 +373,10 @@ namespace AlohaFly.DataExtension
         {
             return new FullyObservableCollection<Dish>(dishes.Where(a => a.IsActive && a.IsTemporary));
         }
+        */
+
+
+            /*
 
         public event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged(string propertyName)
@@ -455,7 +415,9 @@ namespace AlohaFly.DataExtension
         public FullyObservableCollection<PaymentGroup> PaymentGroups { set; get; }
 
 
-        public FullyObservableCollection<Discount> Discounts { set; get; }
+
+
+        //public FullyObservableCollection<Discount> Discounts { set; get; }
 
         private FullyObservableCollection<ContactPerson> contactPerson;
         public FullyObservableCollection<ContactPerson> ContactPerson
@@ -471,177 +433,18 @@ namespace AlohaFly.DataExtension
 
         }
 
-        /*
-        public bool AddOrUpdateToGoCustomer(OrderCustomer customer)
-        {
-            if (customer.Id == 0)
-            {
-                var res = DBDataExtractor<OrderCustomer>.AddItem(DBProvider.Client.CreateOrderCustomer, customer);
-                if (res != -1)
-                {
-                    customer.Id = res;
-                    ToGoCustomers.Add(customer);
-                    if (customer.Addresses != null)
-                    {
-                        foreach (var addr in customer.Addresses.Where(a => a.NeedUpdate || a.Id == 0))
-                        {
-                            if (addr.Id == 0)
-                            {
-                                addr.OrderCustomerId = customer.Id;
-                                var id = DBDataExtractor<OrderCustomerAddress>.AddItem(DBProvider.Client.CreateOrderCustomerAddress, addr);
 
-                            }
-                            else
-                            {
-                                DBDataExtractor<OrderCustomerAddress>.EditItem(DBProvider.Client.UpdateOrderCustomerAddress, addr);
-                            }
-                        }
+*/
 
 
-                    }
-
-                    if (customer.Phones != null)
-                    {
-                        foreach (var addr in customer.Phones.Where(a => a.NeedUpdate || a.Id == 0))
-                        {
-                            if (addr.Id == 0)
-                            {
-                                addr.OrderCustomerId = customer.Id;
-                                var id = DBDataExtractor<OrderCustomerPhone>.AddItem(DBProvider.Client.CreateOrderCustomerPhone, addr);
-
-                            }
-                            else
-                            {
-                                DBDataExtractor<OrderCustomerPhone>.EditItem(DBProvider.Client.UpdateOrderCustomerPhone, addr);
-                            }
-                        }
-
-
-                    }
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                foreach (var addr in customer.Addresses.Where(a => a.NeedUpdate || a.Id == 0))
-                {
-                    if (addr.Id == 0)
-                    {
-                        addr.OrderCustomerId = customer.Id;
-                        var id = DBDataExtractor<OrderCustomerAddress>.AddItem(DBProvider.Client.CreateOrderCustomerAddress, addr);
-
-                        addr.Id = id;
-                    }
-                    else
-                    {
-                        DBDataExtractor<OrderCustomerAddress>.EditItem(DBProvider.Client.UpdateOrderCustomerAddress, addr);
-                    }
-                }
-                foreach (var addr in customer.Phones.Where(a => a.NeedUpdate || a.Id == 0))
-                {
-                    if (addr.Id == 0)
-                    {
-                        addr.OrderCustomerId = customer.Id;
-                        var id = DBDataExtractor<OrderCustomerPhone>.AddItem(DBProvider.Client.CreateOrderCustomerPhone, addr);
-
-                        addr.Id = id;
-                    }
-                    else
-                    {
-                        DBDataExtractor<OrderCustomerPhone>.EditItem(DBProvider.Client.UpdateOrderCustomerPhone, addr);
-                    }
-                }
-
-
-
-                return DBDataExtractor<OrderCustomer>.EditItem(DBProvider.Client.UpdateOrderCustomer, customer);
-            }
-        }
-
-        public long AddToGoCustomerAddress(OrderCustomer orderCustomer, OrderCustomerAddress addr)
-        {
-
-
-            addr.OrderCustomerId = orderCustomer.Id;
-            var id = DBDataExtractor<OrderCustomerAddress>.AddItem(DBProvider.Client.CreateOrderCustomerAddress, addr);
-            if (id > 0)
-            {
-                addr.Id = id;
-
-                orderCustomer.AddAddress(addr);
-                foreach (var adr in orderCustomer.Addresses.Where(a => a.NeedUpdate && a.Id != id))
-                {
-                    DBDataExtractor<OrderCustomerAddress>.EditItem(DBProvider.Client.UpdateOrderCustomerAddress, adr);
-                }
-
-                ToGoCustomersAddresses.Add(addr);
-
-            }
-
-            return id;
-        }
-
-        public FullyObservableCollection<OrderCustomerAddress> ToGoCustomersAddresses { set; get; }
-
-
-        public FullyObservableCollection<OrderCustomerPhone> ToGoCustomersPhones { set; get; }
-
-        private FullyObservableCollection<OrderCustomer> toGoCustomers;
-        public FullyObservableCollection<OrderCustomer> ToGoCustomers
-
-        {
-            set
-            {
-                toGoCustomers = value;
-            }
-            get
-            {
-                return toGoCustomers;
-            }
-
-        }
 
         /*
-        private FullyObservableCollection<OrderCustomer> toGoCustomersAddresses;
-        public FullyObservableCollection<OrderCustomer> ToGoCustomersAddresses
-        {
-            set
-            {
-                toGoCustomersAddresses = value;
-            }
-            get
-            {
-                return toGoCustomersAddresses;
-            }
-
-        }
-        */
-
-
-
-
-
-
         public FullyObservableCollection<DishLogicGroup> DishLogicGroup { set; get; }
         public FullyObservableCollection<DishKitchenGroup> DishKitchenGroup { set; get; }
 
+            */
 
-
-
-        FullyObservableCollection<User> managerOperator;
-        public FullyObservableCollection<User> ManagerOperator
-        {
-            get
-            {
-                return managerOperator;
-            }
-
-        }
-        /*
+        /*   
         FullyObservableCollection<User> managerOperator;
         public FullyObservableCollection<User> ManagerOperator
         {
@@ -671,22 +474,22 @@ namespace AlohaFly.DataExtension
         {
             if (T == typeof(DishLogicGroup))
             {
-                return DataCatalogsSingleton.Instance.DishLogicGroup;
+                return DataCatalogsSingleton.Instance.DishLogicGroupData.Data;
             }
 
             if (T == typeof(DishKitchenGroup))
             {
-                return DataCatalogsSingleton.Instance.DishKitchenGroup;
+                return DataCatalogsSingleton.Instance.DishKitchenGroupData.Data;
             }
 
             if (T == typeof(Payment))
             {
-                return DataCatalogsSingleton.Instance.Payments;
+                return DataCatalogsSingleton.Instance.PaymentData.Data;
             }
 
             if (T == typeof(Discount))
             {
-                return DataCatalogsSingleton.Instance.Discounts;
+                return DataCatalogsSingleton.Instance.DiscountData.Data;
             }
             return null;
         }
@@ -704,10 +507,10 @@ namespace AlohaFly.DataExtension
                 
                 OnDataCatalogMessage("Загружаю список операторов");
                 //managerOperator = DBDataExtractor<User>.GetDataList(DBProvider.Client.GetUserList) == null ? new FullyObservableCollection<User>() : new FullyObservableCollection<User>(DBDataExtractor<User>.GetDataList(DBProvider.Client.GetUserList));
-                managerOperator = DBDataExtractor<User>.GetDataList(DBProvider.Client.GetUserList);
+               // managerOperator = DBDataExtractor<User>.GetDataList(DBProvider.Client.GetUserList);
 
                 OnDataCatalogMessage("Загружаю контакты");
-                ContactPerson = DBDataExtractor<ContactPerson>.GetDataList(DBProvider.Client.GetContactPersonList);
+                //ContactPerson = DBDataExtractor<ContactPerson>.GetDataList(DBProvider.Client.GetContactPersonList);
                 /*
                 ToGoCustomers = DBDataExtractor<OrderCustomer>.GetDataList(DBProvider.Client.GetOrderCustomerList);
                 ToGoCustomersAddresses = new FullyObservableCollection<OrderCustomerAddress>();
@@ -720,14 +523,16 @@ namespace AlohaFly.DataExtension
                 }
                 */
                 OnDataCatalogMessage("Загружаю наклейки");
-                //ItemLabelsInfo = DBDataExtractor<ItemLabelInfo>.GetDataList(DBProvider.Client.GetItemLabelInfoList) == null ? new FullyObservableCollection<ItemLabelInfo>() : new FullyObservableCollection<ItemLabelInfo>(DBDataExtractor<ItemLabelInfo>.GetDataList(DBProvider.Client.GetItemLabelInfoList));
+                /*
                 ItemLabelsInfo = DBDataExtractor<ItemLabelInfo>.GetDataList(DBProvider.Client.GetItemLabelInfoList);
                 DishLogicGroup = DBDataExtractor<DishLogicGroup>.GetDataList(DBProvider.Client.GetDishLogicGroupsList);
                 DishKitchenGroup = DBDataExtractor<DishKitchenGroup>.GetDataList(DBProvider.Client.GetDishKitсhenGroupsList);
+                */
 
                 OnDataCatalogMessage("Загружаю авиакомпании");
-                PaymentGroups = DBDataExtractor<PaymentGroup>.GetDataList(DBProvider.Client.GetPaymentGroupList);
-                Payments = DBDataExtractor<Payment>.GetDataList(DBProvider.Client.GetPaymentList);
+               // PaymentGroups = DBDataExtractor<PaymentGroup>.GetDataList(DBProvider.Client.GetPaymentGroupList);
+              //  Payments = DBDataExtractor<Payment>.GetDataList(DBProvider.Client.GetPaymentList);
+              /*
                 foreach (var a in Payments)
                 {
                     if (a.PaymentGroupId != 0)
@@ -737,7 +542,10 @@ namespace AlohaFly.DataExtension
 
                     PaymentsSourceCache.AddOrUpdate(a);
                 }
-                Discounts = DBDataExtractor<Discount>.GetDataList(DBProvider.Client.GetDiscountList);
+                */
+              //  Discounts = DBDataExtractor<Discount>.GetDataList(DBProvider.Client.GetDiscountList);
+
+                /*
                 AllAirCompanies = new FullyObservableCollection<AirCompany>(DBDataExtractor<AirCompany>
                     .GetDataList(DBProvider.Client.GetAirCompanyList)
                     //.Where(a => !DBProvider.SharAirs.Contains(a.Id) || ((Authorization.CurentUser != null) && ((Authorization.CurentUser.UserName == "sh.user") || (Authorization.IsDirector))))
@@ -759,13 +567,15 @@ namespace AlohaFly.DataExtension
                 AirCompanies = new FullyObservableCollection<AirCompany>(AllAirCompanies.Where(a => a.IsActive && (!DBProvider.SharAirs.Contains(a.Id) || ((Authorization.CurentUser != null) && ((Authorization.CurentUser.UserName == "sh.user") || (Authorization.IsDirector))))));
                 //AirCompanies = DBDataExtractor<AirCompany>.GetDataList(DBProvider.Client.GetAirCompanyList);
                 //DeliveryPlaces = DBDataExtractor<DeliveryPlace>.GetDataList(DBProvider.Client.GetDeliveryPlaceList) == null ? new FullyObservableCollection<DeliveryPlace>() : new FullyObservableCollection<DeliveryPlace>(DBDataExtractor<DeliveryPlace>.GetDataList(DBProvider.Client.GetDeliveryPlaceList));
-
+                */
+                /*
                 DeliveryPlaces = DBDataExtractor<DeliveryPlace>.GetDataList(DBProvider.Client.GetDeliveryPlaceList);
 
                 Drivers = DBDataExtractor<Driver>.GetDataList(DBProvider.Client.GetDriverList) == null ? new FullyObservableCollection<Driver>() : new FullyObservableCollection<Driver>(DBDataExtractor<Driver>.GetDataList(DBProvider.Client.GetDriverList));
                 mDiscounts = DBDataExtractor<Discount>.GetDataList(DBProvider.Client.GetDiscountList) == null ? new FullyObservableCollection<Discount>() : new FullyObservableCollection<Discount>(DBDataExtractor<Discount>.GetDataList(DBProvider.Client.GetDiscountList));
-
+                */
                 OnDataCatalogMessage("Загружаю блюда");
+                /*
                 Dishes = DBDataExtractor<Dish>.GetDataList(DBProvider.Client.GetDishList);
                 foreach (var d in Dishes)
                 {
@@ -773,15 +583,15 @@ namespace AlohaFly.DataExtension
                     { try { d.DishKitсhenGroup = DishKitchenGroup.Single(a => a.Id == d.DishKitсhenGroupId); } catch { } }
                     if (d.DishLogicGroupId > 0)
                     { try { d.DishLogicGroup = DishLogicGroup.Single(a => a.Id == d.DishLogicGroupId); } catch { } }
-                    d.LabelsCount = ItemLabelsInfo.Where(a => a.ParenItemId == d.Id).Count();
-                }
 
+                }
+                */
                 OnDataCatalogMessage("Загружаю cписок клиентов");
 
-                marketingChannels = DBDataExtractor<MarketingChannel>.GetDataList(DBProvider.Client.GetMarketingChannelList);
+//                marketingChannels = DBDataExtractor<MarketingChannel>.GetDataList(DBProvider.Client.GetMarketingChannelList);
 
 
-                ItemLabelsInfo.ItemPropertyChanged += ItemLabelsInfo_ItemPropertyChanged;
+                //ItemLabelsInfo.ItemPropertyChanged += ItemLabelsInfo_ItemPropertyChanged;
 
                 RefreshDynamicData();
 
@@ -802,11 +612,12 @@ namespace AlohaFly.DataExtension
 
 
         }
-
+        /*
         private void ItemLabelsInfo_ItemPropertyChanged(object sender, ItemPropertyChangedEventArgs e)
         {
             UpdateLabelInfo(ItemLabelsInfo[e.CollectionIndex]);
         }
+        */
         /*
         private void FillAllDataAsync()
         {
@@ -860,7 +671,106 @@ namespace AlohaFly.DataExtension
     }
     */
 
-    public interface IAlertsShower
+    public class AirCompanyFilter
+    {
+        [Reactive] public FullyObservableCollection<AirCompany> CurentComps { set; get; }
+        FullyObservableDBDataSubsriber<AirCompany, AirCompany> curentCompsConnector = new FullyObservableDBDataSubsriber<AirCompany, AirCompany>(a => a.Id);
+
+        public AirCompanyFilter()
+        {
+            CurentComps = new FullyObservableCollection<AirCompany>();
+            curentCompsConnector.Select(a => a.IsActive && (!DBProvider.SharAirs.Contains(a.Id) || ((Authorization.CurentUser != null) && ((Authorization.CurentUser.UserName == "sh.user") || (Authorization.IsDirector)))))
+                            .OrderBy(a => a.Id)
+                            .Subsribe(DataCatalogsSingleton.Instance.AirCompanyData, CurentComps);
+        }
+    }
+
+
+        public class OpenDishFactory
+    {
+        [Reactive] public FullyObservableCollection<Dish> OpenDishes { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> openDishesConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+        public OpenDishFactory(long ownerBarcode)
+        {
+            OwnerBarcode = ownerBarcode;
+            OpenDishes = new FullyObservableCollection<Dish>();
+            openDishesConnector.Select(a => a.IsActive && a.IsTemporary &&a.Barcode == OwnerBarcode)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, OpenDishes);
+        }
+        public long OwnerBarcode; 
+    }
+
+    public class DishFilter
+    {
+        [Reactive] public FullyObservableCollection<Dish> OpenDishes { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> openDishesConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+
+        [Reactive] public FullyObservableCollection<Dish> ActiveDishesAll { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> activeDishesConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+        [Reactive] public FullyObservableCollection<Dish> ActiveDishesToGo { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> activeDishesToGoConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+        [Reactive] public FullyObservableCollection<Dish> ActiveDishesToFly { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> activeDishesToFlyConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+
+        [Reactive] public FullyObservableCollection<Dish> AllDishesToGo { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> allDishesToGoConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+        [Reactive] public FullyObservableCollection<Dish> AllDishesToFly { set; get; }
+        FullyObservableDBDataSubsriber<Dish, Dish> allDishesToFlyConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);
+
+
+
+        public DishFilter()
+        {
+            OpenDishes = new FullyObservableCollection<Dish>();
+            openDishesConnector.Select(a => a.IsActive && a.IsTemporary)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, OpenDishes);
+
+            ActiveDishesAll = new FullyObservableCollection<Dish>();
+            activeDishesConnector.Select(a => a.IsActive && !a.IsTemporary)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, ActiveDishesAll);
+            
+            ActiveDishesToGo = new FullyObservableCollection<Dish>();
+            activeDishesToGoConnector.Select(a => a.IsActive && !a.IsTemporary && a.IsToGo)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, ActiveDishesToGo);
+
+            ActiveDishesToFly = new FullyObservableCollection<Dish>();
+            activeDishesToFlyConnector.Select(a => a.IsActive && !a.IsTemporary && !a.IsToGo)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, ActiveDishesToFly);
+            
+            AllDishesToGo = new FullyObservableCollection<Dish>();
+            allDishesToGoConnector.Select(a => a.IsToGo && !a.IsTemporary)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, AllDishesToGo);
+
+            AllDishesToFly = new FullyObservableCollection<Dish>();
+            allDishesToFlyConnector.Select(a =>!a.IsToGo && !a.IsTemporary)
+                            .OrderBy(a => a.Barcode)
+                            .Subsribe(DataCatalogsSingleton.Instance.DishData, AllDishesToFly);
+
+
+        }
+
+        private List<OpenDishFactory> OpenDishFactories = new List<OpenDishFactory>();
+
+        public OpenDishFactory GetOpenDishes(long ownerBarCode)
+        {
+            if (!OpenDishFactories.Any(a => a.OwnerBarcode == ownerBarCode))
+            {
+                OpenDishFactories.Add(new OpenDishFactory(ownerBarCode));
+            }
+
+            return OpenDishFactories.FirstOrDefault(a => a.OwnerBarcode == ownerBarCode);
+        }
+
+
+    }
+
+        public interface IAlertsShower
     {
         void InitAlerts(List<Alert> alerts);
     }

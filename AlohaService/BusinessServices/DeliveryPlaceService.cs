@@ -31,6 +31,10 @@ namespace AlohaService.BusinessServices
                 dp.Name = deliveryPlace.Name;
                 dp.Phone = deliveryPlace.Phone;
                 dp.IsActive = deliveryPlace.IsActive;
+
+                dp.UpdatedDate = DateTime.Now;
+                dp.LastUpdatedSession = deliveryPlace.LastUpdatedSession;
+
                 dbContext.DeliveryPlace.Add(dp);
                 dbContext.SaveChanges();
 
@@ -78,6 +82,9 @@ namespace AlohaService.BusinessServices
             dp.Name = deliveryPlace.Name;
             dp.Phone = deliveryPlace.Phone;
             dp.IsActive = deliveryPlace.IsActive;
+
+            dp.UpdatedDate = DateTime.Now;
+            dp.LastUpdatedSession = deliveryPlace.LastUpdatedSession;
 
             db.SaveChanges();
 

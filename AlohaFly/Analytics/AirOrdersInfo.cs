@@ -34,13 +34,13 @@ namespace AlohaFly.Analytics
         [Display(Name = "Номер рейса")]
         public string FlightNumber { get { return Ord.FlightNumber; } }
         [Display(Name = "Авиакомпания")]
-        public string AirCompName { get { return DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies.SingleOrDefault(a => a.Id == Ord.AirCompanyId).Name; } }
+        public string AirCompName { get { return DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.SingleOrDefault(a => a.Id == Ord.AirCompanyId).Name; } }
         [Display(Name = "Дата")]
         public DateTime DelDate { get { return Ord.DeliveryDate; } }
         [Display(Name = "Статус заказа")]
         public OrderStatus OrderStatus { get { return Ord.OrderStatus; } }
         [Display(Name = "Контактное лицо")]
-        public string ContactName { get { return DataExtension.DataCatalogsSingleton.Instance.ContactPerson.SingleOrDefault(a => a.Id == Ord.ContactPersonId).FullName; } }
+        public string ContactName { get { return DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.Data.SingleOrDefault(a => a.Id == Ord.ContactPersonId).FullName; } }
         [Display(Name = "Сумма заказа")]
         public decimal Total { get { return Ord.OrderTotalSumm; } }
         [Display(Name = "Скидка")]

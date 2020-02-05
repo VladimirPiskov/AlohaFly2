@@ -16,9 +16,10 @@ namespace AlohaFly.Models
 {
     class WndDeleteDishModel : ReactiveObject
     {
-
+        /*
         private readonly ReadOnlyObservableCollection<Payment> _spisPayments;
         public ReadOnlyObservableCollection<Payment> SpisPayments => _spisPayments;
+        */
         IDeletedDish dish;
 
 
@@ -27,19 +28,20 @@ namespace AlohaFly.Models
         public WndDeleteDishModel(IDeletedDish _dish)
         {
             dish = _dish;
+            /*
             //_spisPayments = new ReadOnlyObservableCollection<Payment> (DataCatalogsSingleton.Instance.PaymentsSourceCache.Items.AsObservableChangeSet());
             DataCatalogsSingleton.Instance.PaymentsSourceCache.Connect()
             .Filter(x => x.IsActive && x.PaymentGroup != null && !x.PaymentGroup.Sale && (x.ToGo ^ dish is DishPackageFlightOrder))
             //.ObserveOn(RxApp.MainThreadScheduler)
             .Bind(out _spisPayments)
             .Subscribe();
-
+            */
 
             if (dish != null && dish.Deleted)
             {
                 if (dish.SpisPaymentId != 0)
                 {
-                    SelectedSpis = SpisPayments?.SingleOrDefault(x => x.Id == dish.SpisPaymentId);
+                    SelectedSpis = DataCatalogsSingleton.Instance.PaymentData.Data.SingleOrDefault(x => x.Id == dish.SpisPaymentId);
                 }
                 DeletedComment = dish.Comment;
                 Spis = (dish.DeletedStatus == 1);

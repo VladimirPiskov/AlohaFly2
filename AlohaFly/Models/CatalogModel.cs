@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Controls;
 using Telerik.Windows.Data;
 
@@ -18,20 +19,32 @@ namespace AlohaFly.Models
 
 
     public class CatalogModel<T> : INotifyPropertyChanged
-         where T : INotifyPropertyChanged
+         where T : class, INotifyPropertyChanged
     {
-        private readonly FullyObservableCollection<T> _catalogData = new FullyObservableCollection<T>();
+        private readonly FullyObservableCollection<T> catalogData = new FullyObservableCollection<T>();
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private EditCatalogDataFuncs<T> EditFuncs;
+        //private EditCatalogDataFuncs<T> EditFuncs;
 
-        public CatalogModel(EditCatalogDataFuncs<T> editFuncs)
+        private FullyObservableDBData<T> dBData;
+
+        public CatalogModel(FullyObservableDBData<T> _dBData, FullyObservableCollection<T> _catalogData=null)
+        //public CatalogModel(EditCatalogDataFuncs<T> editFuncs, FullyObservableDBData<T> _dBData)
         {
-            EditFuncs = editFuncs;
-            _catalogData = editFuncs.AllDataList;
+            dBData = _dBData;
+            catalogData = _catalogData ?? dBData.Data;
 
         }
+        
+        /*
+        public CatalogModel(EditCatalogDataFuncs<T> editFuncs)
+        {
+            //dBData = _dBData;
+            //EditFuncs = editFuncs;
+            //  _catalogData = editFuncs.AllDataList;
 
+        }
+        */
         protected void NotifyPropertyChanged(
           string propertyName)
         {
@@ -43,42 +56,62 @@ namespace AlohaFly.Models
         {
             get
             {
-                return _catalogData;
+                return catalogData;
             }
         }
-
-        public long AddItem(T item)
+        
+        public T AddItem(T item)
+        //public long AddItem(T item)
         {
 
 
             //return DBDataExtractor<T>.AddItem((_) => { return EditFuncs.AddItemFunc(item); }, item);
+            var res = dBData.EndEdit(item);
+
+            if (res.Succeess)
+            {
+                SetId(item, res.UpdatedItem);
+                return res.UpdatedItem;
+            }
+
+            return null;
+            /*
             var res = DBDataExtractor<T>.AddItem(EditFuncs.AddItemFunc, item);
             if (res != -1) { SetId(item, res); };
             return res;
-
+            */
 
         }
 
-        public void SetId(dynamic item, long Id)
+        public void SetId(dynamic item, dynamic item2)
         {
-            item.Id = Id;
+            item.Id = item2.Id;
             //typeof(T).GetMember("Id")?[0].SetValue(item, Id);
 
         }
 
         public bool CommitEditItem(T item)
         {
-            return DBDataExtractor<T>.EditItem(EditFuncs.EditItemFunc, item);
+            var res = dBData.EndEdit(item);
+            return dBData.EndEdit(item).Succeess;
+
+          // return DBDataExtractor<T>.EditItem(EditFuncs.EditItemFunc, item);
         }
-        public bool CancelAddItem(long Id)
+        //public bool CancelAddItem(long Id)
+        public bool CancelAddItem(T item)
         {
-            return DBDataExtractor<T>.DeleteItem(EditFuncs.CancelAddItemFunc, Id);
+
+            return dBData.DeleteItem(item).Succeess;
+            //return DBDataExtractor<T>.DeleteItem(EditFuncs.CancelAddItemFunc, Id);
         }
 
         public bool DeleteItem(T item)
         {
+            /*
             long Id = ((dynamic)item).Id;
             return DBDataExtractor<T>.DeleteItem(EditFuncs.CancelAddItemFunc, Id);
+            */
+            return dBData.DeleteItem(item).Succeess;
 
         }
 
@@ -129,7 +162,7 @@ namespace AlohaFly.Models
     }
 
     public class CatalogViewModel<T> : CatalogViewModel
-        where T : INotifyPropertyChanged
+        where T : class, INotifyPropertyChanged
     {
         readonly CatalogModel<T> _model;
 
@@ -181,15 +214,19 @@ namespace AlohaFly.Models
             return _model.CommitEditItem(SelectedItem);
         }
 
-        private long AddedItemId = -1;
+        private T AddedItem;
         public override bool AddItem()
         {
-            AddedItemId = _model.AddItem(SelectedItem);
-            return (AddedItemId != -1);
+            
+            
+            AddedItem = _model.AddItem(SelectedItem);
+            //AddedItemId = _model.AddItem(SelectedItem);
+
+            return (AddedItem != null);
         }
         public override bool CancelAddItem()
         {
-            return _model.CancelAddItem(AddedItemId);
+            return _model.CancelAddItem(AddedItem);
         }
 
         public override bool DeleteItem()

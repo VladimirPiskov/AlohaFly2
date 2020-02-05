@@ -24,6 +24,9 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Наеменование")]
         public bool IsActive { get; set; }
 
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public Guid LastUpdatedSession { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -126,70 +126,70 @@ namespace AlohaFly
                         new MenuItemCatalog ("Печать по авиакомпаниям",PrintRep1, AccessTypeConst.Access_Reports_Rep1,false),
                         /*
                         new MenuItemCatalog ("Расход блюд",new Action(()=>{ Task.Run(()=>
-                            new Reports.ExcelReports().DBFGetRashDishez(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                            new Reports.ExcelReports().DBFGetRashDishez(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         
                         , AccessTypeConst.Access_Reports_Rep1,false),
                         
 
                         new MenuItemCatalog("Расход блюд по категориям", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetRashDishezOnCat(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetRashDishezOnCat(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                         
 
                         new MenuItemCatalog("Расход блюд по группам станций", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetRashDishezOnStationGroup(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetRashDishezOnStationGroup(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                         
                         new MenuItemCatalog("Общая сумма", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetSales(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetSales(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                         */
                         new MenuItemCatalog("Выручка станций по дням", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetSalesByDays(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetSalesByDays(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                         new MenuItemCatalog("Выручка по категориям", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetSalesByCats(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetSalesByCats(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                         new MenuItemCatalog("Отчет по блюдам", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetDishezByPayment(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetDishezByPayment(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                         new MenuItemCatalog("Отчет по компаниям", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetPaymentsSumm(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetPaymentsSumm(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                         /*
                         new MenuItemCatalog("Отчет по оплатам", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetPaymentsSumm(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetPaymentsSumm(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                         */
                         /*
                          new MenuItemCatalog ("ToGo Отчет по оплатам",new Action(()=>{
-                            new Reports.ExcelReports().DBFGetPaymentsSummToGo(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt);})
+                            new Reports.ExcelReports().DBFGetPaymentsSummToGo(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt);})
                         , AccessTypeConst.Access_Reports_Rep1,false),
                         */
 
                         new MenuItemCatalog("Общая выручка new", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetSales2(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetSales2(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
                          new MenuItemCatalog("Баланс new", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetBalance(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetBalance(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                          new MenuItemCatalog("Отчет по отказам new", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetVoids2(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetVoids2(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                          new MenuItemCatalog("Отчет по открытым блюдам", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().DBFGetRashOpenDishezOnCat(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().DBFGetRashOpenDishezOnCat(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                          new MenuItemCatalog("Выручка по дням", new Action(() => { Task.Run(() =>
-                               new Reports.ExcelReports().SaleByDayAndDepReport(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               new Reports.ExcelReports().SaleByDayAndDepReport(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                          new MenuItemCatalog("Общий отчет", new Action(() => { Task.Run(() =>
-                               Reports.GKANReports.Instanse.ShowCommonReport(AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt)); })
+                               Reports.GKANReports.Instanse.ShowCommonReport(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                     };
@@ -204,12 +204,14 @@ namespace AlohaFly
         {
             var rep = new Reports.ExcelReports();
             rep.AllOrdersToExcelByComps(AirOrdersModelSingleton.Instance.AirCompanyOrders.ToList(),
-                AirOrdersModelSingleton.Instance.StartDt, AirOrdersModelSingleton.Instance.EndDt);
+                DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt);
         }
 
         public static void ShowContactPersons()
         {
             var _model = new Models.CatalogModel<ContactPerson>(
+                DataCatalogsSingleton.Instance.ContactPersonData
+                /*
             new Models.EditCatalogDataFuncs<ContactPerson>()
             {
                 AddItemFunc = DBProvider.Client.CreateContactPerson,
@@ -217,6 +219,7 @@ namespace AlohaFly
                 CancelAddItemFunc = DBProvider.Client.DeleteContactPerson,
                 AllDataList = DataExtension.DataCatalogsSingleton.Instance.ContactPerson
             }
+            */
             );
             var vm = new Models.CatalogViewModel<ContactPerson>(_model);
             vm.CanDeleteItem = false;
@@ -226,13 +229,16 @@ namespace AlohaFly
         public static void ShowLogicDishGroups()
         {
             var _model = new Models.CatalogModel<DishLogicGroup>(
-            new Models.EditCatalogDataFuncs<DishLogicGroup>()
-            {
-                AddItemFunc = DBProvider.Client.CreateDishLogicGroup,
-                EditItemFunc = DBProvider.Client.UpdateDishLogicGroup,
-                CancelAddItemFunc = DBProvider.Client.DeleteDishLogicGroup,
-                AllDataList = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup
-            }
+                DataCatalogsSingleton.Instance.DishLogicGroupData
+            /*
+        new Models.EditCatalogDataFuncs<DishLogicGroup>()
+        {
+            AddItemFunc = DBProvider.Client.CreateDishLogicGroup,
+            EditItemFunc = DBProvider.Client.UpdateDishLogicGroup,
+            CancelAddItemFunc = DBProvider.Client.DeleteDishLogicGroup,
+            AllDataList = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroup
+        }
+        */
             );
             var vm = new Models.CatalogViewModel<DishLogicGroup>(_model);
             vm.CanDeleteItem = false;
@@ -243,13 +249,16 @@ namespace AlohaFly
         public static void ShowKitchenDishGroups()
         {
             var _model = new Models.CatalogModel<DishKitchenGroup>(
-            new Models.EditCatalogDataFuncs<DishKitchenGroup>()
-            {
-                AddItemFunc = DBProvider.Client.CreateDishKitchenGroup,
-                EditItemFunc = DBProvider.Client.UpdateDishKitchenGroup,
-                CancelAddItemFunc = DBProvider.Client.DeleteDishKitchenGroup,
-                AllDataList = DataExtension.DataCatalogsSingleton.Instance.DishKitchenGroup
-            }
+              DataCatalogsSingleton.Instance.DishKitchenGroupData
+            /*
+        new Models.EditCatalogDataFuncs<DishKitchenGroup>()
+        {
+            AddItemFunc = DBProvider.Client.CreateDishKitchenGroup,
+            EditItemFunc = DBProvider.Client.UpdateDishKitchenGroup,
+            CancelAddItemFunc = DBProvider.Client.DeleteDishKitchenGroup,
+            AllDataList = DataExtension.DataCatalogsSingleton.Instance.DishKitchenGroup
+        }
+        */
             );
             var vm = new Models.CatalogViewModel<DishKitchenGroup>(_model);
             vm.CanDeleteItem = false;
@@ -284,7 +293,7 @@ namespace AlohaFly
         public static void ShowItemLabelsInfo()
         {
 
-            var vm = new Models.AddLabelsViewModel(DataExtension.DataCatalogsSingleton.Instance.Dishes.First());
+            var vm = new Models.AddLabelsViewModel(DataExtension.DataCatalogsSingleton.Instance.DishData.Data.First());
             vm.Header = "Редактирование наклеек";
             var ctrlItemlabels = new UI.ctrlItemLabels();
             ctrlItemlabels.DataContext = vm;
@@ -297,7 +306,7 @@ namespace AlohaFly
         public static void ShowOpenItemLabelsInfo()
         {
 
-            var vm = new Models.AddLabelsViewModel(DataExtension.DataCatalogsSingleton.Instance.Dishes.First(), true);
+            var vm = new Models.AddLabelsViewModel(DataExtension.DataCatalogsSingleton.Instance.DishFilter.OpenDishes.First(), true);
             vm.Header = "Редактирование открытых наклеек";
             var ctrlItemlabels = new UI.ctrlItemLabels();
             ctrlItemlabels.DataContext = vm;
@@ -309,24 +318,47 @@ namespace AlohaFly
 
         public static void ShowAirCompanyCatalog()
         {
+
+            var _model = new Models.CatalogModel<AirCompany>(DataCatalogsSingleton.Instance.AirCompanyData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<AirCompany>(_model) { Header = "Справочник авиакомпаний" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+
+
+
+            /*
             var _model = new Models.CatalogModel<AirCompany>(
             new Models.EditCatalogDataFuncs<AirCompany>()
             {
                 AddItemFunc = DBProvider.Client.CreateAirCompany,
                 EditItemFunc = DBProvider.Client.UpdateAirCompany,
                 CancelAddItemFunc = DBProvider.Client.DeleteAirCompany,
-                AllDataList = DataExtension.DataCatalogsSingleton.Instance.AllAirCompanies
+                AllDataList = DataExtension.DataCatalogsSingleton.Instance.AllAirCompan
             }
             );
-
-
             var vm = new Models.CatalogViewModel<AirCompany>(_model);
             vm.CanDeleteItem = false;
             ShowCatItem(vm, "Справочник авиакомпаний");
+            */
+
+
+
+
         }
 
         public static void ShowDriverCatalog()
         {
+            var _model = new Models.CatalogModel<Driver>(DataCatalogsSingleton.Instance.DriverData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<Driver>(_model) { Header = "Справочник водителей" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+
+
+            /*
             var _model = new Models.CatalogModel<Driver>(
             new Models.EditCatalogDataFuncs<Driver>()
             {
@@ -340,10 +372,18 @@ namespace AlohaFly
             var vm = new Models.CatalogViewModel<Driver>(_model);
             vm.CanDeleteItem = false;
             ShowCatItem(vm, "Справочник водителей");
+            */
         }
 
         public static void ShowMarketingChanelsCatalog()
         {
+            var _model = new Models.CatalogModel<MarketingChannel>(DataCatalogsSingleton.Instance.MarketingChannelData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<MarketingChannel>(_model) { Header = "Справочник каналов маркетинга" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+            /*
             var _model = new Models.CatalogModel<MarketingChannel>(
             new Models.EditCatalogDataFuncs<MarketingChannel>()
             {
@@ -357,10 +397,19 @@ namespace AlohaFly
             var vm = new Models.CatalogViewModel<MarketingChannel>(_model);
             vm.CanDeleteItem = false;
             ShowCatItem(vm, "Справочник каналов маркетинга");
+            */
         }
 
         public static void ShowPaymentsCatalog()
         {
+            var _model = new Models.CatalogModel<Payment>(DataCatalogsSingleton.Instance.PaymentData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<Payment>(_model) { Header = "Справочник видов оплат" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+
+            /*
             var _model = new Models.CatalogModel<Payment>(
             new Models.EditCatalogDataFuncs<Payment>()
             {
@@ -374,11 +423,21 @@ namespace AlohaFly
             var vm = new Models.CatalogViewModel<Payment>(_model);
             vm.CanDeleteItem = false;
             ShowCatItem(vm, "Справочник видов оплат");
+            */
         }
 
 
         public static void ShowPaymentGroupsCatalog()
         {
+
+            var _model = new Models.CatalogModel<PaymentGroup>(DataCatalogsSingleton.Instance.PaymentGroupData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<PaymentGroup>(_model) { Header = "Справочник групп оплат" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+
+            /*
             var _model = new Models.CatalogModel<PaymentGroup>(
             new Models.EditCatalogDataFuncs<PaymentGroup>()
             {
@@ -391,7 +450,8 @@ namespace AlohaFly
 
             var vm = new Models.CatalogViewModel<PaymentGroup>(_model);
             vm.CanDeleteItem = false;
-            ShowCatItem(vm, "Справочник груп оплат");
+            ShowCatItem(vm, "Справочник групп оплат");
+            */
         }
 
 
@@ -405,6 +465,7 @@ namespace AlohaFly
 
         private static void ShowItemsCatalog(string name, FullyObservableCollection<Dish> data)
         {
+            /*
             var GetDataFuncs = new Models.EditCatalogDataFuncs<Dish>()
             {
                 AddItemFunc = DBProvider.Client.CreateDish,
@@ -412,7 +473,9 @@ namespace AlohaFly
                 CancelAddItemFunc = DBProvider.Client.DeleteDish,
                 AllDataList = data
             };
-            var _model = new Models.CatalogModel<Dish>(GetDataFuncs);
+            */
+
+            var _model = new Models.CatalogModel<Dish>(DataCatalogsSingleton.Instance.DishData, data);
 
             var ItemsCatalog = new UI.CtrlCatalogView2();
             var ItemsCatalogVm = new Models.CatalogViewModel<Dish>(_model) { Header = name };
@@ -426,28 +489,36 @@ namespace AlohaFly
         }
         private static void ShowItemsCatalog()
         {
-            ShowItemsCatalog("Справочник блюд всех", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.Dishes));
+            ShowItemsCatalog("Справочник блюд всех", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishData.Data));
         }
 
         public static void ShowItemsCatalogToFly()
         {
-            ShowItemsCatalog("Справочник блюд ToFly", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.Dishes.Where(a => !a.IsTemporary && !a.IsToGo)));
+            ShowItemsCatalog("Справочник блюд ToFly", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishFilter.AllDishesToFly));
         }
 
         public static void ShowItemsCatalogToGo()
         {
-            ShowItemsCatalog("Справочник блюд ToGo", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.Dishes.Where(a => !a.IsTemporary && a.IsToGo)));
+            ShowItemsCatalog("Справочник блюд ToGo", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishFilter.AllDishesToFly));
         }
 
         public static void ShowItemsCatalogTemp()
         {
-            ShowItemsCatalog("Справочник блюд временных", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.Dishes.Where(a => a.IsTemporary)));
+            ShowItemsCatalog("Справочник блюд временных", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishFilter.OpenDishes));
         }
 
 
         public static void ShowDeliveryPlaceCatalog()
         {
 
+            var _model = new Models.CatalogModel<DeliveryPlace>(DataCatalogsSingleton.Instance.DeliveryPlaceData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<DeliveryPlace>(_model) { Header = "Справочник мест доставки" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+
+            /*
             var _model = new Models.CatalogModel<DeliveryPlace>(
                 new Models.EditCatalogDataFuncs<DeliveryPlace>()
                 {
@@ -460,6 +531,7 @@ namespace AlohaFly
             var ItemsCatalog = new UI.CtrlCatalogView2();
             ItemsCatalog.DataContext = new Models.CatalogViewModel<DeliveryPlace>(_model) { Header = "Справочник мест доставки" };
             MainClass.ShowUC(ItemsCatalog);
+            */
         }
 
 

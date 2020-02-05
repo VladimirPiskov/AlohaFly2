@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlohaService.Entities
 {
-    public class Dish
+    public class Dish : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public string RussianName { get; set; }
@@ -51,5 +51,7 @@ namespace AlohaService.Entities
         public string LabelRussianName { get; set; }
 
         public string LabelEnglishName { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
     }
 }

@@ -34,6 +34,10 @@ namespace AlohaService.BusinessServices
                 cp.IsActive = contactPerson.IsActive;
                 cp.Email = contactPerson.Email;
 
+                cp.UpdatedDate = DateTime.Now;
+                cp.LastUpdatedSession = contactPerson.LastUpdatedSession;
+
+
                 dbContext.ContactPersons.Add(cp);
                 dbContext.SaveChanges();
 
@@ -116,6 +120,9 @@ namespace AlohaService.BusinessServices
             c.Phone = contactPerson.Phone;
             c.IsActive = contactPerson.IsActive;
             c.Email = contactPerson.Email;
+
+            c.UpdatedDate = DateTime.Now;
+            c.LastUpdatedSession = contactPerson.LastUpdatedSession;
 
             db.SaveChanges();
 

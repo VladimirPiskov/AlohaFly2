@@ -7,7 +7,7 @@ using System.Web;
 
 namespace AlohaService.Entities
 {
-    public class OrderFlight
+    public class OrderFlight : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public string OrderNumber { get; set; }
@@ -86,6 +86,10 @@ namespace AlohaService.Entities
         public bool FRPrinted { get; set; }
 
         public bool PreCheckPrinted { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
+
 
         public bool IsSHSent { get; set; }
 

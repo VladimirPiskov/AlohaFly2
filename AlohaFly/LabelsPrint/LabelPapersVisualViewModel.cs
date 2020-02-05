@@ -20,9 +20,13 @@ namespace AlohaFly.LabelsPrint
         IOrderLabel Order;
         Dish d;
         bool PrintDish = false;
-        public LabelPapersVisualViewModel(IOrderLabel order)
+        Dictionary<long, RunTimeLabelInfo> labels;
+        //public LabelPapersVisualViewModel(IOrderLabel order, List<ItemLabelInfo> _labels)
+        public LabelPapersVisualViewModel(IOrderLabel order, Dictionary<long, RunTimeLabelInfo> _labels)
+        
         {
             Order = order;
+            labels = _labels;
             PapersInit();
             PrintCommand = new DelegateCommand((_) =>
             {
@@ -30,10 +34,11 @@ namespace AlohaFly.LabelsPrint
             });
         }
 
-        public LabelPapersVisualViewModel(Dish _d)
+        public LabelPapersVisualViewModel(Dish _d, Dictionary<long, RunTimeLabelInfo> _labels)
         {
             PrintDish = true;
             d = _d;
+            labels = _labels;
             PapersInit();
             PrintCommand = new DelegateCommand((_) =>
             {
@@ -92,23 +97,48 @@ namespace AlohaFly.LabelsPrint
             GC.Collect();
         }
 
+
+
         void CreateLabelsOfDish(Dish d, DateTime dt)
         {
 
-            int nCount = DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == d.Id).Count();
-            foreach (var l in DataExtension.DataCatalogsSingleton.Instance.ItemLabelsInfo.Where(a => a.ParenItemId == d.Id).OrderBy(a => a.SerialNumber))
+            //int nCount = DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.Id).Count();
+            //foreach (var l in DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.Id).OrderBy(a => a.SerialNumber))
+
+            if (labels.TryGetValue(d.Id, out RunTimeLabelInfo info))
             {
-                int logoType = 0;
-                if (Order is OrderToGo) { logoType = 1; }
-                var lvm = new LabelImageViewModel(d, l, dt, logoType);
-                var ctrlImage = new CtrlLabelImage() { DataContext = lvm };
-                Labels.Add(ctrlImage);
+                Dish dn = (Dish)d.Clone();
+                dn.LabelRussianName = info.RussianName;
+                dn.LabelEnglishName = info.EnglishName;
+                dn.LabelsCount = info.Labels.Where(a => a.ParenItemId == d.Id).Count();
+                foreach (var l in info.Labels.Where(a => a.ParenItemId == d.Id).OrderBy(a => a.SerialNumber))
+                {
+                    int logoType = 0;
+                    if (Order is OrderToGo) { logoType = 1; }
+                    var lvm = new LabelImageViewModel(dn, l, dt, logoType);
+                    var ctrlImage = new CtrlLabelImage() { DataContext = lvm };
+                    Labels.Add(ctrlImage);
+                }
+
             }
+            else
+            {
+               // int nCount = DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.Id).Count();
+                foreach (var l in DataExtension.DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.Id).OrderBy(a => a.SerialNumber))
+                {
+                    int logoType = 0;
+                    if (Order is OrderToGo) { logoType = 1; }
+                    var lvm = new LabelImageViewModel(d, l, dt, logoType);
+                    var ctrlImage = new CtrlLabelImage() { DataContext = lvm };
+                    Labels.Add(ctrlImage);
+                }
+            }
+
+
         }
 
         void PapersInit()
         {
-
             Labels = new List<CtrlLabelImage>();
             Papers = new List<CtrlLabelsPaper>();
             if (!PrintDish)
@@ -116,7 +146,6 @@ namespace AlohaFly.LabelsPrint
                 foreach (var d in Order.DishPackagesForLab.OrderBy(a => a.PositionInOrder))
                 {
                     if (!d.PrintLabel) { continue; }
-                    //foreach(var l in d.DishId)
                     for (int sNum = 0; sNum < d.LabelSeriesCount; sNum++)
                     {
                         CreateLabelsOfDish(d.Dish, Order.DeliveryDate);
@@ -154,9 +183,7 @@ namespace AlohaFly.LabelsPrint
         List<CtrlLabelsPaper> Papers { set; get; }
         List<CtrlLabelImage> Labels { set; get; }
 
-        //List<RadBookItem> items;
         List<PageDataItem> items;
-        // public List<RadBookItem> Items
         public List<PageDataItem> Items
         {
             get
@@ -167,15 +194,7 @@ namespace AlohaFly.LabelsPrint
 
                     foreach (var p in Papers)
                     {
-
-                        /*
-                        RadBookItem r = new RadBookItem()
-                        {
-                            Cursor = Cursors.Hand,
-                            //Background = new SolidColorBrush(Colors.Red),
-                            Content = p
-                        };
-                     */
+                      
 
                         PageDataItem r = new PageDataItem()
                         {

@@ -29,7 +29,8 @@ namespace AlohaService.ServiceDataContracts
         [DataMember]
         [Display(Name = "Активно")]
         public bool IsActive { get; set; } = true;
-
+        [DataMember]
+        public Guid LastUpdatedSession { get; set; }
         public override string ToString()
         {
             return Name;

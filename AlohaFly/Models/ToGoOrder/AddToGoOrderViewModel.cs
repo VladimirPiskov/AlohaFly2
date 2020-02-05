@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Data;
 using static AlohaFly.Models.AddOrderModel;
@@ -43,9 +44,9 @@ namespace AlohaFly.Models
             {
                 Amount = 1,
                 Code = 2244,
-                Dish = DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.Barcode == 2244),
-                DishName = DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.Barcode == 2244)?.Name,
-                DishId = DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.Barcode == 2244)?.Id ?? 0,
+                Dish = DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == 2244),
+                DishName = DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == 2244)?.Name,
+                DishId = DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == 2244)?.Id ?? 0,
                 PositionInOrder = 1,
                 TotalPrice = 0,
                 Printed = false
@@ -56,9 +57,9 @@ namespace AlohaFly.Models
             {
                 Amount = 1,
                 Code = 2245,
-                Dish = DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.Barcode == 2245),
-                DishName = DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.Barcode == 2245)?.Name,
-                DishId = DataCatalogsSingleton.Instance.Dishes.FirstOrDefault(a => a.Barcode == 2245)?.Id ?? 0,
+                Dish = DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == 2245),
+                DishName = DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == 2245)?.Name,
+                DishId = DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == 2245)?.Id ?? 0,
                 PositionInOrder = 2,
                 TotalPrice = 0,
                 Printed = false
@@ -154,9 +155,15 @@ namespace AlohaFly.Models
 
                         if (vm.Result)
                         {
-                            res = DataCatalogsSingleton.Instance.AddOpenDish(od);
-                            AddToOrderDish.Dish = od;
-                            AddToOrderDish.TotalPrice = AddToOrderDish.Dish.PriceForFlight;
+
+                            var addRes = DataCatalogsSingleton.Instance.DishData.EndEdit(od);
+                            res = addRes.Succeess;
+                            if (res)
+                            {
+                                AddToOrderDish.Dish = addRes.UpdatedItem;
+                                AddToOrderDish.TotalPrice = AddToOrderDish.Dish.PriceForDelivery;
+                            }
+                            
                         }
                         else
                         {
@@ -372,7 +379,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.ActiveDishesToGo;
+                return DataExtension.DataCatalogsSingleton.Instance.DishFilter.ActiveDishesToGo;
             }
         }
 
@@ -436,13 +443,23 @@ namespace AlohaFly.Models
                 }
                 );
 
+            this.WhenAnyValue(a => a.ClientInfo)
+                .Subscribe(_ =>
+                {
+                    if ((ClientInfo == null) ||(ClientInfo.OrderCount >= 2)) { ControlColor = new SolidColorBrush(Colors.White);return; }
+
+                    ControlColor = new SolidColorBrush(Colors.LightSteelBlue); 
+                    
+                }
+                );
+
             needUpd = true;
             ClientPanelVis = model.Order.OrderCustomer == null ? Visibility.Collapsed : Visibility.Visible;
             Changed = model.Order.Id == 0;
             model.OrderChanged += Model_OrderChanged;
             SetFocusedCommands();
 
-            DataExtension.DataCatalogsSingleton.Instance.PropertyChanged += DataCatalog_PropertyChanged;
+            //DataExtension.DataCatalogsSingleton.Instance.PropertyChanged += DataCatalog_PropertyChanged;
 
             AddClientCommand = new DelegateCommand(_ =>
             {
@@ -633,7 +650,7 @@ namespace AlohaFly.Models
                     logger.Error($"ChangeStatusCommand togo {model?.Order?.Id} " + e.Message);
                 }
             });
-
+            ClientInfo = model.Order.OrderCustomer?.OrderCustomerInfo;
         }
 
         private void ClientToGoDetailsEditContext_Exited(object sender, ToGoClientEditViewModel.ExitedEventArgs e)
@@ -649,14 +666,10 @@ namespace AlohaFly.Models
             }
         }
 
-        public OrderCustomerInfo ClientInfo
-        {
-            get
-            {
-                return Client?.OrderCustomerInfo;
+        [Reactive]  public OrderCustomerInfo ClientInfo { get; private set; }
 
-            }
-        }
+        [Reactive] public SolidColorBrush ControlColor { set; get; } = new SolidColorBrush(Colors.White); 
+
         [Reactive] public Visibility CtrlClientToGoEditDetailsVisibility { set; get; } = Visibility.Collapsed;
         [Reactive] public Visibility ClientStackPanelVis { set; get; } = Visibility.Visible;
         [Reactive] public Visibility ClientPanelVis { set; get; } = Visibility.Collapsed;
@@ -720,13 +733,16 @@ namespace AlohaFly.Models
 
                     //OrderPhone = model.Order?.OrderCustomer?.GetPrimaryPhone()?.Phone;
                     //OrderAddress = model.Order?.OrderCustomer?.GetPrimaryAddress();
+                    ClientInfo = model.Order.OrderCustomer.OrderCustomerInfo;
                 }
                 ClientPanelVis = model.Order.OrderCustomer == null ? Visibility.Collapsed : Visibility.Visible;
+                
             }
             get { return model.Order.OrderCustomer; }
         }
 
-
+        
+            
         public bool DishSpisPaymentColumnVis
         {
             get
@@ -787,12 +803,13 @@ namespace AlohaFly.Models
         public ICommand AddClientCommand { get; set; }
         public ICommand EditClientCommand { get; set; }
 
+        /*
         private void DataCatalog_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             DishCollectionSource.Refresh();
             this.RaisePropertyChanged("DishCollectionSource");
         }
-
+        */
 
         ICollectionView _dishCollectionSource;
         public ICollectionView DishCollectionSource
@@ -934,7 +951,7 @@ namespace AlohaFly.Models
             {
                 if (model != null && SelectedDish != null)
                 {
-                    QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.GetOpenDishes(SelectedDish.Barcode));
+                    QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.DishFilter.GetOpenDishes(SelectedDish.Barcode).OpenDishes);
                     _openDishez = collectionViewSource;
                     _openDishez.MoveCurrentToFirst();
                 }
@@ -957,7 +974,7 @@ namespace AlohaFly.Models
                 {
                     marketingChannelVM = new CatalogComboBoxViewModel<MarketingChannel>()
                     {
-                        DataCatalog = DataCatalogsSingleton.Instance.MarketingChannels,
+                        DataCatalog = DataCatalogsSingleton.Instance.MarketingChannelData.Data,
                         Header = "Канал продаж",
                         EmptyText = "Укажите канал продаж..",
                         DisplayMemberPathName = "Name"
@@ -1035,7 +1052,7 @@ namespace AlohaFly.Models
                 {
                     deliveryPerconVM = new CatalogComboBoxViewModel<Driver>()
                     {
-                        DataCatalog = DataExtension.DataCatalogsSingleton.Instance.Drivers,
+                        DataCatalog = DataExtension.DataCatalogsSingleton.Instance.DriverData.Data,
                         Header = "Кто отвез",
                         EmptyText = "Укажите кто отвез..",
                         DisplayMemberPathName = "FullName"

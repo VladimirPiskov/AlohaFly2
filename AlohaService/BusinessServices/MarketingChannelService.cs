@@ -31,6 +31,8 @@ namespace AlohaService.BusinessServices
                 dp.Name = MarketingChannel.Name;
                 
                 dp.IsActive = MarketingChannel.IsActive;
+                dp.UpdatedDate = DateTime.Now;
+                dp.LastUpdatedSession = MarketingChannel.LastUpdatedSession;
                 dbContext.MarketingChannel.Add(dp);
                 dbContext.SaveChanges();
 
@@ -78,6 +80,9 @@ namespace AlohaService.BusinessServices
             dp.Name = MarketingChannel.Name;
             
             dp.IsActive = MarketingChannel.IsActive;
+
+            dp.UpdatedDate = DateTime.Now;
+            dp.LastUpdatedSession = MarketingChannel.LastUpdatedSession;
 
             db.SaveChanges();
 

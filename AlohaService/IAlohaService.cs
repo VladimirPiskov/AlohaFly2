@@ -359,6 +359,10 @@ namespace AlohaService
         OperationResult CreateOrderFlight(OrderFlight orderFlight);
 
         [OperationContract]
+        OperationResult CreateOrderFlightWithPackage(ServiceDataContracts.OrderFlight orderFlight);
+
+
+        [OperationContract]
         bool InsertOrderFlightFromAloha(OrderFlight orderFlight);
 
         [OperationContract]
@@ -369,6 +373,9 @@ namespace AlohaService
 
         [OperationContract]
         OperationResultValue<OrderFlight> UpdateOrderFlight(OrderFlight orderFlight, long userId);
+
+        [OperationContract]
+        OperationResult UpdateOrderFlight2(OrderFlight orderFlight, long userId);
 
         [OperationContract]
         OperationResult DeleteOrderFlight(long orderFlightId);

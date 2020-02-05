@@ -38,6 +38,9 @@ namespace AlohaService.BusinessServices
                      SHId =payment.SHId
                 };
 
+                p.UpdatedDate = DateTime.Now;
+                p.LastUpdatedSession = payment.LastUpdatedSession;
+
                 db.Payments.Add(p);
                 db.SaveChanges();
 
@@ -101,6 +104,9 @@ namespace AlohaService.BusinessServices
             paymentToUpdate.FRSend = payment.FRSend;
             paymentToUpdate.PaymentGroupId = payment.PaymentGroupId;
             paymentToUpdate.SHId = payment.SHId;
+
+            paymentToUpdate.UpdatedDate = DateTime.Now;
+            paymentToUpdate.LastUpdatedSession = payment.LastUpdatedSession;
 
             db.SaveChanges();
 

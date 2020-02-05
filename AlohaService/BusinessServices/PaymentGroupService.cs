@@ -33,6 +33,9 @@ namespace AlohaService.BusinessServices
                     Name = payment.Name,
                 };
 
+                p.UpdatedDate = DateTime.Now;
+                p.LastUpdatedSession = payment.LastUpdatedSession;
+
                 db.PaymentGroups.Add(p);
                 db.SaveChanges();
 
@@ -90,7 +93,8 @@ namespace AlohaService.BusinessServices
             paymentToUpdate.Name = payment.Name;
             paymentToUpdate.Sale = payment.Sale;
 
-
+            paymentToUpdate.UpdatedDate = DateTime.Now;
+            paymentToUpdate.LastUpdatedSession = payment.LastUpdatedSession;
 
             db.SaveChanges();
 

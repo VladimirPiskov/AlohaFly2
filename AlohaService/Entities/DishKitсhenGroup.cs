@@ -5,7 +5,7 @@ using System.Web;
 
 namespace AlohaService.Entities
 {
-    public class DishKitchenGroup
+    public class DishKitchenGroup : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public string Name { get; set; }
@@ -21,6 +21,8 @@ namespace AlohaService.Entities
 
         
         public long SHIdSh { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
 
     }
 }

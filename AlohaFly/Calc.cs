@@ -125,7 +125,7 @@ namespace AlohaFly
             if (ord.AirCompany == null) return;
             if (ord.AirCompanyId == MainClass.AirAvangardId) return;
             if (ord.AirCompany.DiscountId == null) return;
-            decimal summ = Models.AirOrdersModelSingleton.Instance.GetOrderFlightsOfMonth(ord.DeliveryDate)
+            decimal summ = Models.AirOrdersModelSingleton.Instance.GetOrdersOfMonth(ord.DeliveryDate)
                 .Where(a => a.AirCompany?.Id == ord.AirCompany?.Id && a.Id < ord.Id)
                 .Sum(a => a.OrderSumm);
             if (ord.OrderStatus != OrderStatus.Closed)
@@ -163,7 +163,7 @@ namespace AlohaFly
         {
             try
             {
-                var ranges = DataExtension.DataCatalogsSingleton.Instance.mDiscounts.Single(a => a.Id == discId).Ranges.ToList();
+                var ranges = DataExtension.DataCatalogsSingleton.Instance.DiscountData.Data.Single(a => a.Id == discId).Ranges.ToList();
                 var res1 = ranges.OrderBy(a => a.Start).Where(a => a.Start <= beforesumm).Last();
                 var res2 = ranges.OrderBy(a => a.Start).Where(a => a.Start < beforesumm + ordersumm).Last();
                 if ((res1 == null) && (res2 == null)) return null;

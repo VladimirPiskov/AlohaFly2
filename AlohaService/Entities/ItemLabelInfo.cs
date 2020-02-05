@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlohaService.Entities
 {
-    public class ItemLabelInfo
+    public class ItemLabelInfo : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
 
@@ -20,5 +20,7 @@ namespace AlohaService.Entities
         public string NameEng { get; set; }
         public string Message { get; set; }
 
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
     }
 }

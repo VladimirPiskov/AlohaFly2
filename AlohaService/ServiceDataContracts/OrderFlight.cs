@@ -135,6 +135,10 @@ namespace AlohaService.ServiceDataContracts
         [DataMember]
         public Guid? AlohaGuidId { get; set; }
 
+
+        [DataMember]
+        public Guid LastUpdatedSession { get; set; }
+
         [DataMember]
         public List<DishPackageFlightOrder> DishPackages { get; set; }
 

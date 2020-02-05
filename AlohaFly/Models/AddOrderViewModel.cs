@@ -33,7 +33,7 @@ namespace AlohaFly.Models
             ExtraChargeEnable = Model.Order.ExtraCharge > 0;
 
 
-            DataExtension.DataCatalogsSingleton.Instance.PropertyChanged += DataCatalog_PropertyChanged;
+            //DataExtension.DataCatalogsSingleton.Instance.PropertyChanged += DataCatalog_PropertyChanged;
             AddDishToOrderCommand = new DelegateCommand(_ =>
             {
                 try
@@ -465,12 +465,13 @@ namespace AlohaFly.Models
 
 
 
-
+        /*
         private void DataCatalog_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             DishCollectionSource.Refresh();
             OnPropertyChanged("DishCollectionSource");
         }
+        */
         decimal ExtraChargeValueDefualt = 10;
 
         public decimal ExtraChargeValue
@@ -999,6 +1000,7 @@ namespace AlohaFly.Models
             }
         }
 
+
         ICollectionView _openDishez;
         public ICollectionView OpenDishez
         {
@@ -1006,7 +1008,8 @@ namespace AlohaFly.Models
             {
                 if (Model != null && SelectedDish != null)
                 {
-                    QueryableCollectionView collectionViewSource = new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.GetOpenDishes(SelectedDish.Barcode));
+                    QueryableCollectionView collectionViewSource = 
+                        new QueryableCollectionView(DataExtension.DataCatalogsSingleton.Instance.DishFilter.GetOpenDishes(SelectedDish.Barcode).OpenDishes);
                     _openDishez = collectionViewSource;
                     _openDishez.MoveCurrentToFirst();
                 }
@@ -1346,7 +1349,7 @@ namespace AlohaFly.Models
                 {
                     if (Order.Id == 0)
                     {
-                        addToBaseRes = Models.AirOrdersModelSingleton.Instance.AddOrder(Order, OrderDishez.ToList());
+                        addToBaseRes = Models.AirOrdersModelSingleton.Instance.UpdateOrder(Order);
                     }
                     else
                     {
@@ -1455,9 +1458,15 @@ namespace AlohaFly.Models
 
                         if (vm.Result)
                         {
-                            res = DataCatalogsSingleton.Instance.AddOpenDish(od);
-                            AddToOrderDish.Dish = od;
-                            AddToOrderDish.TotalPrice = AddToOrderDish.Dish.PriceForFlight;
+                            //res = DataCatalogsSingleton.Instance.AddOpenDish(od);
+
+                            var addRes =  DataCatalogsSingleton.Instance.DishData.EndEdit(od);
+                            res = addRes.Succeess;
+                            if (res)
+                            {
+                                AddToOrderDish.Dish = addRes.UpdatedItem;
+                                AddToOrderDish.TotalPrice =  AddToOrderDish.Dish.PriceForFlight;
+                            }
 
                         }
                         else
@@ -1538,7 +1547,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.AirCompanies;
+                return DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data;
             }
         }
 
@@ -1546,7 +1555,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.DeliveryPlaces;
+                return DataExtension.DataCatalogsSingleton.Instance.DeliveryPlaceData.Data;
             }
         }
 
@@ -1554,14 +1563,14 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.Drivers;
+                return DataExtension.DataCatalogsSingleton.Instance.DriverData.Data;
             }
         }
         public FullyObservableCollection<ContactPerson> ContactPerson
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.ContactPerson;
+                return DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.Data;
             }
         }
 
@@ -1577,7 +1586,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.ActiveDishesToFly;
+                return DataExtension.DataCatalogsSingleton.Instance.DishFilter.ActiveDishesToFly;
             }
         }
     }

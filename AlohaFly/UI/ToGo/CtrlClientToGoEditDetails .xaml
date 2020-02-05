@@ -200,29 +200,7 @@
 
                                 <telerik:RadWatermarkTextBox WatermarkContent="Комментарий к клиенту" MinLines="3" MaxLines="10" Margin="0,20,0,0" AcceptsReturn="True"  Style="{StaticResource  HeaderTextBoxStyle}" Text="{Binding Client.Comments}"/>
 
-                                <!--
-                <telerik:RadGridView 
-            
-            GroupRenderMode="Flat" Grid.RowSpan="2"
-             ItemsSource="{Binding Path=AddressesVM}"
-                             IsReadOnly="False"
-                             ShowGroupPanel="False"
-             DragElementAction="None"
-             RowIndicatorVisibility="Collapsed"
-            FrozenColumnsSplitterVisibility="Hidden"
-             ColumnWidth="SizeToHeader"
-             AutoGenerateColumns="False"
-                             >
-                    <telerik:RadGridView.Columns>
-            
-                        <telerik:GridViewDataColumn Header="Адрес" Width="290"   DataMemberBinding="{Binding Address}" TextWrapping="WrapWithOverflow"/>
-                        <telerik:GridViewDataColumn Header="Метро" Width="140"  TextAlignment="Right"  DataMemberBinding="{Binding SubWay}"/>
-                        <telerik:GridViewDataColumn Header="Зона" Width="70"   DataMemberBinding="{Binding ZoneId}"/>
-                        <telerik:GridViewDataColumn Header="Комментарий" Width="300"   DataMemberBinding="{Binding Comment}"/>
-
-                    </telerik:RadGridView.Columns>
-                </telerik:RadGridView>
-                -->
+                              
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>

@@ -29,6 +29,8 @@ namespace AlohaService.BusinessServices
                 d.FullName = driver.FullName;
                 d.Phone = driver.Phone;
                 d.IsActive = driver.IsActive;
+                d.UpdatedDate = DateTime.Now;
+                d.LastUpdatedSession = driver.LastUpdatedSession;
 
                 db.Driver.Add(d);
                 db.SaveChanges();
@@ -75,6 +77,10 @@ namespace AlohaService.BusinessServices
             dr.FullName = driver.FullName;
             dr.Phone = driver.Phone;
             dr.IsActive = driver.IsActive;
+
+            dr.UpdatedDate = DateTime.Now;
+            dr.LastUpdatedSession = driver.LastUpdatedSession;
+
             db.SaveChanges();
 
             return new OperationResult { Success = true };

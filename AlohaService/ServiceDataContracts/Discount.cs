@@ -28,6 +28,12 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Список диапазонов")]
         public List<DiscountRange> Ranges { get; set; }
 
+
+        [DataMember]
+        public Guid LastUpdatedSession { get; set; }
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

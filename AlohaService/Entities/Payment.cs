@@ -5,7 +5,7 @@ using System.Web;
 
 namespace AlohaService.Entities
 {
-    public class Payment
+    public class Payment : Interfaces.IRealTimeUpdater
     {
         public long Id { get; set; }
         public int Code { get; set; }
@@ -25,5 +25,7 @@ namespace AlohaService.Entities
 
         
         public PaymentGroup PaymentGroup { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public Guid LastUpdatedSession { get; set; }
     }
 }

@@ -33,6 +33,19 @@ namespace AlohaService
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2"));
+
+            /*
+            modelBuilder.Entity<OrderFlight>().Map(m =>
+            {
+                m.MapInheritedProperties();
+            });
+
+            modelBuilder.Entity<OrderToGo>().Map(m =>
+            {
+                m.MapInheritedProperties();
+            });
+            */
+
         }
 
         public DbSet<User> Users { get; set; }

@@ -32,7 +32,7 @@ namespace AlohaFly
 
         public static void UpDateSpisPayment(this AlohaService.Interfaces.IDeletedDish orderFlightOrder)
         {
-            orderFlightOrder.SpisPayment = DataCatalogsSingleton.Instance.GetPayment(orderFlightOrder.SpisPaymentId);
+            orderFlightOrder.SpisPayment = DataCatalogsSingleton.Instance.PaymentData.Data.SingleOrDefault(a=>a.Id==orderFlightOrder.SpisPaymentId);
 
 
         }

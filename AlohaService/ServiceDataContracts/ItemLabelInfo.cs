@@ -39,6 +39,10 @@ namespace AlohaService.ServiceDataContracts
         [Display(AutoGenerateField = false)]
         public virtual Dish Dish { get; set; }
 
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public Guid LastUpdatedSession { get; set; }
+
         #region INotifyPropertyChanged we do use Foody https://github.com/Fody/PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion

@@ -295,6 +295,18 @@
     <Compile Include="Migrations\201911171536355_orderInfo.Designer.cs">
       <DependentUpon>201911171536355_orderInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001291035416_m21.cs" />
+    <Compile Include="Migrations\202001291035416_m21.Designer.cs">
+      <DependentUpon>202001291035416_m21.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001300939111_upd.cs" />
+    <Compile Include="Migrations\202001300939111_upd.Designer.cs">
+      <DependentUpon>202001300939111_upd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001300941257_upd2.cs" />
+    <Compile Include="Migrations\202001300941257_upd2.Designer.cs">
+      <DependentUpon>202001300941257_upd2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ServiceDataContracts\AirCompany.cs" />
     <Compile Include="ServiceDataContracts\Alert.cs" />
@@ -453,6 +465,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911171536355_orderInfo.resx">
       <DependentUpon>201911171536355_orderInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001291035416_m21.resx">
+      <DependentUpon>202001291035416_m21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001300939111_upd.resx">
+      <DependentUpon>202001300939111_upd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001300941257_upd2.resx">
+      <DependentUpon>202001300941257_upd2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
