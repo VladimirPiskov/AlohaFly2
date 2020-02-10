@@ -74,6 +74,7 @@ namespace AlohaFly.DataExtension
             DriverData.Fill(a => a.Id);
             DeliveryPlaceData.Fill(a => a.Id);
             AirCompanyData.Fill(a => a.Id);
+            
             DishData.Fill(a => a.Id);
             ItemLabelInfoData.Fill(a => a.Id);
             MarketingChannelData.Fill(a => a.Id);
@@ -83,10 +84,14 @@ namespace AlohaFly.DataExtension
             OrdersToGoData.Fill(a => a.Id, GetMonth(DateTime.Now.AddDays(-2)));
             OrdersFlightData.Fill(a => a.Id, GetMonth(DateTime.Now.AddDays(-2)));
             DishFilter = new DishFilter();
+            PaymentFilter = new PaymentFilter();
+            AirCompanyFilter =new AirCompanyFilter();
 
         }
 
+        public AirCompanyFilter AirCompanyFilter;
         public  DishFilter DishFilter;
+        public PaymentFilter PaymentFilter;
 
         public DateTime StartDt { get; private set; }
         public DateTime EndDt { get; private set; }
@@ -680,7 +685,7 @@ namespace AlohaFly.DataExtension
         {
             CurentComps = new FullyObservableCollection<AirCompany>();
             curentCompsConnector.Select(a => a.IsActive && (!DBProvider.SharAirs.Contains(a.Id) || ((Authorization.CurentUser != null) && ((Authorization.CurentUser.UserName == "sh.user") || (Authorization.IsDirector)))))
-                            .OrderBy(a => a.Id)
+                            .OrderBy(a => a.Name)
                             .Subsribe(DataCatalogsSingleton.Instance.AirCompanyData, CurentComps);
         }
     }
@@ -701,7 +706,30 @@ namespace AlohaFly.DataExtension
         public long OwnerBarcode; 
     }
 
-    public class DishFilter
+
+    public class PaymentFilter
+    {
+        [Reactive] public FullyObservableCollection<Payment> SpisPaymnets { set; get; }
+        FullyObservableDBDataSubsriber<Payment, Payment> spConnector = new FullyObservableDBDataSubsriber<Payment, Payment>(a => a.Id);
+
+        [Reactive] public FullyObservableCollection<Payment> ToGoSpisPaymnets { set; get; }
+        FullyObservableDBDataSubsriber<Payment, Payment> togospConnector = new FullyObservableDBDataSubsriber<Payment, Payment>(a => a.Id);
+
+        public PaymentFilter()
+        {
+            SpisPaymnets = new FullyObservableCollection<Payment>();
+            spConnector.Select(x => x.IsActive && x.PaymentGroup != null && !x.PaymentGroup.Sale && (!x.ToGo))
+            .Subsribe(DataCatalogsSingleton.Instance.PaymentData, SpisPaymnets);
+
+            ToGoSpisPaymnets = new FullyObservableCollection<Payment>();
+            togospConnector.Select(x => x.IsActive && x.PaymentGroup != null && !x.PaymentGroup.Sale && (x.ToGo))
+            .Subsribe(DataCatalogsSingleton.Instance.PaymentData, ToGoSpisPaymnets);
+        }
+
+    }
+
+
+        public class DishFilter
     {
         [Reactive] public FullyObservableCollection<Dish> OpenDishes { set; get; }
         FullyObservableDBDataSubsriber<Dish, Dish> openDishesConnector = new FullyObservableDBDataSubsriber<Dish, Dish>(a => a.Id);

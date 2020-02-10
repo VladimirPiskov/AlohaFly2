@@ -35,6 +35,7 @@
                                          Margin="2" FontFamily="Segoe UI"
                                          ClearSelectionButtonContent="Показать все" 
                                          DisplayMemberPath="{Binding DisplayMemberPathName}"
+                                 DropDownWidth="*"
                                          ItemsSource="{Binding DataCatalog}" 
                                          local:FocusExtension.IsFocused="{Binding IsFocused}"
                                     SelectedValue="{Binding SelectedData,Mode=TwoWay}"

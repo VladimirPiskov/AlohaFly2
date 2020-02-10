@@ -37,6 +37,7 @@ namespace AlohaFly.Models
             order.PropertyChanged += Order_PropertyChanged;
             AllDishGridVis = Visibility.Collapsed;
             OrderDishGridVis = Visibility.Visible;
+            CurentDishMaxSerCountVisible = Visibility.Visible;
             Init();
         }
 
@@ -71,6 +72,7 @@ namespace AlohaFly.Models
             LabelDish = dish;
             AllDishGridVis = Visibility.Visible;
             OrderDishGridVis = Visibility.Collapsed;
+            CurentDishMaxSerCountVisible = Visibility.Collapsed;
             Init();
         }
 
@@ -197,7 +199,25 @@ namespace AlohaFly.Models
             this.WhenAnyValue(a => a.LabelDish).Subscribe(_ => { UpdateLabels(); });
             //this.WhenAnyValue(a => a.SelectedDishPackage).Subscribe(_ => { if (SelectedDishPackage != null) { LabelDish = SelectedDishPackage.Dish; } });
             this.WhenAnyValue(a => a.CurentLabelInfo).Subscribe(_ => {UpdateCurentLabelInfo(); });
-         
+            this.WhenAnyValue(a => a.CurentDishMaxSerCount).Subscribe(_ => {
+                if ((LabelDish != null) && (_orderDishes!=null))
+                {
+                    if (_orderDishes.CurrentItem is DishPackageFlightOrder  dpf)
+                    {
+                        dpf.Dish.ToFlyLabelSeriesCount = CurentDishMaxSerCount;
+                        dpf.LabelSeriesCount = dpf.Dish.ToFlyLabelSeriesCount==0? (int)Math.Ceiling(dpf.Amount) : (int)Math.Ceiling(dpf.Amount / (decimal)dpf.Dish.ToFlyLabelSeriesCount);
+                    }
+                    else if (_orderDishes.CurrentItem is DishPackageToGoOrder dpt)
+                    {
+                        dpt.Dish.ToGoLabelSeriesCount = CurentDishMaxSerCount;
+
+                        dpt.LabelSeriesCount = dpt.Dish.ToGoLabelSeriesCount==0? (int)Math.Ceiling(dpt.Amount ): (int)Math.Ceiling(dpt.Amount / (decimal)dpt.Dish.ToGoLabelSeriesCount);
+                    }
+                    SaveCommandEnable = true;
+                }
+            
+            });
+
 
             AddLabelCommand = new DelegateCommand(_ =>
             {
@@ -228,11 +248,9 @@ namespace AlohaFly.Models
 
             PrintCommand = new DelegateCommand(_ =>
             {
-
                 var curLabs = new Dictionary<long, RunTimeLabelInfo>();
-
-                
-                if (ChangedLabels != null)
+               
+                if( (ChangedLabels != null) && (LabelDish!=null))
                 {
                     curLabs = ChangedLabels.ToDictionary(entry => entry.Key, entry => entry.Value);
                     if (!curLabs.TryGetValue(LabelDish.Id, out var val))
@@ -240,11 +258,6 @@ namespace AlohaFly.Models
                         curLabs.Add(LabelDish.Id, CurentRunTimeLabelInfo);
                     }
                 }
-                /*
-                var pvm = new LabelsPrint.LabelPapersVisualViewModel(CurentOrder, curLabs);
-                pvm.ShowMe();
-                */
-                //List<ItemLabelInfo> labels=new List<ItemLabelInfo>();
                 if (OrderDishGridVis == Visibility.Visible)
                 {
                     //labels = GetLabels();
@@ -254,9 +267,6 @@ namespace AlohaFly.Models
                 }
                 else
                 {
-                    //labels = CurentRunTimeLabelInfo.Labels.ToList();
-
-
                     var pvm = new LabelsPrint.LabelPapersVisualViewModel(LabelDish, curLabs);
                     //var pvm = new LabelsPrint.LabelPapersVisualViewModel(LabelDish, CurentRunTimeLabelInfo);
                     pvm.ShowMe();
@@ -285,7 +295,7 @@ namespace AlohaFly.Models
                     else
                     {
                         tmp.AddRange(DataCatalogsSingleton.Instance.ItemLabelInfoData.Data.Where(a => a.ParenItemId == d.DishId).OrderBy(a => a.SerialNumber));
-                    }
+                    }   
                 }
                 }
             return tmp;
@@ -294,6 +304,9 @@ namespace AlohaFly.Models
 
         
         [Reactive] public Visibility AllDishGridVis { set; get; }
+
+        [Reactive]
+        public Visibility CurentDishMaxSerCountVisible { set; get; }
 
         [Reactive] public Visibility OrderDishGridVis { set; get; }
 
@@ -313,8 +326,12 @@ namespace AlohaFly.Models
                         _orderDishes = collectionViewSource;
                         _orderDishes.CurrentChanged += _orderDishes_CurrentChanged;
                         _orderDishes.MoveCurrentToFirst();
-                       // _orderDishes.CurrentChanging += _orderDishes_CurrentChanging;
-                        
+                        if (_orderDishes.CurrentItem != null)
+                        {
+                            LabelDish = ((IDishPackageLabel)_orderDishes.CurrentItem).Dish;
+                        }
+                        // _orderDishes.CurrentChanging += _orderDishes_CurrentChanging;
+
 
 
                     }
@@ -338,6 +355,35 @@ namespace AlohaFly.Models
             }
         }
 
+
+        [Reactive] public int CurentDishMaxSerCount { get; set; }
+        /*
+        {
+            get
+            {
+                if (LabelDish == null) return 0;
+                return LabelDish.ToFlyLabelSeriesCount;
+            }
+            set
+            {
+                if ((LabelDish != null) && (LabelDish.ToFlyLabelSeriesCount != value))
+                {
+                    LabelDish.ToFlyLabelSeriesCount = value;
+                    DBDataExtractor<Dish>.EditItem(DBProvider.Client.UpdateDish, LabelDish);
+
+                    RaisePropertyChanged("CurentDishMaxSerCount");
+
+
+                    if ((OrdersDishes != null) && (OrdersDishes.CurrentItem != null))
+                    {
+                        var dp = (IDishPackageLabel)(OrdersDishes.CurrentItem);
+                        dp.LabelSeriesCount = dp.LabelsCount;
+                    }
+                    curentDishEdited = true;
+                }
+            }
+        }
+        */
         private void _orderDishes_CurrentChanging(object sender, CurrentChangingEventArgs e)
         {
             
@@ -391,6 +437,9 @@ namespace AlohaFly.Models
         {
             if (LabelDish != null)
             {
+                
+                CurentDishMaxSerCount = LabelDish.ToFlyLabelSeriesCount;
+
                 if (ChangedLabels.TryGetValue(LabelDish.Id, out var val))
                 {
                     SaveCommandEnable = true;
@@ -407,10 +456,6 @@ namespace AlohaFly.Models
                     CurentRunTimeLabelInfo.PropertyChanged += CurentRunTimeLabelInfo_PropertyChanged;
                 }
             }
-        
-
-        
-        
         }
 
         private void CurentRunTimeLabelInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -441,32 +486,7 @@ namespace AlohaFly.Models
 
         /*
         bool curentDishEdited = false;
-        public int CurentDishMaxSerCount
-        {
-            get
-            {
-                if (LabelDish == null) return 0;
-                return LabelDish.ToFlyLabelSeriesCount;
-            }
-            set
-            {
-                if ((LabelDish != null) && (LabelDish.ToFlyLabelSeriesCount != value))
-                {
-                    LabelDish.ToFlyLabelSeriesCount = value;
-                    DBDataExtractor<Dish>.EditItem(DBProvider.Client.UpdateDish, LabelDish);
-
-                    RaisePropertyChanged("CurentDishMaxSerCount");
-                    
-
-                    if ((OrdersDishes != null) && (OrdersDishes.CurrentItem != null))
-                    {
-                        var dp = (IDishPackageLabel)(OrdersDishes.CurrentItem);
-                        dp.LabelSeriesCount = dp.LabelsCount;
-                    }
-                    curentDishEdited = true;
-                }
-            }
-        }
+        
         */
 
 

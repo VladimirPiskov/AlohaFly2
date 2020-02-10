@@ -115,12 +115,6 @@ namespace AlohaFly.Models
             {
                 Model.Order.DishPackages = Model.OrderDishez.ToList();
                 new Reports.ExcelReports().ToFlyMenuCreate(Model.Order);
-                /*
-                UI.UIModify.ShowWndPrintExcelDoc(
-                        $"Меню к заказу №{ Model.Order.Id}",
-                        AlohaService.ExcelExport.ExportHelper.ExportMenuToExcelWorkbook(Model.Order));
-                  */
-
 
             });
 
@@ -1330,6 +1324,7 @@ namespace AlohaFly.Models
                     return false;
                 }
 
+                /*
                 if (Order.ContactPerson == null)
                 {
                     addRes = false;
@@ -1340,7 +1335,7 @@ namespace AlohaFly.Models
                         UI.UIModify.ShowAlert("Нельзя сохранить заказ без указания контактного лица");
                     }
                 }
-
+                */
 
                 Order.DishPackages = OrderDishez.ToList();
                 Order.IsSHSent = true;
@@ -1547,7 +1542,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data;
+                return DataExtension.DataCatalogsSingleton.Instance.AirCompanyFilter.CurentComps;
             }
         }
 

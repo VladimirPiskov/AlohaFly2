@@ -80,7 +80,12 @@
                         <telerik:GridViewDataColumn Header="Наименование" Width="*" IsReadOnly="True" DataMemberBinding="{Binding Name}"/>
                         <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding ToFlyLabelSeriesCount}" Width="100" TextAlignment="Right">
                             <telerik:GridViewDataColumn.Header>
-                                <TextBlock Text="Максимум блюд на одну наклейку" TextWrapping="Wrap" TextAlignment="Center"/>
+                                <TextBlock Text="Максимум блюд на одну наклейку ToFly" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </telerik:GridViewDataColumn.Header>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding ToGoLabelSeriesCount}" Width="100" TextAlignment="Right">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock Text="Максимум блюд на одну наклейку ToGo" TextWrapping="Wrap" TextAlignment="Center"/>
                             </telerik:GridViewDataColumn.Header>
                         </telerik:GridViewDataColumn>
                         <telerik:GridViewDataColumn Width="100" IsReadOnly="True" DataMemberBinding="{Binding LabelsCount}" TextAlignment="Right">
@@ -104,8 +109,9 @@
                         <TextBlock Text="Блюдо: " Margin="5,0,5,0" TextWrapping="Wrap" VerticalAlignment="Center"  Foreground="Black"></TextBlock>
                         <TextBlock Text="{Binding LabelDish.Name}"  Margin="5,0,5,0" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Black" FontWeight="Bold"></TextBlock>
                     </StackPanel>
-                    <TextBlock Text="Максимум блюд на одну серию:" Grid.Column="1" Margin="0,3,10,0" TextWrapping="Wrap" HorizontalAlignment="Center" Foreground="Black" ></TextBlock>
+                    <TextBlock Text="Максимум блюд на одну серию:" Grid.Column="1" Margin="0,3,10,0" Visibility="{Binding CurentDishMaxSerCountVisible}" TextWrapping="Wrap" HorizontalAlignment="Center" Foreground="Black" ></TextBlock>
                     <telerik:RadNumericUpDown 
+                                        Visibility="{Binding CurentDishMaxSerCountVisible}"
                                         Grid.Column="2"
                                         Margin="0,0,0,0"
                                         Value="{Binding CurentDishMaxSerCount, Mode=TwoWay}" 

@@ -31,7 +31,20 @@ namespace AlohaFly.Reports
 
         private readonly string templateFolder = @"\Data\";
         private readonly string templateMenuPath = @"Menu.xltx";
+
+
         public void ToFlyMenuCreate(OrderFlight order)
+        {
+            foreach (int pn in order.DishPackages.Select(a => a.PassageNumber).Distinct())
+            {
+                ToFlyMenuCreateForPassage(order, pn);
+            }
+
+        }
+
+            
+        
+            public void ToFlyMenuCreateForPassage(OrderFlight order, int pn)
         {
 
             try
@@ -50,7 +63,7 @@ namespace AlohaFly.Reports
 
                 rowIndex++;
 
-                foreach (var KGroup in order.DishPackagesNoSpis.Where(a => a.Dish.DishKitсhenGroupId != null && a.Dish.NeedPrintInMenu).Select(a => a.Dish.DishKitсhenGroup).Distinct().OrderBy(a => a.Id))
+                foreach (var KGroup in order.DishPackagesNoSpis.Where(a => a.Dish.DishKitсhenGroupId != null && a.Dish.NeedPrintInMenu && ((DishPackageFlightOrder)a).PassageNumber==pn).Select(a => a.Dish.DishKitсhenGroup).Distinct().OrderBy(a => a.Id))
                 {
 
                     //   foreach (var group in groups.Keys)
@@ -74,7 +87,7 @@ namespace AlohaFly.Reports
 
 
 
-                    foreach (var dish in order.DishPackagesNoSpis.Where(a => a.Dish.DishKitсhenGroupId != null && a.Dish.DishKitсhenGroupId == KGroup.Id && a.Dish.NeedPrintInMenu).OrderBy(a => a.PositionInOrder).Select(a => a.Dish))
+                    foreach (var dish in order.DishPackagesNoSpis.Where(a => a.Dish.DishKitсhenGroupId != null && a.Dish.DishKitсhenGroupId == KGroup.Id && a.Dish.NeedPrintInMenu && ((DishPackageFlightOrder)a).PassageNumber == pn).OrderBy(a => a.PositionInOrder).Select(a => a.Dish))
                     {
 
                         //if (dish.NeedPrintInMenu)
@@ -98,7 +111,7 @@ namespace AlohaFly.Reports
                 }
                 rowIndex++;
                 rowIndex++;
-                foreach (var dish in order.DishPackagesNoSpis.Where(a => a.Dish.DishKitсhenGroupId == null && a.Dish.NeedPrintInMenu).OrderBy(a => a.PositionInOrder).Select(a => a.Dish))
+                foreach (var dish in order.DishPackagesNoSpis.Where(a => a.Dish.DishKitсhenGroupId == null && a.Dish.NeedPrintInMenu && ((DishPackageFlightOrder)a).PassageNumber == pn).OrderBy(a => a.PositionInOrder).Select(a => a.Dish))
                 {
 
                     //if (dish.NeedPrintInMenu)

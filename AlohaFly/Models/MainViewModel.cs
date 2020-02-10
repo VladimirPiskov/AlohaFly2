@@ -161,6 +161,22 @@ namespace AlohaFly.Models
             { }
         }
 
+        private void CheckLinkedAndShowPane(UserControl UIElement)
+        {
+            
+            if (UIElement.DataContext is Models.AddOrderViewModel)
+            {
+                CatalogSelector.ShowOrdersToFly();
+            }
+            else if (UIElement.DataContext is Models.AddToGoOrderViewModel)
+            {
+                CatalogSelector.ShowOrdersToGo();
+            }
+            
+
+
+        }
+
         public void AddPane(UserControl UIElement)
         {
 
@@ -177,13 +193,19 @@ namespace AlohaFly.Models
                     {
                         Content = UIElement,
                     };
+                    
                     vm.CloseAction = new Action(() =>
                     {
                         pane.IsHidden = true;
+                        
                     });
                     pane.DataContext = vm;
                     pane.IsVisibleChanged += (sender, e) =>
                     {
+                        if (!(bool)e.NewValue)
+                        {
+                            CheckLinkedAndShowPane(UIElement);
+                        }
                     };
 
                     Binding binding = new Binding();
@@ -209,10 +231,15 @@ namespace AlohaFly.Models
                     vm2.CloseAction = new Action(() =>
                     {
                         pane.IsHidden = true;
+                        
                     });
                     pane.DataContext = vm2;
                     pane.IsVisibleChanged += (sender, e) =>
                     {
+                        if (!(bool)e.NewValue)
+                        {
+                            CheckLinkedAndShowPane(UIElement);
+                        }
                     };
 
                     Binding binding = new Binding();

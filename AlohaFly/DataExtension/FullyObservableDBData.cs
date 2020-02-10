@@ -56,6 +56,7 @@ namespace AlohaFly.DataExtension
         Func<TSource, long> sourceKeySelector = null;
         Func<TOut, long> keySelector = null;
         Func<TOut, long> orderKeySelector = null;
+        Func<TOut, string> orderKeySelectorStr = null;
         Func<TSource, bool> selector = a => true;
         Action<TSource, TOut> transformer = null;
         Func<TSource, TOut> newFunc = null;
@@ -116,6 +117,11 @@ namespace AlohaFly.DataExtension
                                 outData.Sort(orderKeySelector);
                             }
                         }
+                    }
+                    if (orderKeySelectorStr != null && outData != null)
+                    {
+                        outData.Sort(orderKeySelectorStr);
+
                     }
                     if (itemSelector != null)
                     {
@@ -194,6 +200,12 @@ namespace AlohaFly.DataExtension
                     {
                         outData.Sort(orderKeySelector);
                     }
+                    if (orderKeySelectorStr != null && outData != null)
+                    {
+                        outData.Sort(orderKeySelectorStr);
+
+                    }
+
                     if (itemSelector != null)
                     {
                         onChange(itemSelector(sourceData.Where(a => selector(a))));
@@ -225,10 +237,18 @@ namespace AlohaFly.DataExtension
         }
         public FullyObservableDBDataSubsriber<TSource, TOut> OrderBy(Func<TOut, DateTime> _orderKeySelector)
         {
-
-            //orderKeySelector = ;
             return OrderBy(new Func<TOut, long>((a) => _orderKeySelector(a).Ticks));
         }
+
+        public FullyObservableDBDataSubsriber<TSource, TOut> OrderBy(Func<TOut, string> _orderKeySelector)
+        {
+            orderKeySelectorStr = _orderKeySelector;
+            RefreshOutdata();
+            return this;
+
+        }
+
+
         public FullyObservableDBDataSubsriber<TSource, TOut> OrderByDesc(Func<TOut, DateTime> _orderKeySelector)
         {
 
@@ -290,6 +310,10 @@ namespace AlohaFly.DataExtension
             if (orderKeySelector != null && outData != null)
             {
                 outData.Sort(orderKeySelector);
+            }
+            if (orderKeySelectorStr != null && outData != null)
+            {
+                outData.Sort(orderKeySelectorStr);
             }
         }
 

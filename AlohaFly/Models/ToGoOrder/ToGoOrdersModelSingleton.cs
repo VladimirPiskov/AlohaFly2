@@ -431,7 +431,7 @@ namespace AlohaFly.Models
         {
             StartDt = startDt;
             EndDt = endDt;
-            ordersConnector.Select(a => (Authorization.IsDirector || a.OrderStatus != OrderStatus.Cancelled) && (a.DeliveryDate >= StartDt && a.DeliveryDate < EndDt));
+            ordersConnector.Select(a => (Authorization.IsDirector || a.OrderStatus != OrderStatus.Cancelled) && (a.DeliveryDate >= StartDt && a.DeliveryDate < EndDt.AddDays(1)));
          }
 
        

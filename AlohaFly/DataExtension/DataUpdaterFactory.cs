@@ -266,8 +266,14 @@ namespace AlohaFly.DataExtension
                 {
                     if (itm == null) return itm;
                     var tItm = itm as Dish;
-                    tItm.DishLogicGroupId = tItm.DishLogicGroup?.Id;
-                    tItm.DishKitсhenGroupId = tItm.DishKitсhenGroup?.Id;
+                    if (tItm.DishLogicGroup != null)
+                    {
+                        tItm.DishLogicGroupId = tItm.DishLogicGroup.Id;
+                    }
+                    if (tItm.DishKitсhenGroup != null)
+                    {
+                        tItm.DishKitсhenGroupId = tItm.DishKitсhenGroup.Id;
+                    }
                     tItm.LastUpdatedSession = RealTimeUpdaterSingleton.Instance.Transaction;
                     return tItm as T;
                 };
@@ -554,7 +560,10 @@ namespace AlohaFly.DataExtension
                 {
                     OrderFlight ord = itm as OrderFlight;
                     if (ord == null) return itm;
-                    ord.ContactPerson = DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.Data.SingleOrDefault(a => a.Id == ord.ContactPersonId);
+                    if (ord.ContactPersonId != null)
+                    {
+                        ord.ContactPerson = DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.Data.SingleOrDefault(a => a.Id == ord.ContactPersonId);
+                    }
                     ord.AirCompany = DataExtension.DataCatalogsSingleton.Instance.AirCompanyData.Data.SingleOrDefault(a => a.Id == ord.AirCompanyId);
                     if (ord.DeliveryPlaceId != null)
                     {

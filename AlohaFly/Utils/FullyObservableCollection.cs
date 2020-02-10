@@ -129,6 +129,20 @@ namespace AlohaFly.Utils
             }
         }
 
+        public void Sort(Func<T, string> orderFunc)
+        {
+            int comparison(T a, T b) => orderFunc(a).CompareTo(orderFunc(b));
+
+
+            var sortableList = new List<T>(this);
+            sortableList.Sort(comparison);
+
+            for (int i = 0; i < sortableList.Count; i++)
+            {
+                this.Move(this.IndexOf(sortableList[i]), i);
+            }
+        }
+
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
 

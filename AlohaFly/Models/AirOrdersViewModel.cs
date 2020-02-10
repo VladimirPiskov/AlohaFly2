@@ -57,6 +57,19 @@ namespace AlohaFly.Models
                     RaisePropertyChanged("CanCloseCurentOrder");
                 }
             });
+
+
+            PrintMenuCommand = new DelegateCommand(_ =>
+            {
+                if (CurentOrder != null)
+                {
+                    //Model.Order.DishPackages = Model.OrderDishez.ToList();
+                    new Reports.ExcelReports().ToFlyMenuCreate(CurentOrder);
+                }
+
+            });
+
+
             DeleteOrderCommand = new DelegateCommand(_ =>
             {
                 try
@@ -138,6 +151,8 @@ namespace AlohaFly.Models
         public ICommand EditOrderCommand { get; set; }
         public ICommand CopyOrderCommand { get; set; }
         public ICommand CloseOrderCommand { get; set; }
+
+        public ICommand PrintMenuCommand { get; set; }
         public ICommand DeleteOrderCommand { get; set; }
         public ICommand PrintLabelCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
@@ -432,10 +447,14 @@ namespace AlohaFly.Models
 
 
             Orders = new FullyObservableCollection<OrderFlight>();
-            ordersConnector.OrderByDesc(a => a.DeliveryDate)
-                            .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, Orders);
-                            //.SubsribeAction(DataCatalogsSingleton.Instance.OrdersFlightData,);
-
+            
+                ordersConnector.Select(a => (
+                (((Authorization.CurentUser != null) && (Authorization.CurentUser.UserName == "sh.user")) ^ (!DBProvider.SharAirs.Contains(a.AirCompanyId.GetValueOrDefault())))
+            && (Authorization.IsDirector || a.OrderStatus != OrderStatus.Cancelled)))
+                                .OrderByDesc(a => a.DeliveryDate)
+                                .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, Orders);
+                
+            
             OrdersNonSH = new FullyObservableCollection<OrderFlight>();
             ordersNonSHConnector.Select(a => !a.IsSHSent && a.OrderStatus != OrderStatus.InWork)
                 .OrderByDesc(a => a.DeliveryDate)
@@ -501,7 +520,11 @@ namespace AlohaFly.Models
         public void UpdateDateRange(DateTime startDt, DateTime endDt)
         {
             
-            ordersConnector.Select(a => (Authorization.IsDirector || a.OrderStatus != OrderStatus.Cancelled) && (a.DeliveryDate >= startDt && a.DeliveryDate < endDt));
+            ordersConnector
+                .Select(a =>    (
+                (((Authorization.CurentUser != null) && (Authorization.CurentUser.UserName == "sh.user")) ^(!DBProvider.SharAirs.Contains(a.AirCompanyId.GetValueOrDefault()))) 
+            && (Authorization.IsDirector || a.OrderStatus != OrderStatus.Cancelled) 
+            && (a.DeliveryDate >= startDt && a.DeliveryDate < endDt.AddDays(1))));
         }
 
         public bool UpdateOrder(OrderFlight order)

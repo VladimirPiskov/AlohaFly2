@@ -39,7 +39,7 @@ namespace AlohaFly.Models
                 DatePanelVis = Visibility.Collapsed;
 
                 var dt = DateTime.Now;
-                DataCatalogsSingleton.Instance.ChangeOrderDateRange(new DateTime(dt.Year, dt.Month, 1), new DateTime(dt.Year, dt.Month, 1).AddMonths(1));
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(new DateTime(dt.Year, dt.Month, 1), new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1));
                 //AirOrdersModelSingleton.Instance.SetNewOrdersRange();
               // ToGoOrdersModelSingleton.Instance.SetNewOrdersRange();
 
@@ -48,7 +48,7 @@ namespace AlohaFly.Models
             {
                 DatePanelVis = Visibility.Collapsed;
                 var dt = DateTime.Now;
-                DataCatalogsSingleton.Instance.ChangeOrderDateRange(new DateTime(dt.Year, dt.Month, 1).AddMonths(-1), new DateTime(dt.Year, dt.Month, 1));
+                DataCatalogsSingleton.Instance.ChangeOrderDateRange(new DateTime(dt.Year, dt.Month, 1).AddMonths(-1), new DateTime(dt.Year, dt.Month, 1).AddDays(-1));
 
                 //AirOrdersModelSingleton.Instance.SetNewOrdersRange(-1);
                 // ToGoOrdersModelSingleton.Instance.SetNewOrdersRange(-1);

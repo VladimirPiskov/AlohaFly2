@@ -148,6 +148,19 @@
                 </telerik:RadButton.Content>
             </telerik:RadButton>
 
+            <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding PrintMenuCommand}" >
+                <telerik:RadButton.Content>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Icons/multiple_inputs-96.png"  Stretch="Fill" />
+                        <TextBlock Text="Печать меню" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                    </Grid>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+
 
             <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding RefreshCommand}" >
                 <telerik:RadButton.Content>

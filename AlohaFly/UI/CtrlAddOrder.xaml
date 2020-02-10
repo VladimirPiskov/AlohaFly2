@@ -46,26 +46,20 @@
     <Grid >
 
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-          
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-
             <ColumnDefinition Width="320"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="180"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="4" Grid.RowSpan="2" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel x:Name="ButtonsPanel" Grid.Column="0" >
+        <Grid Grid.Column="2"  >
+            <Grid.RowDefinitions>
+                <RowDefinition ></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <StackPanel x:Name="ButtonsPanel" >
 
                 <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding SaveOrderCommand}" >
                     <telerik:RadButton.Content>
@@ -117,10 +111,10 @@
                         </Grid>
                     </telerik:RadButton.Content>
                 </telerik:RadButton>
-            </StackPanel>
+            
             
 
-            <StackPanel Grid.Column="1"  Orientation="Vertical">
+            
                 <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding PrintLabelCommand}" >
                     <telerik:RadButton.Content>
                         <Grid >
@@ -194,6 +188,59 @@
                 </telerik:RadButton>
 
             </StackPanel>
+
+            <StackPanel x:Name="stButtonsNewItem" Grid.Row="1" >
+                <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding AddDishToOrderCommand}" >
+                    <telerik:RadButton.Content>
+                        <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Icons/plus-96.png" Stretch="Fill" />
+                            <TextBlock Text="Добавить блюдо" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                        </Grid>
+                    </telerik:RadButton.Content>
+                </telerik:RadButton>
+                <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding RemoveDishFromOrderCommand}" >
+                    <telerik:RadButton.Content>
+                        <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Icons/minus-96.png" Stretch="Fill" />
+                            <TextBlock Text="{Binding DeleteDishBtnName}" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                        </Grid>
+                    </telerik:RadButton.Content>
+                </telerik:RadButton>
+                <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding DishInOrderDownCommand}" >
+                    <telerik:RadButton.Content>
+                        <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Icons/up-96.png" Stretch="Fill" />
+                            <TextBlock Text="Блюдо вверх" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                        </Grid>
+                    </telerik:RadButton.Content>
+                </telerik:RadButton>
+                <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding DishInOrderUpCommand}" >
+                    <telerik:RadButton.Content>
+                        <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Icons/down-96.png" Stretch="Fill" />
+                            <TextBlock Text="Блюдо вниз" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                        </Grid>
+                    </telerik:RadButton.Content>
+                </telerik:RadButton>
+
+            </StackPanel>
+
         </Grid>
 
         <StackPanel x:Name="FirstColumnPanel" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="10">
@@ -318,13 +365,91 @@
                     </telerik:RadAutoCompleteBox>
                 </Grid>
             </telerik:GroupBox>
+           
+            <local:CtrlCatalogComboBox DataContext="{Binding DeliveryPerconVM}" />
+            
 
+                <Border x:Name="BoxCountBorder" Grid.Column="0" BorderThickness="1" BorderBrush="LightGray" CornerRadius="5" Margin="4" Padding="3" >
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock  Text="Количество коробок: " Foreground="Black" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" MinWidth="50"  HorizontalAlignment="Left" />
+                        <telerik:RadNumericUpDown 
+                                        Grid.Column="1"
+                                        Margin="10,0,10,0"
+                                        Value="{Binding NumberOfBoxes, Mode=TwoWay}" 
+                                        Minimum="0" ValueFormat="Numeric" IsInteger="True"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                        MinWidth="60"/>
+                    </Grid>
+                </Border>
+
+            <Border x:Name="ExtraChargenBorder" Grid.Column="1" BorderThickness="1"  BorderBrush="LightGray" CornerRadius="5" Margin="4" Padding="3" >
+                    <Grid  >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+
+                        </Grid.ColumnDefinitions>
+
+                    <TextBlock Foreground="Black" Text="Надбавка:"  VerticalAlignment="Center" TextWrapping="WrapWithOverflow"   HorizontalAlignment="Left"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <CheckBox  IsChecked="{Binding ExtraChargeEnable, Mode=TwoWay}" 
+                          Margin="10,0,10,0">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+
+                            <telerik:RadNumericUpDown x:Name="ExtraChargeRadNumericUpDown" IsEnabled="{Binding ExtraChargeEnable}"
+                                        Value="{Binding ExtraChargeValue, Mode=TwoWay}" 
+                                        Minimum="0" ValueFormat="Numeric" IsInteger="True"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                        Width="60"
+                                        />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+
+            
+            <StackPanel  x:Name="CommentPanel" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Vertical">
+                <Label Content="Комментарий"   />
+                <telerik:XamlDataProvider RichTextBox="{Binding ElementName=radRichTextBoxOrderComment}" 
+                                                  Xaml="{Binding Path=OrderComment, Mode=TwoWay}" />
+                <Border BorderThickness="1" BorderBrush="LightGray" CornerRadius="4" Padding="6">
+                    <telerik:RadRichTextBox x:Name="radRichTextBoxOrderComment"  
+                                        Loaded="radRichTextBoxOrderComment_Loaded"
+                                        Height="70"
+                                        DocumentInheritsDefaultStyleSettings="True" 
+                                HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                IsContextMenuEnabled="True" IsSelectionMiniToolBarEnabled="True"
+                                IsSpellCheckingEnabled="False" LayoutMode="Flow"
+                                        FontSize="14"
+                                VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden"
+                                    Background="White"  Foreground="Black"
+                                        
+                                        ></telerik:RadRichTextBox>
+                </Border>
+            </StackPanel>
+            <StackPanel  x:Name="ForthColumnPanel"  Orientation="Vertical"  Grid.Row="0" Grid.Column="2" Margin="10">
+
+                <Label   Content="{Binding OrderStatusStr}"   />
+                <Label  Content="{Binding OrderCreatorStr}"   />
+                <Label  Content="{Binding OrderSenderStr}"   />
+                <Label FontSize="16" FontWeight="Bold" Content="{Binding OrderTotalStr}"   />
+
+            </StackPanel>
 
         </StackPanel>
 
-
+        <!--
         <StackPanel x:Name="SecondColumnPanel"  Orientation="Vertical"  Grid.Row="0" Grid.Column="1" Margin="10">
-            <!--
+            
             <telerik:Label Content="Время вывоза" />
             <telerik:RadDateTimePicker  SelectedValue="{Binding Path=ExportTime, Mode=TwoWay }"   TabIndex="7" 
                                         OpenDropDownOnFocus="False" 
@@ -333,7 +458,7 @@
             </telerik:RadDateTimePicker>
             <Label Content="Готовность на кухне"  />
             <telerik:RadDateTimePicker  SelectedValue="{Binding Path=ReadyTime, Mode=TwoWay}" OpenDropDownOnFocus="False"   TabIndex="8" />
-             /-->
+            
 
             
             <local:CtrlCatalogComboBox DataContext="{Binding DeliveryPerconVM}" />
@@ -392,9 +517,10 @@
 
 
             </Grid>
+            
         </StackPanel>
 
-
+ 
      
         <StackPanel  x:Name="ForthColumnPanel"  Orientation="Vertical"  Grid.Row="0" Grid.Column="2" Margin="10">
 
@@ -425,17 +551,15 @@
                                         ></telerik:RadRichTextBox>
             </Border>
         </StackPanel>
-        <!--
-        <GridSplitter x:Name="gridSplitter"  HorizontalAlignment="Stretch"  VerticalAlignment="Center" Height="4" ShowsPreview="True" Margin="0,3,0,3"
-                      Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" />
+        
 
 -->
-        <telerik:GroupBox Margin="5,0,5,-5" Header="Содержимое заказа" FontSize="12" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" >
-            <Grid x:Name="GridOrderDishes">
+        
+            <Grid x:Name="GridOrderDishes" Grid.Column="1" >
                 <Grid.ColumnDefinitions>
 
                     <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
@@ -637,18 +761,20 @@
 
                 </Grid>
 
-                <telerik:RadGridView Grid.Row="1"
+                <telerik:RadGridView Grid.Row="1" 
                                      Margin="5,5,5,0"
                         ShowGroupPanel="False"
-             ItemsSource="{Binding Path=OrderDishez}" DragElementAction="None"
-            ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                        ItemsSource="{Binding Path=OrderDishez}"
+                                     DragElementAction="None"
+                        
+                                     
                     AutoGenerateColumns="False"
                                      RowIndicatorVisibility="Collapsed"
                                      RightFrozenColumnsSplitterVisibility="Hidden"
                                      FrozenColumnsSplitterVisibility="Hidden"
                     IsFilteringAllowed="False"
-                    IsScrolling="True"
-                    IsManipulationEnabled="False"
+
+                    
                         SelectedItem="{Binding RemoveFromOrderDish}"
                                      RowHeight="22"
                                       RowStyleSelector="{StaticResource OpenItemStyleSelector}" 
@@ -686,59 +812,9 @@
                     </telerik:RadGridView.Columns>
                 </telerik:RadGridView>
 
-                <StackPanel x:Name="stButtonsNewItem" Grid.Column="1" Grid.RowSpan="2">
-                    <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding AddDishToOrderCommand}" >
-                        <telerik:RadButton.Content>
-                            <Grid Background="{Binding ElementName=Parent, Path=Background}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Image Source="/Icons/plus-96.png" Stretch="Fill" />
-                                <TextBlock Text="Добавить блюдо" Style="{StaticResource MainButtonsTextBlockStyle}" />
-                            </Grid>
-                        </telerik:RadButton.Content>
-                    </telerik:RadButton>
-                    <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding RemoveDishFromOrderCommand}" >
-                        <telerik:RadButton.Content>
-                            <Grid Background="{Binding ElementName=Parent, Path=Background}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Image Source="/Icons/minus-96.png" Stretch="Fill" />
-                                <TextBlock Text="{Binding DeleteDishBtnName}" Style="{StaticResource MainButtonsTextBlockStyle}" />
-                            </Grid>
-                        </telerik:RadButton.Content>
-                    </telerik:RadButton>
-                    <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding DishInOrderDownCommand}" >
-                        <telerik:RadButton.Content>
-                            <Grid Background="{Binding ElementName=Parent, Path=Background}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Image Source="/Icons/up-96.png" Stretch="Fill" />
-                                <TextBlock Text="Блюдо вверх" Style="{StaticResource MainButtonsTextBlockStyle}" />
-                            </Grid>
-                        </telerik:RadButton.Content>
-                    </telerik:RadButton>
-                    <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding DishInOrderUpCommand}" >
-                        <telerik:RadButton.Content>
-                            <Grid Background="{Binding ElementName=Parent, Path=Background}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Image Source="/Icons/down-96.png" Stretch="Fill" />
-                                <TextBlock Text="Блюдо вниз" Style="{StaticResource MainButtonsTextBlockStyle}" />
-                            </Grid>
-                        </telerik:RadButton.Content>
-                    </telerik:RadButton>
-                    
-                </StackPanel>
+                
             </Grid>
-        </telerik:GroupBox >
+        
     </Grid>
 
 

@@ -1,4 +1,5 @@
 ﻿using AlohaFly.DataExtension;
+using AlohaFly.Utils;
 using AlohaService.Interfaces;
 using AlohaService.ServiceDataContracts;
 using DynamicData;
@@ -18,16 +19,26 @@ namespace AlohaFly.Models
     {
         /*
         private readonly ReadOnlyObservableCollection<Payment> _spisPayments;
-        public ReadOnlyObservableCollection<Payment> SpisPayments => _spisPayments;
+        
         */
         IDeletedDish dish;
-
+         public FullyObservableCollection<Payment> SpisPayments { set; get; }
 
 
 
         public WndDeleteDishModel(IDeletedDish _dish)
         {
             dish = _dish;
+
+            if (dish is DishPackageFlightOrder)
+            {
+                SpisPayments =  DataCatalogsSingleton.Instance.PaymentFilter.SpisPaymnets;
+            }
+            else
+            {
+                SpisPayments = DataCatalogsSingleton.Instance.PaymentFilter.ToGoSpisPaymnets;
+            }
+
             /*
             //_spisPayments = new ReadOnlyObservableCollection<Payment> (DataCatalogsSingleton.Instance.PaymentsSourceCache.Items.AsObservableChangeSet());
             DataCatalogsSingleton.Instance.PaymentsSourceCache.Connect()
