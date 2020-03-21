@@ -455,7 +455,7 @@ namespace AlohaFly.Models
 
             needUpd = true;
             ClientPanelVis = model.Order.OrderCustomer == null ? Visibility.Collapsed : Visibility.Visible;
-            Changed = model.Order.Id == 0;
+            mChanged = model.Order.Id == 0;
             model.OrderChanged += Model_OrderChanged;
             SetFocusedCommands();
 
@@ -491,7 +491,7 @@ namespace AlohaFly.Models
             {
                 logger.Debug($"SaveChanesFunction Order {model.Order.Id}");
                 var r = model.SaveOrder();
-                Changed = !r;
+                mChanged = !r;
                 logger.Debug($"SaveChanesFunction Order {model.Order.Id} result {r}");
                 return r;
 
@@ -754,7 +754,7 @@ namespace AlohaFly.Models
         private void Model_OrderChanged()
         {
 
-            Changed = true;
+            mChanged = true;
             this.RaisePropertyChanged("OrderTotalStr");
             this.RaisePropertyChanged("OrderStatusStr");
             this.RaisePropertyChanged("OrderSenderStr");

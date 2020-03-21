@@ -44,24 +44,7 @@ namespace AlohaFly.Reports
                 }
             }
 
-
-
-            /*
-            {
-                //  using (Stream stream = dialog.OpenFile())
-                using (Stream stream = new FileStream(@"D:/rep1.xls",FileMode.Create))
-                {
-                    gridViewExport.Export(stream,
-                     new GridViewExportOptions()
-                     {
-                         Format = ExportFormat.ExcelML,
-                         ShowColumnHeaders = true,
-                         ShowColumnFooters = true,
-                         ShowGroupFooters = false,
-                     });
-                }
-            }
-            */
+         
         }
 
     }

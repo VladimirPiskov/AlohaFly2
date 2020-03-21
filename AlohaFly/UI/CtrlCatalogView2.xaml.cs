@@ -1,9 +1,13 @@
 ﻿using AlohaFly.DataExtension;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.GridView;
+using Telerik.Windows.Controls.GridView.SearchPanel;
 
 namespace AlohaFly.UI
 {
@@ -74,6 +78,7 @@ namespace AlohaFly.UI
 
         private void RadDataForm_AddedNewItem(object sender, Telerik.Windows.Controls.Data.DataForm.AddedNewItemEventArgs e)
         {
+
             
             if (!((Models.CatalogViewModel)DataContext).AddItem())
             {
@@ -142,6 +147,38 @@ namespace AlohaFly.UI
 
                 }
             }
+        }
+
+        private void RadButton_Click(object sender, RoutedEventArgs e)
+        {
+            Reports.ExportProvider.ExportGridToExcel(mainGrid);
+        }
+
+        private void radDataForm_AddingNewItem(object sender, Telerik.Windows.Controls.Data.DataForm.AddingNewItemEventArgs e)
+        {
+            //Очищаем поис
+            var clearSearchValue = GridViewSearchPanelCommands.ClearSearchValue as RoutedUICommand;
+            clearSearchValue.Execute(null, this.mainGrid.ChildrenOfType<GridViewSearchPanel>().FirstOrDefault());
+            /*
+            e.Cancel = true;
+            if (((Models.CatalogViewModel)DataContext).AddItem())
+            {
+                mainGrid.ScrollIntoView(mainGrid.SelectedItem);
+                radDataForm.BeginEdit();
+            }
+            */
+
+            /*
+            if (!((Models.CatalogViewModel)DataContext).AddItem())
+            {
+                
+                radDataForm.CancelEdit();
+            }
+            else
+            {
+                IsNew = true;
+            }
+            */
         }
     }
 }

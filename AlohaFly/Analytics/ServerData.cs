@@ -40,7 +40,7 @@ namespace AlohaFly.Analytics
                 if (this.periodStartDate != value)
                 {
                     this.periodStartDate = value;
-                    this.OnPropertyChanged("PeriodStartDate");
+                    this.OnPropertyChanged(nameof(PeriodStartDate));
 
                 }
             }
@@ -56,26 +56,24 @@ namespace AlohaFly.Analytics
                 if (this.periodEndDate != value)
                 {
                     this.periodEndDate = value;
-                    this.OnPropertyChanged("PeriodEndDate");
+                    this.OnPropertyChanged(nameof(PeriodEndDate));
 
                 }
             }
         }
-        /*
-        private static bool HasFlag(OrderStatus value, OrderStatus flag)
-        {
-            if (flag == GroupType.None) return ((int)value) == 0;
-            return value.HasFlag(flag);
-        }
-        */
 
+        public void CheckStardDate(DateTime startDate)
+        {
+            DataCatalogsSingleton.Instance.OrdersFlightData.ChangeStartDate(startDate);
+        }
 
         public List<RevenueInfo> GetRevenueSaleGastroInfos(OrderStatus orderStatus, DateTime startDate, DateTime endDate)
         {
             var tmp = new List<RevenueInfo>();
+            
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                     a => a.DeliveryDate >= dt &&
                     a.DeliveryDate < dt.AddDays(1) &&
                     !DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
@@ -102,7 +100,7 @@ namespace AlohaFly.Analytics
             var tmp = new List<RevenueInfo>();
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                     a => a.DeliveryDate >= dt &&
                     a.DeliveryDate < dt.AddDays(1) &&
                     !DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
@@ -123,68 +121,14 @@ namespace AlohaFly.Analytics
             return tmp;
 
         }
-        /*
-        public List<RevenueInfo> GetRevenueSaleSharInfos(OrderStatus orderStatus, DateTime startDate, DateTime endDate)
-        {
-            var tmp = new List<RevenueInfo>();
-            for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
-            {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
-                    a => a.DeliveryDate >= dt &&
-                    a.DeliveryDate < dt.AddDays(1) &&
-
-                    DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
-
-                    a.AirCompany != null &&
-                    a.AirCompany.PaymentType != null &&
-                    a.AirCompany.PaymentType.PaymentGroup != null &&
-                    a.AirCompany.PaymentType.PaymentGroup.Sale &&
-
-                    orderStatus.HasFlag(a.OrderStatus)).ToList();
-
-                var r = new RevenueInfo(dt, ord.Sum(a => a.OrderTotalSumm), ord.Count(), ord.Sum(a => a.DiscountSumm));
-
-                tmp.Add(r);
-
-            }
-            return tmp;
-
-        }
-
-        public List<RevenueInfo> GetRevenueSpisSharInfos(OrderStatus orderStatus, DateTime startDate, DateTime endDate)
-        {
-            var tmp = new List<RevenueInfo>();
-            for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
-            {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
-                    a => a.DeliveryDate >= dt &&
-                    a.DeliveryDate < dt.AddDays(1) &&
-
-                    DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
-
-                    a.AirCompany != null &&
-                    a.AirCompany.PaymentType != null &&
-                    a.AirCompany.PaymentType.PaymentGroup != null &&
-                    !a.AirCompany.PaymentType.PaymentGroup.Sale &&
-
-                    orderStatus.HasFlag(a.OrderStatus)).ToList();
-
-                var r = new RevenueInfo(dt, ord.Sum(a => a.OrderTotalSumm), ord.Count(), ord.Sum(a => a.DiscountSumm));
-
-                tmp.Add(r);
-
-            }
-            return tmp;
-
-        }
-        */
+        
 
         public List<RevenueInfo> GetRevenueSpisAirInfos(OrderStatus orderStatus, DateTime startDate, DateTime endDate)
         {
             var tmp = new List<RevenueInfo>();
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                     a => a.DeliveryDate >= dt &&
                     a.DeliveryDate < dt.AddDays(1) &&
                     !DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
@@ -215,7 +159,6 @@ namespace AlohaFly.Analytics
 
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                //List<OrderToGo> ord = ToGoOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
 
                 List<OrderToGo> ord = DataCatalogsSingleton.Instance.OrdersToGoData.Data.Where(
                      a => a.DeliveryDate >= dt &&
@@ -235,7 +178,7 @@ namespace AlohaFly.Analytics
             var Orderstmp = new List<OrderFlight>();
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                      a => a.DeliveryDate >= dt &&
                      a.DeliveryDate < dt.AddDays(1) &&
                      a.AirCompanyId != MainClass.AirGastroFoodId &&
@@ -252,7 +195,7 @@ namespace AlohaFly.Analytics
             var Orderstmp = new List<OrderFlight>();
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                      a => a.DeliveryDate >= dt &&
                      a.DeliveryDate < dt.AddDays(1) &&
                      !DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
@@ -270,7 +213,7 @@ namespace AlohaFly.Analytics
             var Orderstmp = new List<OrderFlight>();
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                      a => a.DeliveryDate >= dt &&
                      a.DeliveryDate < dt.AddDays(1) &&
                      DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
@@ -292,7 +235,7 @@ namespace AlohaFly.Analytics
             var Orderstmp = new List<OrderFlight>();
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                      a => a.DeliveryDate >= dt &&
                      a.DeliveryDate < dt.AddDays(1) &&
                      DBProvider.SharAirs.Contains((int)a.AirCompanyId) &&
@@ -316,7 +259,7 @@ namespace AlohaFly.Analytics
 
             for (var dt = startDate; dt < endDate; dt = dt.AddDays(1))
             {
-                List<OrderFlight> ord = AirOrdersModelSingleton.Instance.GetOrdersOfMonth(dt).Where(
+                List<OrderFlight> ord = DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(
                      a => a.DeliveryDate >= dt &&
                      a.DeliveryDate < dt.AddDays(1) &&
 

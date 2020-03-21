@@ -19,12 +19,12 @@ namespace AlohaFly.Models
             {
 
 
-                Result = DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.EndEdit(CP).Succeess;
+                var Res = DataExtension.DataCatalogsSingleton.Instance.ContactPersonData.EndEdit(CP);
                 //long Id  =DBDataExtractor<ContactPerson>.AddItem(DBProvider.Client.CreateContactPerson, CP);
-
+                Result = Res.Succeess;
                 if (Result)
                 {
-
+                    CP.Id = Res.UpdatedItem.Id;
                     UI.UIModify.ShowAlert($"Контакт {cp.FullName} добавлен в базу.");
                 }
                 else

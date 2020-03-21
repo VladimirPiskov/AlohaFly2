@@ -640,6 +640,19 @@ namespace AlohaService
         OperationResultValue<UpdateResult> GetUpdatesForSessionTest();
 
         #endregion
+
+
+
+        #region Analitic
+        [OperationContract]
+        OperationResultValue<AnalitikData> GetLTVValues(DateTime sDate, DateTime eDate);
+
+        [OperationContract]
+        OperationResultValue<AnalitikData> GetLTVValues2(DateTime sDate, DateTime eDate);
+
+        [OperationContract]
+        OperationResultValue<List<AnalitikOrderData>> GetAllToGoOrdersData(DateTime sDate, DateTime eDate);
+        #endregion
     }
 
 

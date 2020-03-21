@@ -164,6 +164,9 @@ namespace AlohaService.BusinessServices
                                 OrderToGoId = pack.OrderToGoId,
                                 TotalPrice = pack.TotalPrice,
                                 PositionInOrder = pack.PositionInOrder,
+                                Deleted = pack.Deleted,
+                                DeletedStatus = pack.DeletedStatus,
+                                SpisPaymentId = pack.SpisPaymentId,
                                 Code = pack.Code
                             }).ToList();
             result.Result.PaymentId = order.PaymentId;

@@ -127,8 +127,13 @@ namespace AlohaFly.Models
         }
         string GetOrderRangeSumm()
         {
-        
-            return $"Кол-во заказов {AirOrdersModelSingleton.Instance.Orders.Sum(a => a.OrderTotalSumm).ToString("C", new CultureInfo("ru-RU"))}"; 
+            try
+            {
+                return $"Кол-во заказов {AirOrdersModelSingleton.Instance.Orders.Sum(a => a.OrderTotalSumm).ToString("C", new CultureInfo("ru-RU"))}";
+            }
+            catch {
+                return "";
+            }
         }
 
 

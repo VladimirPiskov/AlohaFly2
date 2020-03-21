@@ -25,6 +25,8 @@ namespace AlohaFly
                     {
                         new MenuItemCatalog("ToFly из RKeeper", new Import.DataImportReaderFromExcel(), AccessTypeConst.Access_ImportToFlyRkeeper,false),
                         new MenuItemCatalog("Обновить гастроцены", Utils.EditGastroPrices.Edit, AccessTypeConst.Access_ImportToFlyRkeeper,false),
+                        new MenuItemCatalog("Обновить блюда ToFly ", new Import.PricesImportToFlyFromExcel(), AccessTypeConst.Access_ImportToFlyRkeeper,false),
+                        new MenuItemCatalog("Обновить блюда ToGo ", new Import.PricesImportToGoFromExcel(), AccessTypeConst.Access_ImportToFlyRkeeper,false),
 
                     };
                 }
@@ -190,6 +192,9 @@ namespace AlohaFly
 
                          new MenuItemCatalog("Общий отчет", new Action(() => { Task.Run(() =>
                                Reports.GKANReports.Instanse.ShowCommonReport(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
+                        , AccessTypeConst.Access_Reports_Rep1, false),
+                         new MenuItemCatalog("Клиенты ToGo", new Action(() => { Task.Run(() =>
+                               Reports.ToGoReports.Instanse.ShowClientsReport(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
 
                     };
@@ -489,7 +494,18 @@ namespace AlohaFly
         }
         private static void ShowItemsCatalog()
         {
+
             ShowItemsCatalog("Справочник блюд всех", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishData.Data));
+
+
+            /*
+            var _model = new Models.CatalogModel<Dish>(DataCatalogsSingleton.Instance.DishData);
+            var ItemsCatalog = new UI.CtrlCatalogView2();
+            var ItemsCatalogVm = new Models.CatalogViewModel<Dish>(_model) { Header = "Справочник блюд всех" };
+            ItemsCatalogVm.CanDeleteItem = false;
+            ItemsCatalog.DataContext = ItemsCatalogVm;
+            MainClass.ShowUC(ItemsCatalog);
+            */
         }
 
         public static void ShowItemsCatalogToFly()
@@ -499,7 +515,7 @@ namespace AlohaFly
 
         public static void ShowItemsCatalogToGo()
         {
-            ShowItemsCatalog("Справочник блюд ToGo", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishFilter.AllDishesToFly));
+            ShowItemsCatalog("Справочник блюд ToGo", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishFilter.AllDishesToGo));
         }
 
         public static void ShowItemsCatalogTemp()

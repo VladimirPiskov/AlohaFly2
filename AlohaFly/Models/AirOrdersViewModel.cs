@@ -100,6 +100,33 @@ namespace AlohaFly.Models
 
             });
 
+
+            OpenOrderCommand = new DelegateCommand(_ =>
+            {
+                try
+
+                {
+                    if (!Authorization.IsDirector && !Authorization.IsAdmin) return;
+                    if ((CurentOrder != null))
+                    {
+                        if (CurentOrder.OrderStatus == OrderStatus.Closed)
+                        {
+                            CurentOrder.OrderStatus = OrderStatus.InWork;
+                            CurentOrder.FRPrinted = false;
+                            CurentOrder.PreCheckPrinted = false;
+                            CurentOrder.NeedPrintFR = false;
+                            CurentOrder.NeedPrintPrecheck = false;
+                            CurentOrder.Closed = false;
+                            CurentOrder.PaymentId = null;
+                            Models.AirOrdersModelSingleton.Instance.UpdateOrder(CurentOrder);
+                        }
+                    }
+                }
+                catch
+                { }
+            });
+
+
             RefreshCommand = new DelegateCommand(_ =>
             {
 
@@ -156,6 +183,8 @@ namespace AlohaFly.Models
         public ICommand DeleteOrderCommand { get; set; }
         public ICommand PrintLabelCommand { get; set; }
         public ICommand RefreshCommand { get; set; }
+
+        public ICommand OpenOrderCommand { get; set; }
 
         public ICommand SetSendStatusCommand { get; set; }
 
@@ -370,8 +399,9 @@ namespace AlohaFly.Models
             }
         }
 
-        
 
+
+        
         ICollectionView _orders;
         public ICollectionView Orders
         {
@@ -390,47 +420,58 @@ namespace AlohaFly.Models
                 return _orders;
             }
         }
+        
         /*
-        public void AfterAddOrder()
+        public FullyObservableCollection<OrderFlight> Orders
         {
-            Orders.SortDescriptions.Clear();
-            Orders.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Descending));
-            MoveCurrentToFirst();
-        }
-
-        public void MoveCurrentToFirst()
-        {
-            MainClass.Dispatcher.Invoke(() =>
+            get
             {
-
-                _orders.MoveCurrentToFirst();
-                OrdersFocused = true;
+                return AirOrdersModelSingleton.Instance.Orders;
             }
-            );
         }
         */
-        public bool ordersFocused { set; get; }
-        public bool OrdersFocused
-        {
-            set
-            {
+
+                /*  
+                public void AfterAddOrder()
                 {
-                    ordersFocused = value;
-                    RaisePropertyChanged("OrdersFocused");
+                    Orders.SortDescriptions.Clear();
+                    Orders.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Descending));
+                    MoveCurrentToFirst();
                 }
+
+                public void MoveCurrentToFirst()
+                {
+                    MainClass.Dispatcher.Invoke(() =>
+                    {
+
+                        _orders.MoveCurrentToFirst();
+                        OrdersFocused = true;
+                    }
+                    );
+                }
+
+                public bool ordersFocused { set; get; }
+                public bool OrdersFocused
+                {
+                    set
+                    {
+                        {
+                            ordersFocused = value;
+                            RaisePropertyChanged("OrdersFocused");
+                        }
+                    }
+                    get
+
+                    {
+                        return ordersFocused;
+                    }
+                }
+                */
+
             }
-            get
-
-            {
-                return ordersFocused;
-            }
-        }
 
 
-    }
 
-
-    
 
     public sealed class AirOrdersModelSingleton
     {
@@ -456,7 +497,10 @@ namespace AlohaFly.Models
                 
             
             OrdersNonSH = new FullyObservableCollection<OrderFlight>();
-            ordersNonSHConnector.Select(a => !a.IsSHSent && a.OrderStatus != OrderStatus.InWork)
+
+            ordersNonSHConnector.Select(a => !a.IsSHSent
+            && (((Authorization.CurentUser != null) && (Authorization.CurentUser.UserName == "sh.user")) ^ (!DBProvider.SharAirs.Contains(a.AirCompanyId.GetValueOrDefault())))
+            && a.OrderStatus != OrderStatus.InWork)
                 .OrderByDesc(a => a.DeliveryDate)
                             .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, OrdersNonSH);
 
@@ -465,8 +509,14 @@ namespace AlohaFly.Models
                 .OrderByDesc(a => a.DeliveryDate)
                             .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, SVOorders);
 
+            /*
+            SVOordersNon = new FullyObservableCollection<OrderFlight>();
+            svoOrdersConnector.Select(a => DBProvider.SharAirs.Contains(a.AirCompanyId.GetValueOrDefault()))
+                .OrderByDesc(a => a.DeliveryDate)
+                            .Subsribe(DataCatalogsSingleton.Instance.OrdersFlightData, SVOorders);
 
-            
+            */
+
         }
 
 
@@ -505,13 +555,11 @@ namespace AlohaFly.Models
             }
         }
 
-        public List<OrderFlight> GetOrdersOfMonth(DateTime month)
+        public List<OrderFlight> GetAirOrdersWithCheck(DateTime startDate)
         {
-            DateTime dt = new DateTime(month.Year, month.Month, 1);
-            DataCatalogsSingleton.Instance.OrdersFlightData.ChangeStartDate(month);
-            return    DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(a=>a.DeliveryDate>= dt && a.DeliveryDate < dt.AddDays(1)).ToList();
             
-
+            DataCatalogsSingleton.Instance.OrdersFlightData.ChangeStartDate(startDate);
+            return DataCatalogsSingleton.Instance.OrdersFlightData.Data.ToList();
         }
         /*
         public DateTime StartDt { set; get; }

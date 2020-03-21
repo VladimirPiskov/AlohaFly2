@@ -7,6 +7,18 @@
              xmlns:local="clr-namespace:AlohaFly.UI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
+
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="O"
+            Modifiers="Ctrl"
+            Command="{Binding OpenOrderCommand}"
+            />
+
+
+    </UserControl.InputBindings>
+
     <Grid>
 
 
@@ -177,13 +189,18 @@
 
 
         </StackPanel>
-        <telerik:RadGridView  x:Name="ordersGrid"
-                    RowHeight="26"
-                    Grid.Row="1" Grid.Column="0"
-                    RowIndicatorVisibility="Collapsed"
+        
+        <telerik:RadGridView  
+                    x:Name="ordersGrid"
+                    Grid.Row="1" 
+                    Grid.Column="0"
                     Margin="0,0,0,10"
-                    ShowGroupPanel="False"
+    ShowSearchPanel="True"
                     MaxColumnWidth="500"    
+            
+                    RowIndicatorVisibility="Collapsed"
+                    ShowGroupPanel="False"
+    
                               
                     DragElementAction="None"
                     ScrollMode="Deferred"   
@@ -193,13 +210,14 @@
                     IsReadOnly="True"
                     RightFrozenColumnsSplitterVisibility="Hidden"
                     FrozenColumnsSplitterVisibility="Hidden"
-                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                     ItemsSource="{Binding Path=Orders}"
                     SelectedItem="{Binding CurentOrder}"
+                    
                     RowStyleSelector="{StaticResource StadiumCapacityStyle}" 
                     MouseDoubleClick="RadGridView_MouseDoubleClick"
-                    local:FocusExtension.IsFocused="{Binding OrdersFocused, Mode=TwoWay}"
+                    
             >
           
 
@@ -236,45 +254,16 @@
                     </telerik:GridViewDataColumn.CellTemplate>
                     
                 </telerik:GridViewDataColumn>
-                
-                <!--
-                <telerik:GridViewDataColumn Header="Комментарий" Width="*"   DataMemberBinding="{Binding Comment}" Loaded="GridViewDataColumn_Loaded">
-                    <telerik:GridViewDataColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <telerik:RadRichTextBox x:Name="radRichTextBox1"   VerticalScrollBarVisibility="Hidden"
-                                                        DocumentInheritsDefaultStyleSettings="True"
-                                                            Background="Transparent"
-                                                        Foreground="Black"                                      
-                                                        BorderThickness="0" IsReadOnly="True" Height="30"
-                                                        IsSelectionEnabled="False" IsHitTestVisible="False" IsSpellCheckingEnabled="False"
-                                                        IsContextMenuEnabled="False" IsSelectionMiniToolBarEnabled="False"
-                                                        telerik:XamlDataProvider.Source="{Binding Comment, Mode=TwoWay}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </telerik:GridViewDataColumn.CellTemplate>
-                  
-                </telerik:GridViewDataColumn>
--->
+
+        
+               
+        
+
 
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
+                
 
-      
-<!--
-        <telerik:RadExpander x:Name="radExpander" Grid.Row ="2"
-                             IsExpanded="{Binding OrderExpatded, Mode=TwoWay}" VerticalContentAlignment="Top"
-								 telerik:AnimationManager.IsAnimationEnabled="{Binding ElementName=AnimationEnableCheckBox, Path=IsChecked}">
-            <telerik:RadExpander.Header>
-                <TextBlock x:Name="expanderCaption" Text="{Binding OrderHeader}" />
-            </telerik:RadExpander.Header>
-            <telerik:RadExpander.Content>
-                <Grid>
-                    <local:CtrlOrderFlightInfo DataContext="{Binding OrderFlightInfoViewModel}" />
-                </Grid>
-            </telerik:RadExpander.Content>
-        </telerik:RadExpander>
-        </-->
         
         
         <Grid  Grid.Row="3">

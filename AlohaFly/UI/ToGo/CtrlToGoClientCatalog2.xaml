@@ -75,7 +75,7 @@
             
             GroupRenderMode="Flat"
             IsReadOnly="True"
-             AutoGenerateColumns="False"
+            AutoGenerateColumns="False"
             CanUserFreezeColumns="False"
             RowIndicatorVisibility="Collapsed"
             
@@ -83,7 +83,7 @@
             CanUserResizeColumns="False"
             
             IsEnabled="{Binding GridViewIsEnabled}"
-             ItemsSource="{Binding Path=ToGoClientsCol}"
+            ItemsSource="{Binding Path=ToGoClientsCol}"
                 
             ShowGroupPanel="False"             
              CanUserInsertRows="False"      

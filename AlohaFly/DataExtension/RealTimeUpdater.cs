@@ -63,7 +63,7 @@ namespace AlohaFly.DataExtension
         }
 
         bool endQueue = false;
-        int interval = 20;
+        int interval = 5;
         public DateTime dataDate
 
         {
@@ -78,11 +78,13 @@ namespace AlohaFly.DataExtension
             while (!endQueue)
             {
                 UpdateData();
+                
                 for (int i = 0; i < interval; i++)
                 {
                     if (endQueue) { return;}
                     Thread.Sleep(1000);
                 }
+                
             }
         }
 

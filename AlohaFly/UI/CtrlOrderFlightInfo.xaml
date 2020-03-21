@@ -28,7 +28,7 @@
             ScrollMode="RealTime"   VerticalAlignment="Stretch"
                     AutoGenerateColumns="False"
                     IsFilteringAllowed="False"
-                    IsScrolling="True"
+                    
                     IsManipulationEnabled="False"
                         IsReadOnly="True"
                              RightFrozenColumnsSplitterVisibility="Hidden"

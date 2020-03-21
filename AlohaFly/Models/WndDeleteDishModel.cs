@@ -76,7 +76,7 @@ namespace AlohaFly.Models
 
 
             OkCommand = new DelegateCommand((_) =>
-        {
+            {
 
             if (Spis && (SelectedSpis == null || SelectedSpis.Id == 0))
             {

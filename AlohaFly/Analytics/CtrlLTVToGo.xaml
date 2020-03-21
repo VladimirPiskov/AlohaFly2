@@ -1,0 +1,276 @@
+﻿<UserControl x:Class="AlohaFly.Analytics.CtrlLTVToGo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlohaFly.Analytics"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="legendItemStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Margin" Value="8,4,8,4" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="qsfTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="Segoe UI Light" />
+        <Setter Property="Foreground" Value="{telerik:Windows8Resource ResourceKey=AccentBrush}" />
+        </Style>
+        <Style x:Key="transparentTrackLineStyle" TargetType="Polyline" />
+        <Style x:Key="trackBallInfoStyle" TargetType="telerik:TrackBallInfoControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="telerik:TrackBallInfoControl">
+                        <Border Background="White" BorderBrush="#FF808080" BorderThickness="1">
+                            <StackPanel Name="panel" Grid.Row="1" Margin="3 0 3 0" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="passangersTrackBallInfoTemplate">
+            <Border>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding DataPoint.Category, StringFormat='MMM yyyy', ConverterCulture=ru-RU}" />
+                    <TextBlock Text=": " />
+                    <TextBlock Text="{Binding DataPoint.Value, StringFormat=\{0:C\}, ConverterCulture=ru-RU}"  />
+                    
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="consumptionTrackBallInfoTemplate">
+            <Border>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding DataPoint.Category, StringFormat='MMM yyyy', ConverterCulture=ru-RU}" />
+                    <TextBlock Text=": " />
+                    <TextBlock Text="{Binding DataPoint.Value, StringFormat=\{0:C\}, ConverterCulture=ru-RU}" />
+                    
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="consumptionTrackBallInfoTemplate2">
+            <Border>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    
+                    <TextBlock Text="{Binding DataPoint.Value}" />
+                    <TextBlock Text=" гостей" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="trackBallTemplate">
+            <Border>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding DataPoint.Category, StringFormat='MMM yyyy', ConverterCulture=ru-RU}" />
+                    <TextBlock Text=": " />
+                    <TextBlock Text="{Binding DataPoint.Value,  StringFormat=\{0:C\}, ConverterCulture=ru-RU}" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <SolidColorBrush x:Key="consumptionBrush" Color="#FFE77F31" />
+        <SolidColorBrush x:Key="consumptionBrush2" Color="Green" />
+        <Style x:Key="consumptionStrokeShapeStyle1" TargetType="Path">
+            <Setter Property="Stroke" Value="{StaticResource consumptionBrush}" />
+        </Style>
+
+        <Style x:Key="consumptionStrokeShapeStyle2" TargetType="Path">
+            <Setter Property="Stroke" Value="{StaticResource consumptionBrush2}" />
+        </Style>
+        <DataTemplate x:Key="consumptionTrackBallTemplate">
+            <Ellipse Fill="{StaticResource consumptionBrush}" 
+                 Stroke="White"
+                 StrokeThickness="1"
+                 Width="6" 
+                 Height="6" />
+        </DataTemplate>
+        <SolidColorBrush x:Key="costStrokeBrush" Color="#FFA8CA59" />
+        <SolidColorBrush x:Key="costFillBrush" Color="#FFDEEBC1" />
+        <Style x:Key="costStrokeShapeStyle2" TargetType="Path">
+            <Setter Property="Stroke" Value="{StaticResource costStrokeBrush}" />
+        </Style>
+        <Style x:Key="costAreaShapeStyle2" TargetType="Path">
+            <Setter Property="Fill" Value="{StaticResource costFillBrush}" />
+        </Style>
+        <DataTemplate x:Key="costTrackBallTemplate">
+            <Ellipse Fill="{StaticResource costStrokeBrush}" 
+                 Stroke="White"
+                 StrokeThickness="1"
+                 Width="6" 
+                 Height="6" />
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="450"></ColumnDefinition>
+            <ColumnDefinition Width="450"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+       
+        <Grid>
+            <StackPanel Grid.Row="1" Height="40" Margin="5"  Orientation="Horizontal" Visibility="{Binding DatePanelVis}" >
+                <TextBlock Text="От" FontSize="16" VerticalAlignment="Center" />
+                <telerik:RadDatePicker Margin="5" SelectedValue="{Binding StartDt}"></telerik:RadDatePicker>
+                <TextBlock Text="до" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" />
+                <telerik:RadDatePicker Margin="5" SelectedValue="{Binding StopDt}"></telerik:RadDatePicker>
+            </StackPanel>
+
+        </Grid>
+        <telerik:RadGridView Grid.Row="0" Grid.Column="2" Grid.RowSpan="3"
+                             
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=CustomersData, Mode=TwoWay}"
+                    MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    FrozenColumnsSplitterVisibility="Hidden"
+                    IsFilteringAllowed="True" 
+                  RowIndicatorVisibility="Collapsed"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible"
+                IsReadOnly="False"
+            >
+
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Width="70" IsReadOnly="False" IsVisible="False" DataMemberBinding="{Binding UseInReport, Mode=TwoWay}">
+                    <telerik:GridViewDataColumn.Header>
+                        <TextBlock Text="Show" Style="{StaticResource GidViewHeaderStyle}" />
+                    </telerik:GridViewDataColumn.Header>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn  Width="*" TextAlignment="Left" DataMemberBinding="{Binding Name}">
+                    <telerik:GridViewDataColumn.Header>
+                        <TextBlock Text="Кто" Style="{StaticResource GidViewHeaderStyle}" />
+                    </telerik:GridViewDataColumn.Header>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Сколько" Width="150" TextAlignment="Right"  DataMemberBinding="{Binding Summ ,StringFormat=\{0:C\}, ConverterCulture=ru-RU  }" />
+                
+            </telerik:RadGridView.Columns>
+
+        </telerik:RadGridView>
+
+
+        <telerik:RadGridView Grid.Row="0"  Grid.Column="1" Grid.RowSpan="2"
+                             RowIndicatorVisibility="Collapsed"
+                    ShowGroupPanel="False"
+                    ItemsSource="{Binding Path=LTVSummData, Mode=TwoWay}"
+                    MaxColumnWidth="500"    DragElementAction="None"
+                    ScrollMode="RealTime"   VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    FrozenColumnsSplitterVisibility="Hidden"
+                    IsFilteringAllowed="True" 
+                  Margin="0,0,20,0"
+                IsReadOnly="True"
+            >
+
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Месяц" Width="100" TextAlignment="Right" DataMemberBinding="{Binding Date, StringFormat={}{0:MMM yyyy}, ConverterCulture=ru-RU  }" />
+                <telerik:GridViewDataColumn Header="Ср. выручка" Width="150" TextAlignment="Right" DataMemberBinding="{Binding Value ,StringFormat=\{0:C\}, ConverterCulture=ru-RU  }" />
+                <telerik:GridViewDataColumn Header="Кол-во гостей" Width="150" TextAlignment="Right" DataMemberBinding="{Binding UnikGCount }" />
+            </telerik:RadGridView.Columns>
+
+        </telerik:RadGridView>
+
+
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"  Margin="70,0,0,0">
+                <TextBlock Text="LTV показатели" FontSize="16" />
+           </StackPanel>
+
+            <StackPanel x:Name="ChartLegend" Grid.Row="1" Orientation="Vertical" Margin="50,0,0,0" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="2" 
+                               Fill="#FFE77F31"/>
+                    <TextBlock Style="{StaticResource legendItemStyle}" Text="Средняя выручка на одного постоянного гостя за месяц" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="2" VerticalAlignment="Center"
+                               Fill="Green" />
+                    <TextBlock Style="{StaticResource legendItemStyle}" Text="Количество постоянных гостей" />
+                </StackPanel>
+            </StackPanel>
+
+
+            <telerik:RadCartesianChart 
+                
+                Grid.Row="2"
+                Margin="0 15 0 5" 
+                Name="chart"
+                                       TrackBallInfoStyle="{StaticResource trackBallInfoStyle}" 
+                                       TrackBallLineStyle="{StaticResource transparentTrackLineStyle}"
+                                       >
+
+                
+                <telerik:RadCartesianChart.HorizontalAxis>
+                    <telerik:DateTimeContinuousAxis SmartLabelsMode="SmartStep" 
+                                                    LabelFormat="MMM yyyy" 
+                                                    MajorStepUnit="Month"
+                                                    MajorStep="1"
+                                                    LabelFitMode="{Binding SelectedItem, ElementName=ComboBoxLabelFitMode}" />
+                    
+                </telerik:RadCartesianChart.HorizontalAxis>
+                
+                <telerik:RadCartesianChart.Series>
+                    <telerik:LineSeries CategoryBinding="Date" 
+                                        ValueBinding="Value" 
+                                        ItemsSource="{Binding LTVSummData}" 
+                                        StrokeShapeStyle="{StaticResource consumptionStrokeShapeStyle1}" 
+                                        TrackBallInfoTemplate="{StaticResource consumptionTrackBallInfoTemplate}"
+                                        TrackBallTemplate="{StaticResource consumptionTrackBallTemplate}"
+                                        
+                                        >
+                        
+
+                    </telerik:LineSeries>
+
+
+                    <telerik:LineSeries CategoryBinding="Date" 
+                                        ValueBinding="UnikGCount" 
+                                        ItemsSource="{Binding LTVSummData}" 
+                                        StrokeShapeStyle="{StaticResource consumptionStrokeShapeStyle2}" 
+                                        TrackBallInfoTemplate="{StaticResource consumptionTrackBallInfoTemplate2}"
+                                        >
+                        <telerik:LineSeries.VerticalAxis>
+                            <telerik:LinearAxis Title="Количество постоянных клиентов"
+                                               
+                                                
+                                                Minimum="0"
+                                              HorizontalLocation="Right" />
+                        </telerik:LineSeries.VerticalAxis>
+
+                    </telerik:LineSeries>
+                                        
+                                                            
+                    
+                </telerik:RadCartesianChart.Series>
+
+                <telerik:RadCartesianChart.VerticalAxis>
+                    <telerik:LinearAxis Title="Средняя выручка"
+                                               SmartLabelsMode="SmartStepAndRange"
+                                                Minimum="0"
+                                              />
+                </telerik:RadCartesianChart.VerticalAxis>
+
+                <telerik:RadCartesianChart.Grid>
+                    <telerik:CartesianChartGrid MajorLinesVisibility="XY" />
+                </telerik:RadCartesianChart.Grid>
+                <telerik:RadCartesianChart.Behaviors>
+                    <telerik:ChartTrackBallBehavior ShowIntersectionPoints="True" 
+                                                     />
+                </telerik:RadCartesianChart.Behaviors>
+            </telerik:RadCartesianChart>
+        </Grid>
+    </Grid>
+</UserControl>

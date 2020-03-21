@@ -57,7 +57,7 @@ namespace AlohaFly.Reports
 
                 Ws = Wb.Worksheets.Add();
                 ShowPaymentReport("To Go отчет по валютам", dataCatsToGo);
-                var dataCatsSVO = new GKANReportCats();
+                var dataCatsSVO = new GKANReportCats() { Dt1 = sDt, Dt2 = eDt }; ;
                 try
                 {
                     Ws = Wb.Worksheets.Add();
@@ -136,18 +136,7 @@ namespace AlohaFly.Reports
 
                     dataCats.Cats.Add(dataCat);
                 }
-                /*
-                var dataCatd = new GKANReportCat()
-                {
-                    Admin = false,
-                    PaymentCat = false,
-                    CatName = "Удаленные блюда",
-                    CatSumm = data.Sum(x => x.GetSpisDishesOfPaimentId(0).Sum(d => d.TotalSumm)),
-                    Id = 1
-
-                };
-                dataCats.Cats.Add(dataCatd);
-                */
+              
                 foreach (var lCat in DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.Where(x => x.IsActive))
                 {
                     var dataCat = new GKANReportCat()
@@ -194,7 +183,7 @@ namespace AlohaFly.Reports
             var dataToGo = ToGoOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
 
             var data = AirOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
-            var dataCats = new GKANReportCats();
+            var dataCats = new GKANReportCats() { Dt1 = sDt, Dt2 = eDt }; ;
 
             foreach (var d in dataToGo.Where(a => a.DiscountPercent > 0).Select(a => a.DiscountPercent).Distinct())
             {
@@ -228,7 +217,7 @@ namespace AlohaFly.Reports
         private GKANReportCats GetToFlyCats(DateTime sDt, DateTime eDt)
         {
             var data = AirOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
-            var dataCats = new GKANReportCats();
+            var dataCats = new GKANReportCats() { Dt1 = sDt,Dt2=eDt };
             foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(x => !x.ToGo && x.IsActive && x.PaymentGroup != null))
             {
                 var dataCat = new GKANReportCat()
@@ -303,7 +292,7 @@ namespace AlohaFly.Reports
                 var dataToGo = ToGoOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt).ToList();
                 var dataToFly = AirOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt).ToList();
                 dataToFly.AddRange(AirOrdersModelSingleton.Instance.SVOorders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt).ToList());
-                var dataCats = new GKANReportCats();
+                var dataCats = new GKANReportCats() { Dt1 = sDt, Dt2 = eDt }; ;
                 foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(x => x.IsActive && x.PaymentGroup != null && !x.PaymentGroup.Sale))
                 {
                     var cat = new GKANReportRemovedCat()
@@ -460,7 +449,7 @@ namespace AlohaFly.Reports
         private GKANReportCats GetToGoCats(DateTime sDt, DateTime eDt)
         {
             var data = ToGoOrdersModelSingleton.Instance.Orders.Where(a => a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled && a.DeliveryDate >= sDt && a.DeliveryDate < eDt);
-            var dataCats = new GKANReportCats();
+            var dataCats = new GKANReportCats() { Dt1 = sDt, Dt2 = eDt }; ;
             foreach (var catP in DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(x => x.ToGo && x.IsActive && x.PaymentGroup != null))
             {
                 var dataCat = new GKANReportCat()
@@ -547,6 +536,11 @@ namespace AlohaFly.Reports
                 Ws.Cells[2, 2] = "Общий отчет".ToUpper();
                 Ws.get_Range("B2:B2").Font.Size = 14;
                 Ws.get_Range("B2:B2").Font.Bold = true;
+
+                Ws.Cells[2, 3] = $"{dataCatsToFly.Dt1.ToString("dd/MM")} - {dataCatsToFly.Dt2.ToString("dd/MM/yyyy")}";
+                Ws.get_Range("C2:C2").Font.Size = 12;
+                Ws.get_Range("C2:C2").Font.Bold = false;
+                Ws.get_Range("C2:C2").HorizontalAlignment = XlHAlign.xlHAlignCenter; 
 
                 int row = 4;
                 ((Range)Ws.Rows[row]).Font.Bold = true;
@@ -684,17 +678,7 @@ namespace AlohaFly.Reports
                     row++;
                 }
 
-                /*
-
-                Ws.Cells[row, 2] = "Итого";
-                Ws.Cells[row, 3] = dataCats.Cats.Where(x => x.PaymentCat).Sum(a => a.Catcount);
-                Ws.Cells[row++, 4] = dataCats.Cats.Where(x => x.PaymentCat).Sum(a => a.CatSumm);
-
-                foreach (var cat in dataCats.Cats.Where(x => !x.PaymentCat))
-                {
-                    cat.Write(row++, 2, Ws);
-                }
-                */
+               
                 Ws.Columns[2].AutoFit();
                 Ws.Columns[3].AutoFit();
                 Ws.Columns[4].ColumnWidth = 10;
@@ -725,6 +709,12 @@ namespace AlohaFly.Reports
                 Ws.Cells[2, 2] = name;
                 Ws.get_Range("B2:B2").Font.Size = 14;
                 Ws.get_Range("B2:B2").Font.Bold = true;
+
+                Ws.Cells[2, 3] = $"{dataCats.Dt1.ToString("dd/MM")} - {dataCats.Dt2.ToString("dd/MM/yyyy")}";
+                Ws.get_Range("C2:C2").Font.Size = 12;
+                Ws.get_Range("C2:C2").Font.Bold = false;
+                Ws.get_Range("C2:C2").HorizontalAlignment = XlHAlign.xlHAlignCenter; ;
+                
 
                 int row = 4;
                 Ws.Cells[row, 3] = "Чеков";
@@ -1001,6 +991,10 @@ namespace AlohaFly.Reports
     public class GKANReportCats
     {
         public GKANReportCats() { }
+
+        public DateTime Dt1;
+        public DateTime Dt2;
+
         public List<GKANReportCat> Cats = new List<GKANReportCat>();
         public List<GKANReportRemovedCat> RemovedCats = new List<GKANReportRemovedCat>();
 

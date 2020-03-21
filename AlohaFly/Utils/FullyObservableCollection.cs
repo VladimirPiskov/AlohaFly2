@@ -47,26 +47,12 @@ namespace AlohaFly.Utils
                 return new DelegateCommand(_ =>
                 {
                     bool isPr = ((T)CurrentEditItem).IsPrimary;
-                    //InternalList.Remove(CurrentEditItem);
+                  
                     Remove(CurrentEditItem);
-                    //MoveCurrentToNext();
+                   
                     if (isPr) ((T)CurrentEditItem).IsPrimary = true;
 
-                    /*
-                    int newInd = 0;
-                    int ind = curent
-                    if (ind > 0)
-                    {
-                        newInd = ind - 1;
-                    }
-                    
-                    EditablePhones.Remove(SelectedPhone);
-                    if (EditablePhones.Count > 0)
-                    {
-                        SelectedPhone = EditablePhones[newInd];
-                        if (isPr) SelectedPhone.IsPrimary = true;
-                    }
-                    */
+                   
 
 
                 });
@@ -114,6 +100,46 @@ namespace AlohaFly.Utils
         }
 
 
+
+        public void AddWithSort(Func<T, long> orderFunc, Func<T, string> orderFuncStr, T elem)
+        {
+            this.Add(elem);
+            if (((orderFunc == null) && (orderFuncStr == null))  || (orderFuncStr!=null && orderFuncStr(elem)==null)) return;
+            for (int i = 0; i < this.Count - 1; i++)
+            {
+                if (orderFunc != null)
+                {
+                    if (orderFunc(this[i]) >= orderFunc(elem))
+                    {
+                        this.Move(this.IndexOf(elem), i);
+                        break;
+
+                    }
+                }
+                else
+                {
+                    if (orderFuncStr(this[i]).CompareTo(orderFuncStr(elem)) > 0)
+                    {
+                        this.Move(this.IndexOf(elem), i);
+                        break;
+                    }
+                }
+            }
+        }
+        public void AddWithSort(Func<T, string> orderFunc, T elem)
+        {
+            this.Add(elem);
+            if (orderFunc == null) return;
+            for (int i = 0; i < this.Count - 1; i++)
+            {
+                if (orderFunc(this[i]).CompareTo(orderFunc(elem))>0)
+                {
+                    this.Move(this.IndexOf(elem), i);
+                    break;
+                }
+            }
+        }
+
         //public void Sort(Comparison<T> comparison)
         public void Sort(Func<T, long> orderFunc)
         {
@@ -131,11 +157,44 @@ namespace AlohaFly.Utils
 
         public void Sort(Func<T, string> orderFunc)
         {
-            int comparison(T a, T b) => orderFunc(a).CompareTo(orderFunc(b));
+            
 
 
             var sortableList = new List<T>(this);
-            sortableList.Sort(comparison);
+            sortableList.Sort(
+                (a, b) => 
+                {
+                    if (orderFunc(a) == null)
+                    {
+                        if (orderFunc(b) == null)
+                        {
+                            // If x is null and y is null, they're
+                            // equal. 
+                            return 0;
+                        }
+                        else
+                        {
+                            // If x is null and y is not null, y
+                            // is greater. 
+                            return -1;
+                        }
+                    }
+                    else
+                    {
+                        // If x is not null...
+                        //
+                        if (orderFunc(b) == null)
+                        // ...and y is null, x is greater.
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return orderFunc(a).CompareTo(orderFunc(b));
+                        }
+                    }
+                }
+                );
 
             for (int i = 0; i < sortableList.Count; i++)
             {
@@ -143,6 +202,9 @@ namespace AlohaFly.Utils
             }
         }
 
+
+
+        
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
 
@@ -163,9 +225,10 @@ namespace AlohaFly.Utils
                     item.PropertyChanged += ChildPropertyChanged;
             }
 
-
-            base.OnCollectionChanged(e);
-
+            if (!eventsFreeze)
+            {
+                base.OnCollectionChanged(e);
+            }
 
         }
 
@@ -200,27 +263,7 @@ namespace AlohaFly.Utils
 
             T typedSender = (T)sender;
             int i = Items.IndexOf(typedSender);
-            if (i >= 0)
-            {
-                /*
-                if (e.PropertyName == "IsPrimary")
-                {
-                    if (typedSender is AlohaService.Interfaces.IPrimaryUnik un)
-                    {
-                        if (un.IsPrimary)
-                        {
-                            foreach (var itm in Items)
-                            {
-                                if (!sender.Equals(itm))
-                                {
-                                    ((AlohaService.Interfaces.IPrimaryUnik)itm).IsPrimary = false;
-                                }
-                            }
-                        }
-                    }
-                }
-                */
-            }
+            
             /*
             if (i < 0)
                 throw new ArgumentException("Received property notification from item not in collection");

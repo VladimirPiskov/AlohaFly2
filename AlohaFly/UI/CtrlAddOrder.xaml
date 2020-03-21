@@ -764,6 +764,7 @@
                 <telerik:RadGridView Grid.Row="1" 
                                      Margin="5,5,5,0"
                         ShowGroupPanel="False"
+                                     GroupRenderMode="Flat"
                         ItemsSource="{Binding Path=OrderDishez}"
                                      DragElementAction="None"
                         

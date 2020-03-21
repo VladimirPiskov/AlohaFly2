@@ -7,6 +7,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Telerik.Windows.Controls;
 using Telerik.Windows.Data;
 
 namespace AlohaFly.Models
@@ -162,7 +164,7 @@ namespace AlohaFly.Models
     }
 
     public class CatalogViewModel<T> : CatalogViewModel
-        where T : class, INotifyPropertyChanged
+        where T : class, INotifyPropertyChanged, new()
     {
         readonly CatalogModel<T> _model;
 
@@ -217,11 +219,18 @@ namespace AlohaFly.Models
         private T AddedItem;
         public override bool AddItem()
         {
-            
-            
-            AddedItem = _model.AddItem(SelectedItem);
-            //AddedItemId = _model.AddItem(SelectedItem);
 
+            T t = new T();
+            AddedItem = _model.AddItem(t);
+            /*
+            if (AddedItem != null)
+            {
+                
+                ItemsSource.MoveCurrentTo(AddedItem);
+
+            }
+            */
+            //return true;
             return (AddedItem != null);
         }
         public override bool CancelAddItem()
@@ -234,8 +243,18 @@ namespace AlohaFly.Models
             return _model.DeleteItem(SelectedItem);
 
         }
-
-
+        /*
+        public ICommand CopyOrderCommand
+        {
+            get { 
+            return
+                     new DelegateCommand(_ =>
+                     {
+                         ExportProvider
+                     });
+            }
+        }
+        */
         private void CatalogData_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             RaisePropertyChanged("ItemsSource");
@@ -286,27 +305,6 @@ namespace AlohaFly.Models
         }
 
 
-        /*
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        protected void NotifyPropertyChanged(
-            string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-        */
-
     }
 
-    /*
-    public class CatalogItemPropViewModel
-    {
-        public CatalogItemPropViewModel()
-        {
-
-        }
-        public string Name { set; get; }
-        public string Value { set; get; }
-    }
-    */
 }

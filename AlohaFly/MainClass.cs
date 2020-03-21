@@ -1,5 +1,6 @@
 ﻿using AlohaFly.DataExtension;
 using AlohaFly.Models;
+using AlohaFly.Utils;
 using AlohaService.ServiceDataContracts;
 using CefSharp;
 using CefSharp.Wpf;
@@ -54,6 +55,17 @@ namespace AlohaFly
             await Task.WhenAll(t);
             mainUIModel.StopBusy();
             UIInit();
+        }
+
+        async public static void DoWithBusy(TaskWithEvent task)
+        {
+            mainUIModel.StartBusy();
+            task.Event = (_) => mainUIModel.SendBusyContent(_);
+            var t = new Task(task.Action);
+            
+            t.Start();
+            await Task.WhenAll(t);
+            mainUIModel.StopBusy();
         }
 
 
@@ -149,7 +161,9 @@ namespace AlohaFly
 
             o.NeedPrintPrecheck = p.FiskalId == 0;
 
-            DBProvider.UpdateOrderFlight(o);
+            //DBProvider.UpdateOrderFlight(o);
+
+            DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(o);
         }
         private static void CloseCheck(OrderToGo o)
         {
@@ -174,7 +188,8 @@ namespace AlohaFly
                 UI.UIModify.ShowAlert($"{err + Environment.NewLine} Накладная будет создана при появлении связи со StoreHouse");
             }
             */
-            DBProvider.UpdateOrderToGo(o);
+            //DBProvider.UpdateOrderToGo(o);
+            DataCatalogsSingleton.Instance.OrdersToGoData.EndEdit(o);
 
         }
 

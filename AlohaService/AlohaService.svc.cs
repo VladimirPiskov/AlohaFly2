@@ -50,6 +50,7 @@ namespace AlohaService
         private MarketingChannelService marketingChannelService;
 
         private UpdaterService updaterService;
+        private AnalitikService analitikService;
 
         private static bool MapperInited = false;
         public AlohaService()
@@ -222,6 +223,8 @@ namespace AlohaService
             orderCustomerAddressService = new OrderCustomerAddressService(new AlohaDb());
             orderCustomerPhoneService = new OrderCustomerPhoneService(new AlohaDb());
             updaterService = new UpdaterService(new AlohaDb());
+
+            analitikService = new AnalitikService(new AlohaDb());
         }
 
         public string GetData(int value)
@@ -1269,6 +1272,26 @@ namespace AlohaService
             return updaterService.GetUpdatesForSessionTest();
         }
 
+        #endregion
+
+
+        #region Analitic
+
+        public OperationResultValue<AnalitikData> GetLTVValues(DateTime sDate, DateTime eDate)
+        {
+            return analitikService.GetLTVValues(sDate, eDate);
+        }
+        public OperationResultValue<AnalitikData> GetLTVValues2(DateTime sDate, DateTime eDate)
+        {
+            return analitikService.GetLTVValues2(sDate, eDate);
+        }
+
+
+        public OperationResultValue<List<AnalitikOrderData>> GetAllToGoOrdersData(DateTime sDate, DateTime eDate)
+        {
+            return analitikService.GetAllToGoOrdersData(sDate, eDate);
+
+        }
         #endregion
     }
 }

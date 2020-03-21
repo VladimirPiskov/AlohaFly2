@@ -124,8 +124,10 @@ namespace AlohaFly.Models
                 }
             });
         }
+
+
         bool changed = false;
-        public bool Changed
+        public bool mChanged
         {
             set
             {
@@ -154,7 +156,7 @@ namespace AlohaFly.Models
             }
             get
             {
-                return header + (Changed ? "*" : "");
+                return header + (mChanged ? "*" : "");
             }
         }
 
@@ -170,7 +172,7 @@ namespace AlohaFly.Models
         {
             if (SaveChanesFunction != null)
             {
-                if (Changed)
+                if (mChanged)
                 {
                     if (WndConfirmCloseModel.ShowWndConfirmCloseModel(SaveChanesQuestion, SaveChanesFunction))
                     {

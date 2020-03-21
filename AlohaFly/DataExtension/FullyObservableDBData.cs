@@ -1,4 +1,5 @@
 ﻿using AlohaFly.Utils;
+using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -178,7 +179,9 @@ namespace AlohaFly.DataExtension
                             {
                                 if (newFunc != null)
                                 {
-                                    outData.Add(newFunc(item));
+                                    //outData.Add(newFunc(item));
+
+                                    outData.AddWithSort(orderKeySelector, orderKeySelectorStr,newFunc(item));
                                 }
                                 else
                                 {
@@ -190,12 +193,14 @@ namespace AlohaFly.DataExtension
                                     }
                                     else
                                     {
-                                        outData.Add(item as TOut);
+                                        outData.AddWithSort(orderKeySelector, orderKeySelectorStr, item as TOut);
+                                        //outData.Add(item as TOut);
                                     }
                                 }
                             }
                         }
                     }
+                    /*
                     if (orderKeySelector != null && outData != null)
                     {
                         outData.Sort(orderKeySelector);
@@ -205,7 +210,7 @@ namespace AlohaFly.DataExtension
                         outData.Sort(orderKeySelectorStr);
 
                     }
-
+                    */
                     if (itemSelector != null)
                     {
                         onChange(itemSelector(sourceData.Where(a => selector(a))));
@@ -281,6 +286,7 @@ namespace AlohaFly.DataExtension
             if (sourceData == null) return;
             if (outData == null) return;
             outData.Clear();
+            outData.SetEventsFreeze();
             foreach (var itm in sourceData)
             {
 
@@ -315,6 +321,7 @@ namespace AlohaFly.DataExtension
             {
                 outData.Sort(orderKeySelectorStr);
             }
+            outData.UnSetEventsFreeze();
         }
 
         public FullyObservableDBDataSubsriber<TSource, TOut> Subsribe(FullyObservableDBData<TSource> source, FullyObservableCollection<TOut> subscriber, Func<TSource, TOut> _newFunc = null)
@@ -339,10 +346,12 @@ namespace AlohaFly.DataExtension
     public class FullyObservableDBData<T>
         where T : class, INotifyPropertyChanged
     {
+
         public FullyObservableDBData()
         {
 
         }
+        Logger logger = LogManager.GetCurrentClassLogger();
 
         public FullyObservableCollection<T> Data;
         public Func<T, long> KeySelector;
@@ -431,20 +440,28 @@ namespace AlohaFly.DataExtension
             fillUpdating = true;
             lock (fillUpdatingLock)
             {
-                fillUpdating = false;
-                var res = items.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
-                changesIdsDuringFillUpdate.Clear();
-                foreach (var item in res)
+                try
                 {
-                    var itemCh = linkedData.DBChildrenDataUpdater(item);
-                    AddOrUpdateDataItem(itemCh);
-                }
 
-            }
+                    fillUpdating = false;
+                    var res = items.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
+                    changesIdsDuringFillUpdate.Clear();
+                    foreach (var item in res)
+                    {
+                        //var itemCh = linkedData.DBChildrenDataUpdater(item);
+                        //AddOrUpdateDataItem(itemCh);
+                        AddOrUpdateDataItem(item);
+                    }
+
+                }
+                catch
+                { }
+                }
+            
         }
 
 
-        static object locker = new object();
+        object locker = new object();
         private T AddOrUpdateDataItem(T item)
         {
             if (item == null) return null;
@@ -553,27 +570,36 @@ namespace AlohaFly.DataExtension
             return res;
 
         }
-
+        
         public FullyObservableDBDataUpdateManyResult EndEditMany(List<T> deletedItems, List<T> addedorUpdatetdItems)
         {
+
             var res = new FullyObservableDBDataUpdateManyResult() { Succeess = true };
-            if (addedorUpdatetdItems != null)
+            try
             {
-                foreach (var item in addedorUpdatetdItems)
+
+                if (addedorUpdatetdItems != null)
                 {
-                    var innerRes = EndEdit(item);
-                    res.Succeess = res.Succeess & innerRes.Succeess;
-                    res.ErrorMessage = res.ErrorMessage + innerRes.ErrorMessage;
+                    foreach (var item in addedorUpdatetdItems)
+                    {
+                        var innerRes = EndEdit(item);
+                        res.Succeess = res.Succeess & innerRes.Succeess;
+                        res.ErrorMessage = res.ErrorMessage + innerRes.ErrorMessage;
+                    }
+                }
+                if (addedorUpdatetdItems != null)
+                {
+                    foreach (var item in deletedItems)
+                    {
+                        var innerRes = DeleteItem(item);
+                        res.Succeess = res.Succeess & innerRes.Succeess;
+                        res.ErrorMessage = res.ErrorMessage + innerRes.ErrorMessage;
+                    }
                 }
             }
-            if (addedorUpdatetdItems != null)
+            catch(Exception e)
             {
-                foreach (var item in deletedItems)
-                {
-                    var innerRes = DeleteItem(item);
-                    res.Succeess = res.Succeess & innerRes.Succeess;
-                    res.ErrorMessage = res.ErrorMessage + innerRes.ErrorMessage;
-                }
+                logger.Debug($"EndEditMany Error {e.Message}");
             }
             return res;
         }
@@ -613,26 +639,31 @@ namespace AlohaFly.DataExtension
         {
             lock (fillUpdatingLock)
             {
-                if (fillUpdating)
+                var res = new FullyObservableDBDataUpdateResult<T>() { Succeess = false };
+                try
                 {
-                    changesIdsDuringFillUpdate.Add(KeySelector(item));
+                    if (fillUpdating)
+                    {
+                        changesIdsDuringFillUpdate.Add(KeySelector(item));
+                    }
+
+                    var dbUpdaterResult = linkedData.DBUpdater.Invoke(item);
+                    res.Succeess = dbUpdaterResult.Succeess;
+                    if (dbUpdaterResult.Succeess)
+                    {
+                        res.UpdatedItem = AddOrUpdateDataItem(dbUpdaterResult.UpdatedItem);
+                    }
+                    else
+                    {
+                        res.ErrorMessage = $"Ошибка при сохранении изменений в базе данных. {Environment.NewLine + dbUpdaterResult.ErrorMessage}";
+                    }
+                    return res;
                 }
-
-                var res = new FullyObservableDBDataUpdateResult<T>();
-
-                var dbUpdaterResult = linkedData.DBUpdater.Invoke(item);
-                res.Succeess = dbUpdaterResult.Succeess;
-                if (dbUpdaterResult.Succeess)
+                catch (Exception e)
                 {
-                    //linkedData.LinkedClassesUpdater.Invoke(item);
-
-                    res.UpdatedItem = AddOrUpdateDataItem(dbUpdaterResult.UpdatedItem);
+                    logger.Debug($"EndEdit Error {e.Message}");      
+                    return res;
                 }
-                else
-                {
-                    res.ErrorMessage = $"Ошибка при сохранении изменений в базе данных. {Environment.NewLine + dbUpdaterResult.ErrorMessage}";
-                }
-                return res;
             }
         }
 

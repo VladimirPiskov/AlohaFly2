@@ -323,12 +323,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analytics\AirOrdersInfo.cs" />
+    <Compile Include="Analytics\CtrlLTVToGo.xaml.cs">
+      <DependentUpon>CtrlLTVToGo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Analytics\CtrlMainAnalitics.xaml.cs">
       <DependentUpon>CtrlMainAnalitics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Analytics\CtrlPivotGridAirCompanies.xaml.cs">
       <DependentUpon>CtrlPivotGridAirCompanies.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Analytics\LTVViewModel.cs" />
     <Compile Include="Analytics\MainAnalyticsViewModel.cs" />
     <Compile Include="Analytics\MenuItems.cs" />
     <Compile Include="Analytics\PivotGridAirCompaniesViewModel.cs" />
@@ -405,6 +409,7 @@
     <Compile Include="Models\WndConfirmCloseModel.cs" />
     <Compile Include="Reports\ExportProvider.cs" />
     <Compile Include="Reports\PDFExport.cs" />
+    <Compile Include="Reports\ToGoReports.cs" />
     <Compile Include="Reports\WordReports.cs" />
     <Compile Include="SH\SHWrapper.cs" />
     <Compile Include="UI\AirCompaniesOrders.xaml.cs">
@@ -517,8 +522,13 @@
     <Compile Include="Utils\EnumDescription.cs" />
     <Compile Include="Utils\FullyObservableCollection.cs" />
     <Compile Include="Utils\PropInfo.cs" />
+    <Compile Include="Utils\TaskWithEvent.cs" />
     <Compile Include="Utils\TextHelper.cs" />
     <Compile Include="Utils\Transliter.cs" />
+    <Page Include="Analytics\CtrlLTVToGo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Analytics\CtrlMainAnalitics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -825,10 +835,6 @@
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AlohaService\AlohaService.csproj">
-      <Project>{478cc079-a69e-4fe5-8e8f-a76deac4d86a}</Project>
-      <Name>AlohaService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Print\Print.csproj">
       <Project>{1e096c96-896e-4e82-ab23-02e69732c750}</Project>
       <Name>Print</Name>

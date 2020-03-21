@@ -97,15 +97,40 @@ namespace AlohaFly.DataExtension
         public DateTime EndDt { get; private set; }
         public void ChangeOrderDateRange(DateTime dt1, DateTime dt2)
         {
-            StartDt = dt1;
-            EndDt = dt2;
+            Action<string> ev=null;
+            TaskWithEvent task = new TaskWithEvent(() =>
+            {
 
-            OrdersToGoData.ChangeStartDate(dt1);
-            ToGoOrdersModelSingleton.Instance.UpdateDateRange(dt1, dt2);
-            OrdersFlightData.ChangeStartDate(dt1);
-            AirOrdersModelSingleton.Instance.UpdateDateRange(dt1, dt2);
+                StartDt = dt1;
+                EndDt = dt2;
+
+                int daysLimit = -15;
+                DateTime dtLimit = OrdersFlightData.startDate.GetValueOrDefault().AddDays(daysLimit);
+
+
+
+                for (DateTime dt = new DateTime(Math.Max(dt1.Ticks, dtLimit.Ticks)); dt >= dt1; dt = new DateTime(Math.Max(dt1.Ticks, dt.AddDays(daysLimit).Ticks)))
+                {
+                    OrdersToGoData.ChangeStartDate(dt);
+                    
+                    OrdersFlightData.ChangeStartDate(dt);
+                    
+                    if (dt == dt1) break;
+                    if (ev != null)
+                    {
+                        ev("dt");
+                    }
+                }
+                ToGoOrdersModelSingleton.Instance.UpdateDateRange(dt1, dt2);
+                    AirOrdersModelSingleton.Instance.UpdateDateRange(dt1, dt2);
+            }, ev);
+
+            MainClass.DoWithBusy(task);
             RaiseChangeOrdersDateRangeEvent();
         }
+
+
+            
 
         public delegate void ChangeOrdersDateRangeEventHandler(object sender, EventArgs e);
 

@@ -59,7 +59,19 @@
             <RowDefinition Height="*"></RowDefinition>
             
         </Grid.RowDefinitions>
-        <telerik:RadTimeBar Name="timeBar1" Height="150"
+        <Grid Height="150">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        <StackPanel  Margin="10,10,30,10"  Orientation="Vertical"  >
+                <telerik:RadDatePicker  SelectedValue="{Binding SelectedStartDate,Mode=TwoWay}" DateTimeWatermarkContent="Начало периода"></telerik:RadDatePicker>
+
+                <telerik:RadDatePicker Margin="0,20,0,0" SelectedValue="{Binding SelectedEndDate,Mode=TwoWay}"  DateTimeWatermarkContent="Окончание периода"></telerik:RadDatePicker>
+        </StackPanel>
+
+
+        <telerik:RadTimeBar Name="timeBar1" Grid.Column="1"
                             PeriodStart="{Binding PeriodStart, Mode=TwoWay}" 
                             PeriodEnd="{Binding PeriodEnd, Mode=TwoWay}"
                             VisiblePeriodStart="{Binding VisiblePeriodStart, Mode=TwoWay}" 
@@ -68,8 +80,6 @@
                             SelectionEnd="{Binding SelectedEndDate, Mode=TwoWay}"
                             MinSelectionRange="{Binding MinSelectionRange, Mode=TwoWay}"
                             IsSnapToIntervalEnabled="True">
-           
-
 
 
             <telerik:RadTimeBar.Intervals>
@@ -82,7 +92,7 @@
 
             <telerik:RadColumnSparkline ItemsSource="{Binding RevenueInfos}" XValuePath="Date" YValuePath="Revenue"  />
         </telerik:RadTimeBar>
-
+        </Grid>
         <telerik:RadTabControl Grid.Row="1" VerticalAlignment="Stretch" Margin="0,10,0,0" Background="White"  
                                
 				DisplayMemberPath="Content" DropDownDisplayMode="Visible" ScrollMode="Viewport" BorderThickness="0">

@@ -7,8 +7,17 @@
              xmlns:local="clr-namespace:AlohaFly.UI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="O"
+            Modifiers="Ctrl"
+            Command="{Binding OpenOrderCommand}"
+            />
 
+
+    </UserControl.InputBindings>
+    <Grid>
+    
 
         <Grid.Resources>
 
@@ -205,7 +214,7 @@
                     Margin="0,0,0,10"
                     ShowGroupPanel="False"
                     ItemsSource="{Binding Path=Orders}"
-                    MaxColumnWidth="500"    
+                    MaxColumnWidth="1500"    
                               DragElementAction="None"
                     ScrollMode="Deferred"  
                               VerticalAlignment="Stretch"
@@ -242,6 +251,7 @@
                 <telerik:GridViewDataColumn Header="Сумма с доставкой" Width="160"  IsReadOnly="True" TextAlignment="Right" DataMemberBinding="{Binding OrderTotalSumm, StringFormat={}{0:C}, ConverterCulture=ru-RU }" />
                 <telerik:GridViewDataColumn Header="Статус" Width="100"  IsReadOnly="True" TextAlignment="Right"  DataMemberBinding="{Binding OrderStatus}" />
                 <telerik:GridViewDataColumn Header="Вид оплаты" Width="*"  IsReadOnly="True" DataMemberBinding="{Binding PaymentType.Name}" />
+                <telerik:GridViewDataColumn Header="Комментарий" Width="*"  IsReadOnly="True" DataMemberBinding="{Binding CommentKitchen}" />
                 
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>

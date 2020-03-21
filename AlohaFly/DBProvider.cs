@@ -53,10 +53,13 @@ namespace AlohaFly
 
                     BinaryMessageEncodingBindingElement encoding = new BinaryMessageEncodingBindingElement();
                     HttpsTransportBindingElement transport = new HttpsTransportBindingElement();
-                    transport.MaxReceivedMessageSize = 1000000000;
+                    transport.MaxReceivedMessageSize = (long)Math.Pow(10,9);
+                    transport.MaxBufferSize = (int)Math.Pow(10, 9);
+                    transport.MaxBufferPoolSize = (long)Math.Pow(10, 9);
+
 
                     Binding binding = new CustomBinding(encoding, transport);
-
+                    
 
 
                     var channelFactory = new System.ServiceModel.ChannelFactory<AlohaService.IAlohaService>(binding, address);
@@ -313,7 +316,7 @@ namespace AlohaFly
                 return false;
             }
         }
-
+        /*
         public static bool UpdateOrderToGo(OrderToGo order)
         {
             try
@@ -391,7 +394,7 @@ namespace AlohaFly
             }
         }
 
-
+            */
         public static void UpdateDishList(List<Dish> Dl)
         {
             try

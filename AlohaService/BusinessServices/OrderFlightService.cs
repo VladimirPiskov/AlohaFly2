@@ -298,6 +298,7 @@ namespace AlohaService.BusinessServices
                 result.Success = true;
                 result.Result = new ServiceDataContracts.OrderFlight();
                 result.Result.Id = order.Id;
+                /*
                 result.Result.AirCompany = order.AirCompany == null ? null :
                     new ServiceDataContracts.AirCompany
                     {
@@ -338,8 +339,10 @@ namespace AlohaService.BusinessServices
                                 Name = order.AirCompany.PaymentType.Name
                             }
                     };
+                    */
                 result.Result.AirCompanyId = order.AirCompanyId;
                 result.Result.Comment = order.Comment;
+                /*
                 result.Result.ContactPerson = order.ContactPerson == null ? null :
                     new ServiceDataContracts.ContactPerson
                     {
@@ -348,8 +351,10 @@ namespace AlohaService.BusinessServices
                         SecondName = order.ContactPerson.SecondName,
                         Phone = order.ContactPerson.Phone
                     };
+                    */
                 result.Result.ContactPersonId = order.ContactPersonId;
                 result.Result.DeliveryDate = order.DeliveryDate;
+                /*
                 result.Result.DeliveryPlace = order.DeliveryPlace == null ? null :
                     new ServiceDataContracts.DeliveryPlace
                     {
@@ -357,7 +362,9 @@ namespace AlohaService.BusinessServices
                         Phone = order.DeliveryPlace.Phone,
                         Name = order.DeliveryPlace.Name
                     };
+                    */
                 result.Result.DeliveryPlaceId = order.DeliveryPlaceId;
+                /*
                 result.Result.Driver = order.Driver == null ? null :
                     new ServiceDataContracts.Driver
                     {
@@ -365,6 +372,7 @@ namespace AlohaService.BusinessServices
                         FullName = order.Driver.FullName,
                         Phone = order.Driver.Phone
                     };
+                    */
                 result.Result.DriverId = order.DriverId;
                 result.Result.ExportTime = order.ExportTime;
                 result.Result.ExtraCharge = order.ExtraCharge;
@@ -380,7 +388,7 @@ namespace AlohaService.BusinessServices
 
 
                 result.Result.CreationDate = order.CreationDate;
-
+                /*
                 result.Result.CreatedBy = order.CreatedBy == null ? null :
                     new ServiceDataContracts.User
                     {
@@ -396,9 +404,10 @@ namespace AlohaService.BusinessServices
                         FullName = order.CreatedBy.FullName,
                         UserRole = (UserRole)order.CreatedBy.UserRole
                     };
-
+                    */
                 result.Result.CreatedById = order.CreatedById;
 
+                /*
                 result.Result.SendBy = order.SendBy == null ? null :
                 new ServiceDataContracts.User
                 {
@@ -414,10 +423,14 @@ namespace AlohaService.BusinessServices
                     FullName = order.SendBy.FullName,
                     UserRole = (UserRole)order.SendBy.UserRole
                 };
-
+                */
                 result.Result.SendById = order.SendById;
 
                 result.Result.Code = order.Code;
+
+
+
+
 
                 if (order.DishPackages != null)
                 {
@@ -427,36 +440,18 @@ namespace AlohaService.BusinessServices
                     {
 
                         Amount = pack.Amount,
+                        Code = pack.Code,
                         Comment = pack.Comment,
-
-                        Dish = new ServiceDataContracts.Dish()
-                        {
-                            Barcode = pack.Dish.Barcode,
-                            EnglishName = pack.Dish.EnglishName,
-                            Id = pack.Dish.Id,
-                            IsActive = pack.Dish.IsActive,
-                            IsTemporary = pack.Dish.IsTemporary,
-                            IsAlcohol = pack.Dish.IsAlcohol,
-                            PriceForDelivery = pack.Dish.PriceForDelivery,
-                            PriceForFlight = pack.Dish.PriceForFlight,
-                            RussianName = pack.Dish.RussianName,
-                            SHId = pack.Dish.SHId,
-                            Name = pack.Dish.Name,
-                            LabelEnglishName = pack.Dish.LabelEnglishName,
-                            LabelRussianName = pack.Dish.LabelRussianName,
-                            NeedPrintInMenu = pack.Dish.NeedPrintInMenu
-                        },
-
-                        PositionInOrder = pack.PositionInOrder,
-
+                        Deleted = pack.Deleted,
+                        DeletedStatus = pack.DeletedStatus,
+                        SpisPaymentId = pack.SpisPaymentId,
+                        Id = pack.Id,
                         DishId = pack.DishId,
                         DishName = pack.DishName,
-                        Id = pack.Id,
-                        PassageNumber = pack.PassageNumber,
                         OrderFlightId = pack.OrderFlightId,
                         TotalPrice = pack.TotalPrice,
-
-                        Code = pack.Code
+                        PositionInOrder = pack.PositionInOrder,
+                        PassageNumber = pack.PassageNumber
 
                     }).ToList();
                 }
@@ -965,7 +960,7 @@ namespace AlohaService.BusinessServices
                    DeliveryDate = order.DeliveryDate,
 
                    DeliveryPlaceId = order.DeliveryPlaceId,
-
+                   /*
                    Driver = order.Driver == null ? null :
                        new ServiceDataContracts.Driver
                        {
@@ -973,6 +968,7 @@ namespace AlohaService.BusinessServices
                            FullName = order.Driver.FullName,
                            Phone = order.Driver.Phone
                        },
+                       */
                    DriverId = order.DriverId,
                    ExportTime = order.ExportTime,
                    ExtraCharge = order.ExtraCharge,

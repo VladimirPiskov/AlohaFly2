@@ -113,7 +113,7 @@
                     AutoGenerateColumns="False"
                     FrozenColumnsSplitterVisibility="Hidden"
                     IsFilteringAllowed="True" 
-                    IsScrolling="True"
+                   
                 IsReadOnly="True"
             >
              

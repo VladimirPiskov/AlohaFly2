@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlohaDb.cs" />
+    <Compile Include="BusinessServices\AnalitikService.cs" />
     <Compile Include="BusinessServices\OrderCustomerPhoneService.cs" />
     <Compile Include="BusinessServices\OrderCustomerAddressService.cs" />
     <Compile Include="BusinessServices\MarketingChannelService.cs" />
@@ -310,6 +311,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ServiceDataContracts\AirCompany.cs" />
     <Compile Include="ServiceDataContracts\Alert.cs" />
+    <Compile Include="ServiceDataContracts\AnalitikData.cs" />
     <Compile Include="ServiceDataContracts\ContactPerson.cs" />
     <Compile Include="ServiceDataContracts\Curier.cs" />
     <Compile Include="ServiceDataContracts\DeliveryPerson.cs" />

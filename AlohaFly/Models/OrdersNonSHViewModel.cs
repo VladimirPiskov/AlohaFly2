@@ -1,4 +1,5 @@
-﻿using AlohaService.ServiceDataContracts;
+﻿using AlohaFly.DataExtension;
+using AlohaService.ServiceDataContracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -112,7 +113,7 @@ namespace AlohaFly.Models
             {
                 ReturnMessage += $"Ошибка выгрузки заказа ToFly №{order.Id} {Environment.NewLine} {ErrMess}";
             }
-            DBProvider.UpdateOrderFlight(order);
+            DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(order);
             RaisePropertyChanged("Orders");
         }
 

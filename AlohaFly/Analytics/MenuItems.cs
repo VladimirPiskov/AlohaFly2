@@ -16,6 +16,7 @@ namespace AlohaFly.Analytics
                     {
                         new MenuItemCatalog ("Выручка",ShowMainAnalytics, AccessTypeConst.Access_Analytics1,false),
                         new MenuItemCatalog ("Выручка по категориям",ShowPivotAir, AccessTypeConst.Access_Analytics2,false),
+                        new MenuItemCatalog ("LTV2GO",ShowLTV, AccessTypeConst.Access_Analytics2,false),
                     };
                 }
                 return _itemsCatalog;
@@ -29,6 +30,18 @@ namespace AlohaFly.Analytics
                 DataContext = new MainAnalyticsViewModel()
                 {
                     Header = "Выручка"
+                }
+            };
+            MainClass.ShowUC(ctrl);
+        }
+
+        public static void ShowLTV()
+        {
+            var ctrl = new CtrlLTVToGo()
+            {
+                DataContext = new LTVViewModel()
+                {
+                    Header = "LTV2GO"
                 }
             };
             MainClass.ShowUC(ctrl);

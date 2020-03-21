@@ -62,6 +62,33 @@ namespace AlohaFly.Models
                     RaisePropertyChanged("CanCloseCurentOrder");
                 }
             });
+
+
+            OpenOrderCommand = new DelegateCommand(_ =>
+            {
+                try
+
+                {
+                    if (!Authorization.IsDirector && !Authorization.IsAdmin) return;
+                    if ((CurentOrder != null))
+                    {
+                        if (CurentOrder.OrderStatus == OrderStatus.Closed)
+                        {
+                            CurentOrder.OrderStatus = OrderStatus.InWork;
+                            CurentOrder.FRPrinted = false;
+                            CurentOrder.PreCheckPrinted = false;
+                            CurentOrder.NeedPrintFR = false;
+                            CurentOrder.NeedPrintPrecheck = false;
+                            CurentOrder.Closed = false;
+                            CurentOrder.PaymentId = null;
+                            Models.ToGoOrdersModelSingleton.Instance.UpdateOrder(CurentOrder);
+                        }
+                    }
+                }
+                catch
+                { }
+            });
+
             DeleteOrderCommand = new DelegateCommand(_ =>
             {
                 try
@@ -188,6 +215,8 @@ namespace AlohaFly.Models
         public ICommand EditOrderCommand { get; set; }
         public ICommand CopyOrderCommand { get; set; }
         public ICommand CloseOrderCommand { get; set; }
+        public ICommand OpenOrderCommand { get; set; }
+        
         public ICommand DeleteOrderCommand { get; set; }
         public ICommand PrintLabelCommand { get; set; }
         public ICommand PrintInvoiceItems { get; set; }

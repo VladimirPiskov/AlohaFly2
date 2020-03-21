@@ -845,7 +845,9 @@ namespace AlohaFly.Models
         {
             get
             {
-                return $"Заказ принял: {Model.Order.CreatedBy.FullName}";
+                if (Model.Order == null) return "";
+                if (Model.Order.CreatedBy == null) return "";
+                return $"Заказ принял: {Model.Order.CreatedBy?.FullName}";
             }
         }
 
@@ -1204,6 +1206,7 @@ namespace AlohaFly.Models
             {
 
                 CreatedBy = Authorization.CurentUser,
+                CreatedById = Authorization.CurentUser.Id,
                 OrderStatus = OrderStatus.InWork,
 
             };
@@ -1324,18 +1327,18 @@ namespace AlohaFly.Models
                     return false;
                 }
 
-                /*
+                
                 if (Order.ContactPerson == null)
                 {
-                    addRes = false;
+                    
                     ContactPerson cP = addContactPercon();
-                    if (cP != null) { Order.ContactPerson = cP; addRes = true; }
+                    if (cP != null) { Order.ContactPerson = cP; }
                     else
                     {
-                        UI.UIModify.ShowAlert("Нельзя сохранить заказ без указания контактного лица");
+                      //  UI.UIModify.ShowAlert("Нельзя сохранить заказ без указания контактного лица");
                     }
                 }
-                */
+                
 
                 Order.DishPackages = OrderDishez.ToList();
                 Order.IsSHSent = true;

@@ -33,7 +33,8 @@ namespace AlohaFly.Analytics
                 if (this.selectedStartDate != value)
                 {
                     this.selectedStartDate = value;
-                    this.OnPropertyChanged("SelectedStartDate");
+                    this.OnPropertyChanged(nameof(SelectedStartDate));
+                    ServerDataSingleton.Instance.CheckStardDate(value);
                     UpdateSumms();
 
 
@@ -52,7 +53,7 @@ namespace AlohaFly.Analytics
                 if (this.selectedEndDate != value)
                 {
                     this.selectedEndDate = value;
-                    this.OnPropertyChanged("SelectedEndDate");
+                    this.OnPropertyChanged(nameof(SelectedEndDate));
 
                     UpdateSumms();
 

@@ -6,6 +6,30 @@ using Telerik.Windows.Controls;
 
 namespace AlohaFly.Import
 {
+
+
+    class PricesImportToFlyFromExcel : DataImportReaderFromExcel
+    {
+        public PricesImportToFlyFromExcel()
+        { }
+
+        public override DelegateCommand MenuAction()
+        {
+            return new DelegateCommand((_) => { UpdatePrices(false); }); ;
+        }
+    }
+
+    class PricesImportToGoFromExcel : DataImportReaderFromExcel
+    {
+        public PricesImportToGoFromExcel()
+        { }
+
+        public override DelegateCommand MenuAction()
+        {
+            return new DelegateCommand((_) => { UpdatePrices(true); }); ;
+        }
+    }
+
     class DataImportReaderFromExcel : DataImportReader
     {
         public DataImportReaderFromExcel()
@@ -68,8 +92,121 @@ namespace AlohaFly.Import
 
         }
 
+        public void UpdateToFlyPrices()
+        {
+            UpdatePrices(false);
+        }
+        public void UpdateToGoPrices()
+        {
+            UpdatePrices(true);
+        }
 
-        private bool GetDt(string s, out DateTime res)
+        protected void UpdatePrices(bool toGo)
+        {
+            if (UI.UIModify.ShowOpenFileDialog(out string filePath, "Microsoft Excel((*.xls *) | (*.xlsx *) )", "Укажите файл для импорта"))
+            {
+                try
+                {
+                    var ewb = new ExcelWorkBook();
+                    var ws = ewb.GetWB(filePath);
+                    if (ws == null) return;
+
+                    if (!ParceChangePrices(ws, out Dictionary<int,decimal> pr))
+                    {
+                        UI.UIModify.ShowAlert($"Ошибка в формате файла {filePath} .");
+                    }
+                    string res = "";
+                    if (pr != null && pr.Count > 0)
+                    {
+                        foreach (var bc in pr.Keys)
+                        {
+                            if (DataExtension.DataCatalogsSingleton.Instance.DishData.Data.Any(a => a.Barcode == bc))
+                            {
+                                
+                                if (DataExtension.DataCatalogsSingleton.Instance.DishData.Data.Where(a => a.Barcode == bc).Count() > 1)
+                                {
+                                    res += $"Более одно блюда с баркодом {bc} {Environment.NewLine}";
+                                    continue;
+                                }
+                                var d = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.FirstOrDefault(a => a.Barcode == bc);
+                                if (d.IsTemporary)
+                                {
+                                    res += $"Временное блюдо с баркодом {bc} {Environment.NewLine}";
+                                    continue;
+                                }
+                                if (!toGo && d.IsToGo)
+                                {
+                                    res += $"Блюдо с баркодом {bc} не для Fly {Environment.NewLine}";
+                                    continue;
+                                }
+
+                                if (toGo && !d.IsToGo)
+                                {
+                                    res += $"Блюдо с баркодом {bc} не для ToGo {Environment.NewLine}";
+                                    continue;
+                                }
+                                if (toGo)
+                                {
+                                    d.PriceForDelivery = pr[bc];
+                                }
+                                else {
+                                    d.PriceForFlight = pr[bc];
+                                }
+                                DataExtension.DataCatalogsSingleton.Instance.DishData.EndEdit(d);
+                            }
+                            else
+                            {
+                                res += $"Блюдо с баркодом {bc} не найдено {Environment.NewLine}";
+                            }
+
+                            res += $"Экспорт завершен";
+
+                        }
+                        UI.UIModify.ShowAlert(res);
+                    }
+                    else
+                    {
+                        UI.UIModify.ShowAlert($"В файле {Environment.NewLine} " +
+                            $"{filePath} {Environment.NewLine}" +
+                            $"не найдено заказов");
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    UI.UIModify.ShowAlert($"Ошибка открытия файла  {Environment.NewLine} " +
+                        $"{filePath} {Environment.NewLine}" +
+                        $"тектс ошибки {Environment.NewLine}" +
+                        $"{e.Message}");
+                    return;
+                }
+            }
+
+        }
+
+        //Баркод в первом столбце цена в третьем
+        private bool ParceChangePrices(Microsoft.Office.Interop.Excel.Worksheet ws, out Dictionary<int, decimal> pr)
+        {
+            int row = 2;
+            pr = new Dictionary<int, decimal>();
+            while (GetExcelCellValue(ws, row, 1) != "" && row < maxExcelRow)
+            {
+                int bc = (int)GetExcelCellValueDec(ws, row, 1);
+                if (!pr.TryGetValue(bc, out decimal p))
+                {
+                    pr.Add(bc, GetExcelCellValueDec(ws, row, 3));
+                }
+                else
+                {
+                    UI.UIModify.ShowAlert($"Повтор баркода {bc}. Строка {row} "); ;
+                }
+                row++;
+            }
+            return true;
+        }
+
+            private bool GetDt(string s, out DateTime res)
         {
             res = new DateTime();
             if (s.Length < 11) return false;
@@ -90,9 +227,16 @@ namespace AlohaFly.Import
 
         private string GetExcelCellValue(Microsoft.Office.Interop.Excel.Worksheet ws, int row, int column)
         {
-            object bcOb = ws.Cells[row, column].Value2;
-            if (bcOb == null) return "";
-            return ws.Cells[row, column].Value.ToString().Trim();
+            try
+            {
+                object bcOb = ws.Cells[row, column].Value2;
+                if (bcOb == null) return "";
+                return ws.Cells[row, column].Value.ToString().Trim();
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         private char RepDemSep
@@ -106,10 +250,19 @@ namespace AlohaFly.Import
 
         private decimal GetExcelCellValueDec(Microsoft.Office.Interop.Excel.Worksheet ws, int row, int column)
         {
-            string s = ws.Cells[row, column].Value.ToString();
+            try
+            {
 
-            return Convert.ToDecimal(s.Replace('.', RepDemSep).Replace(',', RepDemSep));
-        }
+                object bcOb = ws.Cells[row, column].Value2;
+                if (bcOb == null) return 0;
+                string s = ws.Cells[row, column].Value.ToString().Trim();
+                return Convert.ToDecimal(s.Replace('.', RepDemSep).Replace(',', RepDemSep));
+            }
+            catch
+            {
+                return 0;
+            }
+            }
 
 
         private int maxExcelRow = 65536;

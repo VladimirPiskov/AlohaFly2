@@ -1,4 +1,5 @@
-﻿using AlohaService.ServiceDataContracts;
+﻿using AlohaFly.DataExtension;
+using AlohaService.ServiceDataContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,7 +126,11 @@ namespace AlohaFly
             if (ord.AirCompany == null) return;
             if (ord.AirCompanyId == MainClass.AirAvangardId) return;
             if (ord.AirCompany.DiscountId == null) return;
-            decimal summ = Models.AirOrdersModelSingleton.Instance.GetOrdersOfMonth(ord.DeliveryDate)
+            DateTime dt = ord.DeliveryDate;
+            DateTime dt1 = new DateTime(dt.Year, dt.Month, 1);
+            DateTime dt2 = new DateTime(dt.AddMonths(1).Year, dt.AddMonths(1).Month, 1);
+            decimal summ =
+                DataCatalogsSingleton.Instance.OrdersFlightData.Data.Where(a => a.DeliveryDate >= dt1 && a.DeliveryDate < dt2)
                 .Where(a => a.AirCompany?.Id == ord.AirCompany?.Id && a.Id < ord.Id)
                 .Sum(a => a.OrderSumm);
             if (ord.OrderStatus != OrderStatus.Closed)
