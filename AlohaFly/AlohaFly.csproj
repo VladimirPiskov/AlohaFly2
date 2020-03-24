@@ -835,6 +835,10 @@
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AlohaService\AlohaService.csproj">
+      <Project>{478cc079-a69e-4fe5-8e8f-a76deac4d86a}</Project>
+      <Name>AlohaService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Print\Print.csproj">
       <Project>{1e096c96-896e-4e82-ab23-02e69732c750}</Project>
       <Name>Print</Name>

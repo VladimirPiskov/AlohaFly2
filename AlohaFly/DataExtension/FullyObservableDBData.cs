@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -356,6 +357,10 @@ namespace AlohaFly.DataExtension
         public FullyObservableCollection<T> Data;
         public Func<T, long> KeySelector;
         private List<FullyObservableCollection<T>> subsribers = new List<FullyObservableCollection<T>>();
+        //private BlockingCollection<FullyObservableCollection<T>> subsribers = new BlockingCollection<FullyObservableCollection<T>>();
+
+        
+
         private Dictionary<long, T> data;//= new ConcurrentDictionary<long, T>();
         //private DataDBUpdaterFactory<T> updaterFactory;
         private LinkedData<T> linkedData;
@@ -364,9 +369,9 @@ namespace AlohaFly.DataExtension
         public bool exist = false;
         public bool Exist { get { return exist; } }
 
-        private List<long> changesIdsDuringFillUpdate = new List<long>();
+       // private List<long> changesIdsDuringFillUpdate = new List<long>();
         private bool fillUpdating = false;
-        private object fillUpdatingLock = new object();
+        //private object fillUpdatingLock = new object();
 
         public DateTime? startDate;
         //private DateTime? endDate;
@@ -416,14 +421,16 @@ namespace AlohaFly.DataExtension
             fillUpdating = true;
             var dbRes = linkedData.DBListFunc.Invoke(startDate, edt);
 
-            lock (fillUpdatingLock)
+           // lock (fillUpdatingLock)
             {
                 fillUpdating = false;
                 if (dbRes.Success)
                 {
-                    var res = dbRes.Result.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
-                    changesIdsDuringFillUpdate.Clear();
-                    foreach (var item in res)
+
+                    //var res = dbRes.Result.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
+                    //changesIdsDuringFillUpdate.Clear();
+                    
+                    foreach (var item in dbRes.Result)
                     {
                         // var itemCh = linkedData.DBChildrenDataUpdater(item);
                         AddOrUpdateDataItem(item);
@@ -438,15 +445,15 @@ namespace AlohaFly.DataExtension
         {
             if (items == null) return;
             fillUpdating = true;
-            lock (fillUpdatingLock)
+            //lock (fillUpdatingLock)
             {
                 try
                 {
 
                     fillUpdating = false;
-                    var res = items.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
-                    changesIdsDuringFillUpdate.Clear();
-                    foreach (var item in res)
+                    //var res = items.Where(a => !changesIdsDuringFillUpdate.Contains(KeySelector(a))).ToList();// Убираем записи, которые обновились локально с начала апдейта
+                    //changesIdsDuringFillUpdate.Clear();
+                    foreach (var item in items)
                     {
                         //var itemCh = linkedData.DBChildrenDataUpdater(item);
                         //AddOrUpdateDataItem(itemCh);
@@ -461,16 +468,17 @@ namespace AlohaFly.DataExtension
         }
 
 
-        object locker = new object();
+        object subsribersLocker = new object();
         private T AddOrUpdateDataItem(T item)
         {
             if (item == null) return null;
             T val=null;
-            lock (locker)
+          //  lock (locker)
             {
 
                 MainClass.Dispatcher.Invoke(new Action(() =>
                {
+               
 
                    if (data.TryGetValue(KeySelector(item), out val))
                    {
@@ -484,12 +492,14 @@ namespace AlohaFly.DataExtension
                        //val = item;
                        item = linkedData.DBChildrenDataUpdater(item);
                        data.Add(KeySelector(item), item);
-
-                       foreach (var subsriber in subsribers)
+                       lock (subsribersLocker)
                        {
-                           if (!subsriber.Any(a => KeySelector(a) == KeySelector(item)))
+                           foreach (var subsriber in subsribers)
                            {
-                               subsriber.Add(item);
+                               if (!subsriber.Any(a => KeySelector(a) == KeySelector(item)))
+                               {
+                                   subsriber.Add(item);
+                               }
                            }
                        }
                        val = item;
@@ -505,10 +515,10 @@ namespace AlohaFly.DataExtension
         private void DeleteDataItem(T item)
         {
             if (item == null) return;
-            lock (locker)
-            {
+            
                 data.Remove(KeySelector(item));
-
+            lock (subsribersLocker)
+            {
                 foreach (var subsriber in subsribers)
                 {
                     if (subsriber.Any(a => KeySelector(a) == KeySelector(item)))
@@ -530,7 +540,7 @@ namespace AlohaFly.DataExtension
         public void Subsribe(FullyObservableCollection<T> subsriber)
         {
             if (subsriber == null) return;
-            lock (locker)
+            lock (subsribersLocker)
             {
                 if (!subsribers.Contains(subsriber))
                 {
@@ -550,7 +560,7 @@ namespace AlohaFly.DataExtension
         public void Unsubsribe(FullyObservableCollection<T> subsriber)
         {
             if (subsriber == null) return;
-            lock (locker)
+            lock (subsribersLocker)
             {
                 if (subsribers.Contains(subsriber))
                 {
@@ -612,13 +622,14 @@ namespace AlohaFly.DataExtension
         */
             public FullyObservableDBDataUpdateResult<T> DeleteItem(T item)
         {
-            lock (fillUpdatingLock)
+           // lock (fillUpdatingLock)
             {
+                /*
                 if (fillUpdating)
                 {
                     changesIdsDuringFillUpdate.Add(KeySelector(item));
                 }
-
+                */
                 var res = new FullyObservableDBDataUpdateResult<T>();
 
                 var dbUpdaterResult = linkedData.DBDeleter.Invoke(item);
@@ -637,16 +648,17 @@ namespace AlohaFly.DataExtension
 
         public FullyObservableDBDataUpdateResult<T> EndEdit(T item)
         {
-            lock (fillUpdatingLock)
+            //lock (fillUpdatingLock)
             {
                 var res = new FullyObservableDBDataUpdateResult<T>() { Succeess = false };
                 try
                 {
+                    /*
                     if (fillUpdating)
                     {
                         changesIdsDuringFillUpdate.Add(KeySelector(item));
                     }
-
+                    */
                     var dbUpdaterResult = linkedData.DBUpdater.Invoke(item);
                     res.Succeess = dbUpdaterResult.Succeess;
                     if (dbUpdaterResult.Succeess)

@@ -63,7 +63,7 @@ namespace AlohaFly.DataExtension
         }
 
         bool endQueue = false;
-        int interval = 5;
+        int interval = 20;
         public DateTime dataDate
 
         {

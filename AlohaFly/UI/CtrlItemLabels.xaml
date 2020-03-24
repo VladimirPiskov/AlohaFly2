@@ -8,6 +8,11 @@
               xmlns:telerikGrid="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1600">
+    <UserControl.Resources>
+        <Style x:Key="HorizontalCell" TargetType="telerik:GridViewCell">
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
     <Grid >
         <telerik:RadBusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy, Mode=TwoWay}">
             <Grid x:Name="MainGr">
@@ -75,9 +80,12 @@
              RowIndicatorVisibility="Collapsed"
              ColumnWidth="SizeToHeader"
              >
+
+                    
                     <telerik:RadGridView.Columns>
                         <telerik:GridViewDataColumn Header="Баркод" Width="70"  IsReadOnly="True" IsFilterable="False" DataMemberBinding="{Binding Barcode}" TextAlignment="Right"/>
                         <telerik:GridViewDataColumn Header="Наименование" Width="*" IsReadOnly="True" DataMemberBinding="{Binding Name}"/>
+                        <telerik:GridViewDataColumn Header="Дост."  Width="70" IsReadOnly="True" DataMemberBinding="{Binding IsToGo}" CellStyle="{StaticResource HorizontalCell}"/>
                         <telerik:GridViewDataColumn  IsReadOnly="False" DataMemberBinding="{Binding ToFlyLabelSeriesCount}" Width="100" TextAlignment="Right">
                             <telerik:GridViewDataColumn.Header>
                                 <TextBlock Text="Максимум блюд на одну наклейку ToFly" TextWrapping="Wrap" TextAlignment="Center"/>
@@ -88,9 +96,9 @@
                                 <TextBlock Text="Максимум блюд на одну наклейку ToGo" TextWrapping="Wrap" TextAlignment="Center"/>
                             </telerik:GridViewDataColumn.Header>
                         </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn Width="100" IsReadOnly="True" DataMemberBinding="{Binding LabelsCount}" TextAlignment="Right">
+                        <telerik:GridViewDataColumn Width="75" IsReadOnly="True" DataMemberBinding="{Binding LabelsCount}" TextAlignment="Right">
                             <telerik:GridViewDataColumn.Header>
-                                <TextBlock Text="Кол-во наклеек" TextWrapping="Wrap" TextAlignment="Center"/>
+                                <TextBlock Text="Кол-во накл."   TextWrapping="Wrap" TextAlignment="Center"/>
                             </telerik:GridViewDataColumn.Header>
                         </telerik:GridViewDataColumn>
 
