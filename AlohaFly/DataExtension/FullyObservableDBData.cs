@@ -416,13 +416,17 @@ namespace AlohaFly.DataExtension
 
         }
 
+
+        private bool curentFillUpdate = false;
         private void FillUpdate(DateTime? edt = null)
         {
+            logger.Debug($"FillUpdate {edt?.ToString()}");
+            curentFillUpdate = true;
             fillUpdating = true;
             var dbRes = linkedData.DBListFunc.Invoke(startDate, edt);
 
            // lock (fillUpdatingLock)
-            {
+            
                 fillUpdating = false;
                 if (dbRes.Success)
                 {
@@ -436,15 +440,17 @@ namespace AlohaFly.DataExtension
                         AddOrUpdateDataItem(item);
                     }
                 }
-            }
 
+            curentFillUpdate = false;
         }
 
 
         public void UpdateItems(List<T> items)
         {
             if (items == null) return;
+            if (items.Count==0) return;
             fillUpdating = true;
+            logger.Debug($"UpdateItems count {items.Count()}");
             //lock (fillUpdatingLock)
             {
                 try
@@ -475,40 +481,53 @@ namespace AlohaFly.DataExtension
             T val=null;
           //  lock (locker)
             {
-
+                if (!curentFillUpdate) { logger.Debug($"AddOrUpdateDataItem preInvoke  to MainThread"); }
                 MainClass.Dispatcher.Invoke(new Action(() =>
                {
-               
-
-                   if (data.TryGetValue(KeySelector(item), out val))
+                   try
                    {
-                       CopyAllPrimitiveProp(item, val);
-                       val = linkedData.DBChildrenDataUpdater(val);
-
-                      
-                   }
-                   else
-                   {
-                       //val = item;
-                       item = linkedData.DBChildrenDataUpdater(item);
-                       data.Add(KeySelector(item), item);
-                       lock (subsribersLocker)
-                       {
-                           foreach (var subsriber in subsribers)
+                       if (!curentFillUpdate) { logger.Debug($"AddOrUpdateDataItem MainThread"); }
+                       if (data.TryGetValue(KeySelector(item), out val))
+                       { 
+                           CopyAllPrimitiveProp(item, val);
+                           val = linkedData.DBChildrenDataUpdater(val);
+                           if (!curentFillUpdate)
                            {
-                               if (!subsriber.Any(a => KeySelector(a) == KeySelector(item)))
+                               logger.Debug($"AddOrUpdateDataItem MainThread item exists end edit");
+                           }
+
+                       }
+                       else
+                       {
+                           //val = item;
+                           item = linkedData.DBChildrenDataUpdater(item);
+                           data.Add(KeySelector(item), item);
+                           if (!curentFillUpdate)
+                           { logger.Debug($"AddOrUpdateDataItem MainThread item added"); }
+                           lock (subsribersLocker)
+                           {
+                               foreach (var subsriber in subsribers)
                                {
-                                   subsriber.Add(item);
+                                   if (!subsriber.Any(a => KeySelector(a) == KeySelector(item)))
+                                   {
+                                       subsriber.Add(item);
+                                   }
                                }
                            }
+                           val = item;
                        }
-                       val = item;
+                   }
+                   catch(Exception e)
+                   {
+                      
+                       logger.Debug($"AddOrUpdateDataItem MainThread error {e.Message}"); 
                    }
                }));
                 //   linkedData.SubClassesUpdater?.Invoke(item);
 
 
             }
+            
             return val;
         }
 
@@ -650,16 +669,13 @@ namespace AlohaFly.DataExtension
         {
             //lock (fillUpdatingLock)
             {
+
+                logger.Debug($"EndEdit {typeof(T).ToString()}");
                 var res = new FullyObservableDBDataUpdateResult<T>() { Succeess = false };
                 try
                 {
-                    /*
-                    if (fillUpdating)
-                    {
-                        changesIdsDuringFillUpdate.Add(KeySelector(item));
-                    }
-                    */
                     var dbUpdaterResult = linkedData.DBUpdater.Invoke(item);
+                    logger.Debug($"linkedData.DBUpdater  postGetFunc ok ");
                     res.Succeess = dbUpdaterResult.Succeess;
                     if (dbUpdaterResult.Succeess)
                     {
@@ -669,6 +685,7 @@ namespace AlohaFly.DataExtension
                     {
                         res.ErrorMessage = $"Ошибка при сохранении изменений в базе данных. {Environment.NewLine + dbUpdaterResult.ErrorMessage}";
                     }
+                    logger.Debug($"EndEdit return {res.Succeess} err: {res.ErrorMessage}");
                     return res;
                 }
                 catch (Exception e)

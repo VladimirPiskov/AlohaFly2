@@ -690,12 +690,12 @@ namespace AlohaService
         {
             return orderCustomerService.CreateOrderCustomer(orderCustomer);
         }
-
+        /*
         public OperationResultValue<ServiceDataContracts.OrderCustomer> GetOrderCustomer(long orderCustomerId)
         {
             return orderCustomerService.GetOrderCustomer(orderCustomerId);
         }
-
+        */
         public OperationResult UpdateOrderCustomer(ServiceDataContracts.OrderCustomer orderCustomer)
         {
             return orderCustomerService.UpdateOrderCustomer(orderCustomer);
@@ -705,11 +705,12 @@ namespace AlohaService
         {
             return orderCustomerService.DeleteOrderCustomer(orderCustomerId);
         }
-
+        /*
         public OperationResultValue<List<ServiceDataContracts.OrderCustomer>> GetOrderCustomerList()
         {
             return orderCustomerService.GetOrderCustomerList();
         }
+        */
         public OperationResultValue<List<ServiceDataContracts.OrderCustomer>> GetOrderCustomerList2()
         {
             return orderCustomerService.GetOrderCustomerList2();

@@ -43,6 +43,9 @@ namespace AlohaFly.Reports
         }
 
             
+
+        
+
         
             public void ToFlyMenuCreateForPassage(OrderFlight order, int pn)
         {
@@ -315,7 +318,7 @@ namespace AlohaFly.Reports
         {
             if (AllCompsOrders.Count == 0) { UI.UIModify.ShowAlert("Выбранный диапазон не содержит заказзов"); return; }
             OpenXls();
-
+            app.Visible = false;
 
             foreach (var compOrders in AllCompsOrders.OrderBy(a => a.Name))
             {
@@ -324,6 +327,7 @@ namespace AlohaFly.Reports
                 Ws = (Microsoft.Office.Interop.Excel.Worksheet)Wb.Worksheets.Add();
             }
             Ws.Delete();
+            app.Visible = true;
         }
 
         #region ToGoOrders

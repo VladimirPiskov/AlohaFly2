@@ -48,7 +48,9 @@ namespace AlohaFly
                             if (disc != ordForDisc.DiscountSumm)
                             {
                                 ordForDisc.DiscountSumm = disc;
-                                DBProvider.Client.UpdateOrderFlight(ordForDisc, Authorization.CurentUser.Id);
+
+                                DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(ordForDisc);
+                               // DBProvider.Client.UpdateOrderFlight(ordForDisc, Authorization.CurentUser.Id);
                             }
 
 
@@ -67,7 +69,8 @@ namespace AlohaFly
                             if (disc != ord.DiscountSumm)
                             {
                                 ord.DiscountSumm = disc;
-                                DBProvider.Client.UpdateOrderFlight(ord, Authorization.CurentUser.Id);
+                                //DBProvider.Client.UpdateOrderFlight(ord, Authorization.CurentUser.Id);
+                                DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(ord);
                             }
                         }
                     }
@@ -105,7 +108,8 @@ namespace AlohaFly
                                 if (disc != ord.DiscountSumm)
                                 {
                                     ord.DiscountSumm = disc;
-                                    DBProvider.Client.UpdateOrderFlight(ord, Authorization.CurentUser.Id);
+                                    //DBProvider.Client.UpdateOrderFlight(ord, Authorization.CurentUser.Id);
+                                    DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(ord);
                                 }
                             }
 

@@ -37,6 +37,15 @@ namespace AlohaService.ServiceDataContracts
         public string Email { get; set; }
 
         [DataMember]
+        [Display(Name = "CB")]
+        public bool CashBack { get; set; }
+
+        [DataMember]
+        [Display(Name = "Начало акции")]
+        public DateTime CashBackStartDate { get; set; }
+
+
+        [DataMember]
         [Display(Name = "Комментарий")]
         public string Comments { get; set; }
 

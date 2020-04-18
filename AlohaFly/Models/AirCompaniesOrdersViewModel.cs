@@ -237,7 +237,7 @@ namespace AlohaFly.Models
         }
         public decimal OrdersDiscountPercent
         {
-            get { return Orders.Sum(a => a.OrderDishesSumm) == 0 ? 0 : Orders.Sum(a => a.DiscountSumm) / Orders.Sum(a => a.OrderDishesSumm); }
+            get { return Orders.Sum(a => a.OrderDishesSumm) == 0 ? 0 : Orders.Sum(a => a.DiscountSumm) / Orders.Sum(a => a.OrderSumm); }
         }
 
         public decimal OrdersTotalSumm

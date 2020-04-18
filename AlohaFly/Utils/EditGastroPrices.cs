@@ -1,4 +1,5 @@
-﻿using AlohaFly.Models;
+﻿using AlohaFly.DataExtension;
+using AlohaFly.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace AlohaFly.Utils
                 {
                     ord.DishPackages.Where(dp => dp.TotalPrice != dp.Dish.PriceForFlight).ToList().ForEach(dp => dp.TotalPrice = dp.Dish.PriceForFlight);
                     ord.IsSHSent = false;
-                    DBProvider.Client.UpdateOrderFlight(ord, Authorization.CurentUser.Id);
+                    //DBProvider.Client.UpdateOrderFlight(ord, Authorization.CurentUser.Id);
+                    DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(ord);
                 }
             }
         }

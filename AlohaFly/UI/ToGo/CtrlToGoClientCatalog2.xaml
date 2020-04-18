@@ -80,7 +80,7 @@
             RowIndicatorVisibility="Collapsed"
             
             FrozenColumnsSplitterVisibility="Hidden"
-            CanUserResizeColumns="False"
+            CanUserResizeColumns="True"
             
             IsEnabled="{Binding GridViewIsEnabled}"
             ItemsSource="{Binding Path=ToGoClientsCol}"
@@ -102,7 +102,7 @@
                 <telerik:GridViewDataColumn Header="Имя" Width="220"   DataMemberBinding="{Binding OrderCustomer.FullName}"/>
                 <telerik:GridViewDataColumn Header="Телефон" Width="140"  TextAlignment="Right"  DataMemberBinding="{Binding PrimaryPhone.Phone}"/>
                 <telerik:GridViewDataColumn Header="E-mail" Width="150"   DataMemberBinding="{Binding OrderCustomer.Email}"/>
-                <telerik:GridViewDataColumn Header="Адрес" Width="150"   DataMemberBinding="{Binding PrimaryAddress.Address}"/>
+                <telerik:GridViewDataColumn Header="Адрес" Width="450"   DataMemberBinding="{Binding PrimaryAddress.Address}"/>
                 <telerik:GridViewDataColumn Header="Метро" Width="130"   DataMemberBinding="{Binding PrimaryAddress.SubWay}"/>
                 <telerik:GridViewDataColumn Header="Зона" Width="70"  TextAlignment="Right"  DataMemberBinding="{Binding PrimaryAddress.ZoneId}"/>
                 <telerik:GridViewDataColumn Header="Комментарий" Width="*"  DataMemberBinding="{Binding OrderCustomer.Comments}"/>

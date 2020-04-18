@@ -40,6 +40,14 @@ namespace AlohaService.Entities
         public int ToFlyLabelSeriesCount { get; set; } = 1;
         public int ToGoLabelSeriesCount { get; set; } = 1;
 
+
+        public int B { get; set; }
+        public int J { get; set; }
+
+        public int U { get; set; }
+
+        public int Ccal { get; set; }
+
         public long SHId { get; set; }
         public long SHIdNewBase { get; set; }
 

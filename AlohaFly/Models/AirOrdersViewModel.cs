@@ -150,15 +150,16 @@ namespace AlohaFly.Models
                     CurentOrder.SendBy = Authorization.CurentUser;
                     if (curentOrder.OrderStatus == OrderStatus.InWork)
                     {
+
                         CurentOrder.OrderStatus = OrderStatus.Sent;
                         SH.SHWrapper.CreateSalesInvoiceSync(CurentOrder, out string err);
-
                     }
                     else if (curentOrder.OrderStatus == OrderStatus.Sent)
                     {
                         CurentOrder.OrderStatus = OrderStatus.InWork;
 
                     }
+                    logger.Debug($"SetSendStatusCommand {CurentOrder.Id}; CurentOrder.OrderStatus: {CurentOrder.OrderStatus.ToString()}");
 
                     Models.AirOrdersModelSingleton.Instance.UpdateOrder(CurentOrder);
 

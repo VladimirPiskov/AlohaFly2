@@ -12,7 +12,9 @@ namespace AlohaService.Entities
         public long OldId { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
+        public bool CashBack { get; set; }
 
+        public DateTime CashBackStartDate { get; set; }
 
         public string SecondName { get; set; }
         public string MiddleName { get; set; }

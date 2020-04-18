@@ -291,19 +291,20 @@ namespace AlohaService
 
         [OperationContract]
         OperationResult CreateOrderCustomer(OrderCustomer orderCustomer);
-
+        /*
         [OperationContract]
         OperationResultValue<OrderCustomer> GetOrderCustomer(long orderCustomerId);
-
+        */
         [OperationContract]
         OperationResult UpdateOrderCustomer(OrderCustomer orderCustomer);
 
         [OperationContract]
         OperationResult DeleteOrderCustomer(long orderCustomerId);
 
+        /*
         [OperationContract]
         OperationResultValue<List<OrderCustomer>> GetOrderCustomerList();
-
+        */
 
         [OperationContract]
         OperationResultValue<OrderCustomer> GetOrderCustomer2(long orderCustomerId);

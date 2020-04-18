@@ -26,6 +26,7 @@ namespace AlohaService.BusinessServices
         {
             try
             {
+                /*
                 var oc = new Entities.OrderCustomer();
                 oc.OldId = orderCustomer.OldId;
                 oc.Name = orderCustomer.Name;
@@ -35,6 +36,11 @@ namespace AlohaService.BusinessServices
                 oc.MiddleName = orderCustomer.MiddleName;
                 oc.SecondName = orderCustomer.SecondName;
                 oc.DiscountPercent = orderCustomer.DiscountPercent;
+                */
+
+
+
+                var oc = Mapper.Map<ServiceDataContracts.OrderCustomer, Entities.OrderCustomer>(orderCustomer);
 
                 oc.UpdatedDate = DateTime.Now;
                 oc.LastUpdatedSession = orderCustomer.LastUpdatedSession;
@@ -42,7 +48,7 @@ namespace AlohaService.BusinessServices
                 db.SaveChanges();
 
                 
-                db.SaveChanges();
+                
 
                 return new OperationResult
                 {
@@ -60,7 +66,7 @@ namespace AlohaService.BusinessServices
                 };
             }
         }
-
+        /*
         public OperationResultValue<ServiceDataContracts.OrderCustomer> GetOrderCustomer(long orderCustomerId)
         {
             var orderCustomer = db.OrderCustomers.FirstOrDefault(oc => oc.Id == orderCustomerId);
@@ -106,7 +112,7 @@ namespace AlohaService.BusinessServices
 
             return result;
         }
-
+        */
 
         public OperationResultValue<ServiceDataContracts.OrderCustomer> GetOrderCustomer2(long orderCustomerId)
         {
@@ -169,7 +175,7 @@ namespace AlohaService.BusinessServices
 
             return new OperationResult { Success = true };
         }
-
+        /*
         public OperationResultValue<List<ServiceDataContracts.OrderCustomer>> GetOrderCustomerList()
         {
             try
@@ -227,7 +233,7 @@ namespace AlohaService.BusinessServices
                 };
             }
         }
-
+        */
 
         public OperationResultValue<List<ServiceDataContracts.OrderCustomer>> GetOrderCustomerList2()
         {

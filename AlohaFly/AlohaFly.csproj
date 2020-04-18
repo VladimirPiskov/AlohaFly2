@@ -373,6 +373,7 @@
       <DependentUpon>ctrlCheckVisual.xaml</DependentUpon>
     </Compile>
     <Compile Include="PrintRecieps\PrintOnWinPrinter.cs" />
+    <Compile Include="Reports\ExcelReports2\ExcelReportBase.cs" />
     <Compile Include="Reports\GKANReports.cs" />
     <Compile Include="Reports\ExcelReports.cs" />
     <Compile Include="Interface\INeedSave.cs" />

@@ -53,6 +53,27 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Цена для \r\n доставки")]
         public decimal PriceForDelivery { get; set; }
 
+
+
+
+        [DataMember]
+        [Display(Name = "Белки", AutoGenerateField = true)]
+
+        public int B { get; set; }
+        [DataMember]
+        [Display(Name = "Жиры", AutoGenerateField = true)]
+
+        public int J { get; set; }
+        [DataMember]
+        [Display(Name = "Углеводы", AutoGenerateField = true)]
+
+        public int U { get; set; }
+        [DataMember]
+        [Display(Name = "Каллории", AutoGenerateField = true)]
+
+        public int Ccal { get; set; }
+
+
         [DataMember]
         [Display(Name = "Алк.")]
         public bool IsAlcohol { get; set; }
@@ -148,6 +169,11 @@ namespace AlohaService.ServiceDataContracts
         [DataMember]
         [Display(Name = "SHRid", AutoGenerateField = true)]
         public long SHIdNewBase { get; set; }
+
+
+
+        
+
 
         [DataMember]
         [Display(AutoGenerateField = false)]

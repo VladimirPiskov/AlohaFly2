@@ -94,7 +94,7 @@ namespace AlohaFly.Models
 
         public bool CommitEditItem(T item)
         {
-            var res = dBData.EndEdit(item);
+            //var res = dBData.EndEdit(item);
             return dBData.EndEdit(item).Succeess;
 
           // return DBDataExtractor<T>.EditItem(EditFuncs.EditItemFunc, item);

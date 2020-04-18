@@ -87,6 +87,9 @@ namespace AlohaFly.DataExtension
             PaymentFilter = new PaymentFilter();
             AirCompanyFilter =new AirCompanyFilter();
 
+
+            Calc.CalkDiscounts(OrdersFlightData.Data.ToList());
+
         }
 
         public AirCompanyFilter AirCompanyFilter;

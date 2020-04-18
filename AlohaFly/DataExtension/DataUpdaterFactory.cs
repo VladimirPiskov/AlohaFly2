@@ -1,4 +1,5 @@
 ﻿using AlohaService.ServiceDataContracts;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace AlohaFly.DataExtension
     public class DataDBUpdaterFactory<T>
         where T : class
     {
-
+        Logger logger = LogManager.GetCurrentClassLogger();
         public DataDBUpdaterFactory(Func<T, long> _keySelector)
         {
             keySelector = _keySelector;
@@ -619,37 +620,55 @@ namespace AlohaFly.DataExtension
         {
             return (item) =>
                         {
+                            logger.Debug($"DBUpdater {typeof(T).ToString()}");
+                            
+                            
                             var result = new FullyObservableDBDataUpdateResult<T>();
-                            OperationResult dbRes;
-                            long ItemId = keySelector(item);
-                            item = preUpdateFunc(item);
-                            if (ItemId == 0)
+                            try
                             {
-                                dbRes = createFunc(item);
-                                ItemId = dbRes.CreatedObjectId;
-                            }
-                            else
-                            {
-                                dbRes = updateFunc(item);
-                            }
-
-                            result.Succeess = dbRes.Success;
-                            if (dbRes.Success)
-                            {
-                                var newItmRes = getFunc(ItemId);
-                                if (newItmRes.Success)
+                                OperationResult dbRes;
+                                long ItemId = keySelector(item);
+                                item = preUpdateFunc(item);
+                                logger.Debug($"DBUpdater {typeof(T).ToString()}  preUpdateFunc ok");
+                                if (ItemId == 0)
                                 {
-                                    result.UpdatedItem = postGetFunc(newItmRes.Result);
+                                    logger.Debug($"DBUpdater {typeof(T).ToString()}  create new");
+                                    dbRes = createFunc(item);
+                                    ItemId = dbRes.CreatedObjectId;
+                                    logger.Debug($"DBUpdater {typeof(T).ToString()}  create new return {ItemId}");
                                 }
                                 else
                                 {
-                                    result.Succeess = false;
-                                    result.ErrorMessage = newItmRes.ErrorMessage;
+                                    dbRes = updateFunc(item);
+                                    logger.Debug($"DBUpdater {typeof(T).ToString()}  update old ");
+                                }
+
+                                result.Succeess = dbRes.Success;
+                                logger.Debug($"DBUpdater {typeof(T).ToString()}  result.Succeess  ={result.Succeess} ");
+                                if (dbRes.Success)
+                                {
+                                    var newItmRes = getFunc(ItemId);
+                                    if (newItmRes.Success)
+                                    {
+                                        result.UpdatedItem = postGetFunc(newItmRes.Result);
+                                        logger.Debug($"DBUpdater {typeof(T).ToString()}  postGetFunc ok ");
+                                    }
+                                    else
+                                    {
+                                        result.Succeess = false;
+                                        result.ErrorMessage = newItmRes.ErrorMessage;
+                                    }
+                                }
+                                else
+                                {
+                                    result.ErrorMessage = dbRes.ErrorMessage;
                                 }
                             }
-                            else
+                            catch(Exception e)
                             {
-                                result.ErrorMessage = dbRes.ErrorMessage;
+                                result.Succeess = false;
+                                result.ErrorMessage = $"DBUpdater error: {e.Message}";
+                                logger.Debug($"DBUpdater error: {e.Message}");
                             }
                             return result;
 
