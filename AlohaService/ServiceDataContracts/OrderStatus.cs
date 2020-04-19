@@ -17,6 +17,11 @@ namespace AlohaService.ServiceDataContracts
         //[EnumMember(Value = "0")]
         //Unknown = 0,
 
+        [Display(Name = "Новый")]
+        [Description("Новый")]
+        [EnumMember(Value = "0")]
+        New = 0,
+
 
         [Display(Name = "В работе")]
         [Description("В работе")]

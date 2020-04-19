@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AlohaService.ServiceDataContracts;
+using AlohaService.ServiceDataContracts.ExternalContracts;
 using NLog;
 using StoreHouseConnect;
 
@@ -75,11 +76,11 @@ namespace AlohaFlyAdmin
 
         private void btnGetGroups_Click(object sender, RoutedEventArgs e)
         {
-            var res =  sh.GetGoups(Convert.ToInt32(tbGroupeNumber.Text));
+            var res = sh.GetGoups(Convert.ToInt32(tbGroupeNumber.Text));
 
-            foreach(var r in res)
+            foreach (var r in res)
             {
-                ShTb.Text += $"{r.Rid} {r.Name} "+Environment.NewLine;
+                ShTb.Text += $"{r.Rid} {r.Name} " + Environment.NewLine;
             }
         }
 
@@ -95,7 +96,7 @@ namespace AlohaFlyAdmin
                     ShTb.Text += s;
                 }
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
                 _logger.Debug("Error GetPlaces " + ee.Message);
             }
@@ -107,7 +108,7 @@ namespace AlohaFlyAdmin
             var res = sh.GetCats();
             foreach (var r in res.ListExpCtgs)
             {
-                string s = $"{r.Rid} {r.Name} " ;
+                string s = $"{r.Rid} {r.Name} ";
                 _logger.Debug(s);
                 ShTb.Text += s + Environment.NewLine;
             }
@@ -130,17 +131,17 @@ namespace AlohaFlyAdmin
 
         private void btnCreateAllInvoices_Click(object sender, RoutedEventArgs e)
         {
-            (new DishesFromSH()).CreateInvoices();
+           // (new DishesFromSH()).CreateInvoices();
         }
 
         private void btnExportToGo_Click(object sender, RoutedEventArgs e)
         {
-            ToGoExport.ToGoExporter.RunExport();
+            //ToGoExport.ToGoExporter.RunExport();
         }
 
         private void SyncDishFromSHToGo_Click(object sender, RoutedEventArgs e)
         {
-            (new DishesFromSH()).AddDishToSQL(true );
+            (new DishesFromSH()).AddDishToSQL(true);
         }
 
         private void btnCreateNeBase_Click(object sender, RoutedEventArgs e)
@@ -162,20 +163,20 @@ namespace AlohaFlyAdmin
         private void btnAddToSQLSharAlco_Click(object sender, RoutedEventArgs e)
         {
             SharAlcoAdd.AddToCFC();
-                }
+        }
 
         private void btnGetLog_Click(object sender, RoutedEventArgs e)
         {
             var l = LogChangeOrder.GetLogsOfOrder(tbLogOrder.Text);
-            
-            tbBefore.Text = string.Join(Environment.NewLine + Environment.NewLine, l.OrderBy(a=>a.CreationDate).Select(a => $"User: {a.UserId} date: {a.CreationDate} {Environment.NewLine} {a.StateBefore}"));
-            tbAfter.Text = string.Join(Environment.NewLine + Environment.NewLine, l.OrderBy(a=>a.CreationDate).Select(a => $"User: {a.UserId} date: {a.CreationDate} {Environment.NewLine} {a.StateAfter}"));
+
+            tbBefore.Text = string.Join(Environment.NewLine + Environment.NewLine, l.OrderBy(a => a.CreationDate).Select(a => $"User: {a.UserId} date: {a.CreationDate} {Environment.NewLine} {a.StateBefore}"));
+            tbAfter.Text = string.Join(Environment.NewLine + Environment.NewLine, l.OrderBy(a => a.CreationDate).Select(a => $"User: {a.UserId} date: {a.CreationDate} {Environment.NewLine} {a.StateAfter}"));
         }
 
         private void btnTestQuery_Click(object sender, RoutedEventArgs e)
         {
             var d1 = DateTime.Now;
-          var res =   AlohaFly.DBProvider.GetOrders(d1.AddDays(-5), d1, out List<OrderFlight> SVOOrders);
+            //  var res =   AlohaFly.DBProvider.GetOrders(d1.AddDays(-5), d1, out List<OrderFlight> SVOOrders);
 
 
         }
@@ -188,6 +189,39 @@ namespace AlohaFlyAdmin
         private void btnGastroRid_Click(object sender, RoutedEventArgs e)
         {
             GastroRid.Insert();
+        }
+
+        private void btnAddsiteorder_Click(object sender, RoutedEventArgs e)
+        {
+            var order = new ExternalToGoOrder()
+            {
+                Client = new ExternalClient()
+                {
+                    Address = "Жопа мира, д.7, кв.77",
+                    Emale = "em1@gmail.com",
+                    Name = "Василий Пупкин",
+                    Phone = "+79265555555"
+                },
+                Comment = "It's comment",
+                DeliveryDate = new DateTime(2020, 04, 20),
+                DeliveryPrice = 300,
+                ExternalId = 1,
+                Summ = 2000,
+                Dishes = new List<ExternalDishPackage>()
+            };
+            order.Dishes.Add(new ExternalDishPackage()
+            {
+                Comment = "Comment1",
+                Count = 1,
+                Id = 1447,
+                Name = "Салат с лобстером, гребешком и соусом гуакамоле ",
+                Price = 2000
+            }
+                );
+
+
+
+            AlohaFly.DBProvider.Client.CreateSiteToGoOrder(order);
         }
     }
 }

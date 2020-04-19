@@ -13,7 +13,7 @@ namespace AlohaFlyAdmin.Tmp
     {
         public static void Doit()
         {
-
+            /*
             Application app;
             Workbook Wb;
             Worksheet Ws;
@@ -75,7 +75,8 @@ namespace AlohaFlyAdmin.Tmp
                     AlohaFly.DBProvider.UpdateOrderFlight(ord);
                 }
             }
-
+*/
         }
+
     }
 }

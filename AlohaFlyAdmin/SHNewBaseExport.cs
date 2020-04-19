@@ -17,7 +17,7 @@ namespace AlohaFlyAdmin
         {
             Connect();
             //GetAllExpCats();
-                GetDishesFromSH();
+            //    GetDishesFromSH();
 
 
 
@@ -36,7 +36,7 @@ namespace AlohaFlyAdmin
 
 
 
-            GetGoodsTree();
+            //GetGoodsTree();
             //GetUnits();
             //AddGoodsTest();
             //  AddGoodTest();
@@ -74,7 +74,7 @@ namespace AlohaFlyAdmin
             }
 
         }
-
+        /*
         private static void CreateGroups()
         {
 
@@ -112,90 +112,12 @@ namespace AlohaFlyAdmin
                     AlohaFly.DBProvider.Client.UpdateDishKitchenGroup(gr);
                 }
             }
-            /*
-                if (!ShGroups.Values.Contains(gr.Trim()))
-                {
-
-                }
-            */
+          
 
         }
 
 
-        private static void CreateGroupsToGo()
-        {
-
-            var ShGroups = GetToGoGoodsTreeDic();
-            AlohaFly.DataExtension.DataCatalogsSingleton.Instance.DataCatalogsFill();
-            var orders = AlohaFly.DBProvider.GetOrderToGoList(new DateTime(2019, 1, 1), new DateTime(2019, 3, 1));
-            var DList = new List<Dish>();
-            foreach (var ord in orders)
-            {
-                foreach (var dp in ord.DishPackages)
-                {
-                    if ((dp.Dish.DishKitсhenGroup != null))
-                    {
-                        if (!DList.Contains(dp.Dish))
-                        {
-                            DList.Add(dp.Dish);
-                        }
-                    }
-                }
-            }
-            var grNames = DList.Select(a => a.DishKitсhenGroup).Distinct();
-
-
-            foreach (var gr in grNames)
-            {
-                if (!ShGroups.Values.Contains(gr.Name.Trim()))
-                {
-                    string err = "";
-                    int errCode = 0;
-                    sh.InsGoodTree(ToGoFolderId, (ToGoFolderId * 100 + gr.Id).ToString(), gr.Name.Trim(), out errCode, out err);
-                }
-                else
-                {
-                    gr.SHIdToGo = ShGroups.Where(a => a.Value == gr.Name.Trim()).FirstOrDefault().Key;
-                    AlohaFly.DBProvider.Client.UpdateDishKitchenGroup(gr);
-                }
-            }
-            /*
-                if (!ShGroups.Values.Contains(gr.Trim()))
-                {
-
-                }
-            */
-
-        }
-
-
-        private static void PrintNonCatsGoodsToGo()
-        {
-            AlohaFly.DataExtension.DataCatalogsSingleton.Instance.DataCatalogsFill();
-            var orders = AlohaFly.DBProvider.GetOrderToGoList(new DateTime(2019, 1, 1), new DateTime(2019, 3, 1));
-            var AirOrders = orders;//.Where(a => !AlohaFly.DBProvider.SharAirs.Contains(a.AirCompanyId.GetValueOrDefault()));
-            var DList = new List<Dish>();
-            foreach (var ord in AirOrders)
-            {
-                foreach (var dp in ord.DishPackages)
-                {
-                    if ((dp.Dish.DishKitсhenGroup == null))
-                    {
-                        if (!DList.Contains(dp.Dish))
-                        {
-                            DList.Add(dp.Dish);
-                        }
-                    }
-                }
-            }
-            foreach (var d in DList.OrderBy(a => a.Id))
-            {
-                _logger.Debug($"Id: {d.Id}; Barcode {d.Barcode}; Name: {d.Name}");
-            }
-
-
-        }
-
+        
         private static void PrintNonCatsGoods()
         {
             AlohaFly.DataExtension.DataCatalogsSingleton.Instance.DataCatalogsFill();
@@ -269,7 +191,7 @@ namespace AlohaFlyAdmin
 
 
         }
-
+        
         private static void AddGoods()
         {
             var existD = GetToFlyExistBarCodes();
@@ -712,6 +634,6 @@ namespace AlohaFlyAdmin
             }
             return res;
         }
-
+        */
     }
 }

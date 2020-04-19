@@ -25,6 +25,7 @@
 
                     <Button x:Name="btnPriceUpd" Click="btnPriceUpd_Click" Content="btnPriceUpd"/>
                     <Button x:Name="btnGastroRid" Click="btnGastroRid_Click" Content="btnGastroRid"/>
+                    <Button x:Name="btnAddsiteorder" Click="btnAddsiteorder_Click" Content="btnAddsiteorder"/>
 
 
                 </StackPanel>

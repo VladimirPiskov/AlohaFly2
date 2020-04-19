@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using AlohaService.ServiceDataContracts;
+using AlohaService.ServiceDataContracts.ExternalContracts;
 
 namespace AlohaService
 {
@@ -654,6 +655,17 @@ namespace AlohaService
         [OperationContract]
         OperationResultValue<List<AnalitikOrderData>> GetAllToGoOrdersData(DateTime sDate, DateTime eDate);
         #endregion
+
+
+        #region External
+        [OperationContract]
+        OperationResult CreateSiteToGoOrder(ExternalToGoOrder order);
+        #endregion
+
+
+
+
+
     }
 
 

@@ -12,6 +12,7 @@ using AlohaService.Helpers;
 using AlohaService.BusinessServices;
 using log4net;
 using AutoMapper;
+using AlohaService.ServiceDataContracts.ExternalContracts;
 
 namespace AlohaService
 {
@@ -51,6 +52,7 @@ namespace AlohaService
 
         private UpdaterService updaterService;
         private AnalitikService analitikService;
+        private ExternalOrdersService externalOrdersService;
 
         private static bool MapperInited = false;
         public AlohaService()
@@ -225,6 +227,9 @@ namespace AlohaService
             updaterService = new UpdaterService(new AlohaDb());
 
             analitikService = new AnalitikService(new AlohaDb());
+            externalOrdersService = new ExternalOrdersService(new AlohaDb());
+
+
         }
 
         public string GetData(int value)
@@ -1294,5 +1299,16 @@ namespace AlohaService
 
         }
         #endregion
+
+
+        #region External
+
+        public OperationResult CreateSiteToGoOrder(ExternalToGoOrder order)
+        {
+            return externalOrdersService.CreateSiteToGoOrder(order);
+        }
+
+        #endregion
+
     }
 }

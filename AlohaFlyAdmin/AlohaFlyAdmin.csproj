@@ -261,6 +261,10 @@
       <Project>{5fba9070-f3c8-47ef-9c91-02d5587fce8b}</Project>
       <Name>AlohaFly</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AlohaService\AlohaService.csproj">
+      <Project>{478cc079-a69e-4fe5-8e8f-a76deac4d86a}</Project>
+      <Name>AlohaService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StoreHouse\StoreHouseConnect.csproj">
       <Project>{479c8dba-b9dc-4d9b-b83e-7e7ac1a3a572}</Project>
       <Name>StoreHouseConnect</Name>

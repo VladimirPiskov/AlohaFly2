@@ -8,6 +8,7 @@ using NLog;
 
 namespace AlohaFlyAdmin.ToGoExport
 {
+    /*
     class ToGoExporter
     {
         static Logger _logger = LogManager.GetCurrentClassLogger();
@@ -534,56 +535,7 @@ namespace AlohaFlyAdmin.ToGoExport
                             }
                         }
 
-                        // if (existsClients.Any(a => a.OldId == cl.ID)) { continue; }
-                        /*
-                         var orderCustomer = new OrderCustomer();
-                         orderCustomer.OldId = cl.ID;
-                         orderCustomer.Name = cl.Name;
-                         orderCustomer.SecondName = cl.FamilyName;
-                         orderCustomer.IsActive = true;
-                         orderCustomer.Comments = cl.Comment;
-                         orderCustomer.DiscountPercent = 0;
-                         orderCustomer.Email = cl.Email;
-
-                         orderCustomer.Phones = new List<OrderCustomerPhone>();
-                         foreach (var tel in db.Tel.Where(a => a.ClientID == cl.ID))
-                         {
-                             OrderCustomerPhone ph = new OrderCustomerPhone()
-                             {
-                                 IsActive = tel.Active,
-                                 IsPrimary = (tel.ID == db.Tel.Where(a => a.ClientID == cl.ID).Select(a => a.ID).Max()),
-                                 Phone = tel.Number
-
-                             };
-                             orderCustomer.Phones.Add(ph);
-                         }
-                         orderCustomer.Addresses = new List<OrderCustomerAddress>();
-                         {
-                             foreach (var addr in db.Address.Where(a => a.ClientID == cl.ID))
-                             {
-                                 OrderCustomerAddress ph = new OrderCustomerAddress()
-                                 {
-                                     IsActive = addr.Active.GetValueOrDefault(true),
-                                     IsPrimary = (addr.ID == db.Address.Where(a => a.ClientID == cl.ID).Select(a => a.ID).Max()),
-                                     Address = addr.Address1,
-                                     Comment = addr.Comment,
-                                     MapUrl = addr.MapURL,
-                                     SubWay = addr.Subway,
-                                     ZoneId = addr.Zone.GetValueOrDefault(1),
-                                     OldId = addr.ID
-
-                                 };
-                                 orderCustomer.Addresses.Add(ph);
-                             }
-                         }
-                         //clsList.Add(orderCustomer);
-                         var res = AlohaFly.DBProvider.Client.CreateOrderCustomer(orderCustomer);
-                         if (!res.Success)
-                         {
-                             string err = res.ErrorMessage;
-                         }
-
-     */
+      
                     }
                     catch (Exception e)
                     {
@@ -657,4 +609,7 @@ namespace AlohaFlyAdmin.ToGoExport
         }
 
     }
+
+*/
 }
+

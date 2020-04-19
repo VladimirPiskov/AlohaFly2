@@ -39,7 +39,7 @@ namespace AlohaFlyAdmin
             }   
 
         }
-
+        /*
         public void CreateInvoices()
         {
             AlohaFly.DataExtension.DataCatalogsSingleton.Instance.DataCatalogsFill();
@@ -55,7 +55,7 @@ namespace AlohaFlyAdmin
             }
 
         }
-
+        */
         public TListPlaceImpl GetPlaces()
         {
             string errMess;

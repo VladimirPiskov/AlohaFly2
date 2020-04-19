@@ -21,7 +21,7 @@ namespace AlohaFlyAdmin
                 long k =Convert.ToInt64(ws.Cells[row,2].Value2.ToString());
                 long a = Convert.ToInt64(ws.Cells[row, 3].Value2.ToString());
 
-                var d = AlohaFly.DataExtension.DataCatalogsSingleton.Instance.Dishes.Where(b => b.Barcode == a).FirstOrDefault();
+                var d = AlohaFly.DataExtension.DataCatalogsSingleton.Instance.DishData.Data.Where(b => b.Barcode == a).FirstOrDefault();
                 d.SHGastroId=k;
                 AlohaFly.DBProvider.Client.UpdateDish(d);
             }
