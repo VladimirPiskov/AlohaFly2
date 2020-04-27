@@ -135,6 +135,9 @@ namespace AlohaService.ServiceDataContracts
         public long? PaymentId { get; set; }
 
         [DataMember]
+        public long ExternalId { get; set; }
+        
+        [DataMember]
         [Display(Name = "Вид платежа")]
         public Payment PaymentType { get; set; }
 

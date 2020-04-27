@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlohaFlyAdmin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="536.416" Width="815.462">
     <Grid>
         <TabControl>
             <TabItem Header="Utils">
@@ -34,17 +34,17 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
-                        
+
                     </Grid.RowDefinitions>
                     <UI:CtrlManageFuncs x:Name="ctrManageFuncs" Grid.Row="0" />
-                      
-                    </Grid>
+
+                </Grid>
             </TabItem>
             <TabItem Header="Users">
-                
-                    <UI:CtrlManageUsers x:Name="ctrManageUsers" Grid.Row="0" />
 
-                
+                <UI:CtrlManageUsers x:Name="ctrManageUsers" Grid.Row="0" />
+
+
             </TabItem>
             <TabItem Header="SH">
                 <StackPanel Orientation="Vertical">
@@ -55,11 +55,11 @@
                     <Button x:Name="btnGetCats" Click="btnGetCats_Click" Content="GetCats"/>
                     <Button x:Name="btnGetDish" Click="btnGetDish_Click" Content="SyncDishFromSH"/>
                     <Button x:Name="btnPrintDishToGo" Click="btnPrintDishToGo_Click" Content="btnPrintDishToGo"/>
-                    
+
                     <Button x:Name="SyncDishFromSHToGo" Click="SyncDishFromSHToGo_Click" Content="SyncDishFromSHToGo"/>
                     <Button x:Name="btnCreateAllInvoices" Click="btnCreateAllInvoices_Click" Content="CreateAllInvoices"/>
                     <Button x:Name="btnCreateNeBase" Click="btnCreateNeBase_Click" Content="btnCreateNeBase"/>
-                    
+
                     <TextBox x:Name="tbGroupeNumber"/>
                     <TextBlock x:Name="ShTb" Text="Hi" Height="auto" Background="AliceBlue"/>
                 </StackPanel>

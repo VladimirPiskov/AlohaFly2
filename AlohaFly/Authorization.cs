@@ -25,9 +25,6 @@ namespace AlohaFly
             return CurentUser.UserRole;
         }
         internal static Dictionary<long, FuncAccessType> UserFuncs { set; get; }
-
-
-
         public static Utils.FuncAccessTypeEnum GetAccessType(long funcId)
         {
             if (CurentUser == null) return Utils.FuncAccessTypeEnum.Disable;

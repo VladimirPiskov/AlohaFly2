@@ -105,7 +105,10 @@
   <ItemGroup>
     <Compile Include="AlohaDb.cs" />
     <Compile Include="BusinessServices\AnalitikService.cs" />
-    <Compile Include="BusinessServices\ExternalOrdersService.cs" />
+    <Compile Include="BusinessServices\External\ExternalFromYandexService.cs" />
+    <Compile Include="BusinessServices\External\ExternalFromDeleveryClubService.cs" />
+    <Compile Include="BusinessServices\External\ExternalFromSiteOrdersService.cs" />
+    <Compile Include="BusinessServices\External\ExternalOrdersService.cs" />
     <Compile Include="BusinessServices\OrderCustomerPhoneService.cs" />
     <Compile Include="BusinessServices\OrderCustomerAddressService.cs" />
     <Compile Include="BusinessServices\MarketingChannelService.cs" />
@@ -309,6 +312,10 @@
     <Compile Include="Migrations\202001300941257_upd2.Designer.cs">
       <DependentUpon>202001300941257_upd2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004270855048_ExternalId.cs" />
+    <Compile Include="Migrations\202004270855048_ExternalId.Designer.cs">
+      <DependentUpon>202004270855048_ExternalId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ServiceDataContracts\AirCompany.cs" />
     <Compile Include="ServiceDataContracts\Alert.cs" />
@@ -480,6 +487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001300941257_upd2.resx">
       <DependentUpon>202001300941257_upd2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004270855048_ExternalId.resx">
+      <DependentUpon>202004270855048_ExternalId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

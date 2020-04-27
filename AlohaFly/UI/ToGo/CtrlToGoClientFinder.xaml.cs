@@ -37,7 +37,7 @@ namespace AlohaFly.UI
             }
             else if (e.Key == Key.Enter || e.Key == Key.Tab)
             {
-                var dc = (Models.ToGoClient.ToGoClientFinderViewModel)this.DataContext;
+                var dc = (Models.ToGoClient.ToGoClientFinderBaseViewModel)this.DataContext;
                 dc.SelectItemCommand.Execute(null);
 
             }
@@ -45,16 +45,52 @@ namespace AlohaFly.UI
 
         private void ListBoxResult_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dc = (Models.ToGoClient.ToGoClientFinderViewModel)this.DataContext;
+            var dc = (Models.ToGoClient.ToGoClientFinderBaseViewModel)this.DataContext;
             dc.SelectItemCommand.Execute(null);
 
         }
 
         private void ListBoxResult_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var dc = (Models.ToGoClient.ToGoClientFinderViewModel)this.DataContext;
+            var dc = (Models.ToGoClient.ToGoClientFinderBaseViewModel)this.DataContext;
             dc.SelectItemCommand.Execute(null);
         }
+
+        /*
+        private void FindWTBAddress_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down)
+            {
+                if (ListBoxResultAddress.Items != null && ListBoxResultAddress.Items.Count > 0)
+                {
+
+                    ListBoxResultAddress.Focus();
+                }
+            }
+        }
+
+        private void ListBoxResultAddress_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ListBoxResultAddress_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Up)
+            {
+                if (ListBoxResultAddress.SelectedIndex == 0)
+                {
+                    FindWTBAddress.Focus();
+                }
+            }
+            else if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                var dc = (Models.ToGoClient.ToGoClientFinderViewModel)this.DataContext;
+                dc.SelectItemCommand.Execute(null);
+
+            }
+        }
+   */ 
     }
 
 

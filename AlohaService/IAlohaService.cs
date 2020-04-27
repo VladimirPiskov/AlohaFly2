@@ -658,8 +658,28 @@ namespace AlohaService
 
 
         #region External
+
         [OperationContract]
-        OperationResult CreateSiteToGoOrder(ExternalToGoOrder order);
+        OperationResult ExternalCreateSiteToGoOrder(ExternalToGoOrder order);
+        [OperationContract]
+        OperationResult ExternalCreateDeleveryClubToGoOrder(ExternalToGoOrder order);
+        [OperationContract]
+        OperationResult ExternalCreateYandexToGoOrder(ExternalToGoOrder order);
+
+
+
+
+        [OperationContract]
+        OperationResultValue<List<long>> ExternalGetSiteOrderList();
+        [OperationContract]
+        OperationResultValue<List<long>> ExternalGetDeleveryClubOrderList();
+        [OperationContract]
+        OperationResultValue<List<long>> ExternalGetYandexOrderList();
+
+        
+
+
+
         #endregion
 
 

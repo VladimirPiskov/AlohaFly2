@@ -11,14 +11,14 @@ using OrderToGo = AlohaService.Entities.OrderToGo;
 using OrderCustomerAddress = AlohaService.Entities.OrderCustomerAddress;
 using OrderCustomer = AlohaService.Entities.OrderCustomer;
 
-namespace AlohaService.BusinessServices
+namespace AlohaService.BusinessServices.External
 {
-    public class ExternalOrdersService
+    public abstract class ExternalOrdersService
     {
         private AlohaDb db;
         protected ILog log;
 
-        public ExternalOrdersService(AlohaDb databaseContext)
+        public  ExternalOrdersService(AlohaDb databaseContext)
         {
             db = databaseContext;
             LogHelper.Configure();
@@ -30,7 +30,28 @@ namespace AlohaService.BusinessServices
 
         }
 
-        public OperationResult CreateSiteToGoOrder(ExternalToGoOrder order)
+        protected long marketingChanelId { set; get; }
+        public OperationResultValue<List<long>> GetExternalOrderList()
+        {
+            var res = new OperationResultValue<List<long>>();
+            try
+            {
+                res.Result = db.OrderToGo.Where(a=>a.MarketingChannelId == marketingChanelId).Select(a => a.ExternalId ).ToList();
+                res.Success = true;
+            }
+            catch (Exception e)
+            {
+                log.Error($"CreateSiteToGoOrder {e.Message}");
+                res.Success = false;
+                res.ErrorMessage = e.Message;
+    
+            }
+            return res;
+        }
+        protected abstract void SetMarketingChanelAttributes(OrderToGo orderToGo);
+        
+
+            public OperationResult CreateToGoOrder(ExternalToGoOrder order)
         {
             OperationResult res = new OperationResult()
             {
@@ -54,7 +75,8 @@ namespace AlohaService.BusinessServices
                 }
 
                 var orderToGo = ConvertOrderFromExternal(order);
-                orderToGo.MarketingChannelId = 3;
+                SetMarketingChanelAttributes(orderToGo);
+               // orderToGo.MarketingChannelId = 3;
                 db.OrderToGo.Add(orderToGo);
                 db.SaveChanges();
                 log.Debug($"CreatedSiteToGoOrder Id: {orderToGo.Id}");
@@ -259,7 +281,7 @@ namespace AlohaService.BusinessServices
                 Summ = order.Summ,
                 UpdatedDate = DateTime.Now,
                 PreCheckPrinted = false,
-                OldId = order.ExternalId,
+                ExternalId = order.ExternalId,
                LastUpdatedSession = Guid.NewGuid(),
 
             };

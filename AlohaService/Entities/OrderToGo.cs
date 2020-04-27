@@ -77,6 +77,8 @@ namespace AlohaService.Entities
 
         public bool Closed { get; set; }
 
+        public long ExternalId { get; set; }
+
         public bool IsSHSent { get; set; }
         
             public DateTime? UpdatedDate { get; set; }

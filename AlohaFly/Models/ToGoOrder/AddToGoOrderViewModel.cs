@@ -400,8 +400,15 @@ namespace AlohaFly.Models
         public AddToGoOrderViewModel(AddToGoOrderModel _model) : base()
         {
 
-            FindDataContext = new ToGoClient.ToGoClientFinderViewModel();
+            //  FindDataContext = new ToGoClient.ToGoClientFinderViewModel();
+            FindDataContext = new ToGoClientFinderByNamePhoneViewModel();
             FindDataContext.ItemSelected += FindDataContext_ItemSelected;
+
+            FindByAdressDataContext = new ToGoClientFinderByAddressViewModel();
+            FindByAdressDataContext.ItemSelected += FindDataContext_ItemSelected;
+
+
+
             CtrlClientToGoEditDetailsVisibility = Visibility.Hidden;
 
             model = _model;
@@ -688,7 +695,8 @@ namespace AlohaFly.Models
             //CtrlClientToGoDetailsVisibility = Visibility.Visible;
         }
 
-        public Models.ToGoClient.ToGoClientFinderViewModel FindDataContext { set; get; }
+        public Models.ToGoClient.ToGoClientFinderByNamePhoneViewModel FindDataContext { set; get; }
+        public Models.ToGoClient.ToGoClientFinderByAddressViewModel FindByAdressDataContext { set; get; }
 
         public ICommand ShowMapCommand
         {

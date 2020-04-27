@@ -20,12 +20,13 @@
 
         </DataTemplate>
     </UserControl.Resources>
-    <Grid >
-
-        <!--
-            <telerik:RadWatermarkTextBox x:Name="FindWTB" FontSize="16" WatermarkContent="Поиск" Text="{Binding Path=FindString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=0}"></telerik:RadWatermarkTextBox>
-          </!-->
-        <telerik:RadWatermarkTextBox x:Name="FindWTB" WatermarkContent="Введите текст для поиска клиента" PreviewKeyDown="FindWTB_KeyDown"  FontSize="18" Text="{Binding Path=FindString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=0}"></telerik:RadWatermarkTextBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+            <telerik:RadWatermarkTextBox x:Name="FindWTB" WatermarkContent="{Binding WatermarkContent}" PreviewKeyDown="FindWTB_KeyDown"  FontSize="18" Text="{Binding Path=FindString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=0}"></telerik:RadWatermarkTextBox>
         <Popup Placement="Bottom" Margin="0,-5,0,0"  HorizontalAlignment="Stretch" PlacementTarget="{Binding ElementName=FindWTB}" IsOpen="{Binding FPopupIsOpen}" StaysOpen="False" Width="{Binding ElementName=UC, Path=ActualWidth}">
             <StackPanel>
                 <TextBox IsReadOnly="True"  Text="{Binding InfoText}" Visibility="{Binding InfoTextVisibility}" FontFamily="Segoe UI" FontSize="18" Background="LightGray"  Foreground="Black"></TextBox>
@@ -53,6 +54,39 @@
             </telerik:RadListBox>
             </StackPanel>
         </Popup>
-        
+        </Grid>
+        <!--
+        <Grid Grid.Row="1">
+            <telerik:RadWatermarkTextBox x:Name="FindWTBAddress" WatermarkContent="Введите текст для поиска клиента" PreviewKeyDown="FindWTBAddress_PreviewKeyDown"  FontSize="18" Text="{Binding Path=FindString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=0}"></telerik:RadWatermarkTextBox>
+            <Popup Placement="Bottom" Margin="0,-5,0,0"  HorizontalAlignment="Stretch" PlacementTarget="{Binding ElementName=FindWTBAddress}" IsOpen="{Binding FPopupIsOpen}" StaysOpen="False" Width="{Binding ElementName=UC, Path=ActualWidth}">
+                <StackPanel>
+                    <TextBox IsReadOnly="True"  Text="{Binding InfoText}" Visibility="{Binding InfoTextVisibility}" FontFamily="Segoe UI" FontSize="18" Background="LightGray"  Foreground="Black"></TextBox>
+                    <telerik:RadListBox  x:Name="ListBoxResultAddress" HorizontalAlignment="Stretch" PreviewMouseUp="ListBoxResultAddress_PreviewMouseUp"  PreviewKeyDown="ListBoxResultAddress_PreviewKeyDown" ItemsSource="{Binding Path=FindTextCollection}"  MaxHeight="500" SelectedItem="{Binding Path=SelectedClient,Mode=TwoWay}">
+
+                        <telerik:RadListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </telerik:RadListBox.ItemsPanel>
+                        <telerik:RadListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"></RowDefinition>
+                                        <RowDefinition Height="auto"></RowDefinition>
+
+                                    </Grid.RowDefinitions>
+
+                                    <wpf:HtmlLabel Grid.Row="0" VerticalContentAlignment="Center" Margin="0,-25,0,0"  Text="{Binding FullName}"  ></wpf:HtmlLabel>
+                                    <wpf:HtmlLabel Grid.Row="1"  Text="{Binding Phone}"  Margin="0,-19,0,0"></wpf:HtmlLabel>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:RadListBox.ItemTemplate>
+                    </telerik:RadListBox>
+                </StackPanel>
+            </Popup>
+        </Grid>
+
+</-->
     </Grid>
 </UserControl>

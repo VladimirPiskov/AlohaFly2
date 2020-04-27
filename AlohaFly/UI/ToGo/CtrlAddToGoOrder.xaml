@@ -203,15 +203,28 @@
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>   
+                    
                     <ColumnDefinition Width="auto"/>
                     
                 </Grid.ColumnDefinitions>
                 <local:CtrlToGoClientFinder  HorizontalAlignment="Stretch" DataContext="{Binding Path=FindDataContext}"/>
+                
                 <telerik:RadButton Width="44" Height="36" Grid.Column="1" Command="{Binding AddClientCommand}" >
                     <telerik:RadButton.Content>
                             <Image Source="/Icons/plus-96.png"  Stretch="Fill" />
                     </telerik:RadButton.Content>
                 </telerik:RadButton>
+
+            </Grid>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+
+                    <ColumnDefinition Width="auto"/>
+
+                </Grid.ColumnDefinitions>
+                <local:CtrlToGoClientFinder  HorizontalAlignment="Stretch" DataContext="{Binding Path=FindByAdressDataContext}"/>
+
 
             </Grid>
             <telerik:GroupBox Margin="0,20,0,-5" Header="Клиент" FontSize="12" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="{Binding ClientPanelVis}">

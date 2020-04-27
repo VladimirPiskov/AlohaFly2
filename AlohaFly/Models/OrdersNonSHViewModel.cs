@@ -29,15 +29,15 @@ namespace AlohaFly.Models
                
                 ShowEndMsg();
             });
+
+
             CreateAllToGoSHInvoice = new DelegateCommand(_ =>
             {
                 ReturnMessage = "";
                 SendAllToGo();
                 ShowEndMsg();
             });
-
-
-            
+           
 
 
             CreateAllToFlySHInvoice = new DelegateCommand(_ =>

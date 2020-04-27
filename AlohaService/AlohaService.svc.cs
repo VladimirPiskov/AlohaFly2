@@ -13,6 +13,7 @@ using AlohaService.BusinessServices;
 using log4net;
 using AutoMapper;
 using AlohaService.ServiceDataContracts.ExternalContracts;
+using AlohaService.BusinessServices.External;
 
 namespace AlohaService
 {
@@ -52,7 +53,9 @@ namespace AlohaService
 
         private UpdaterService updaterService;
         private AnalitikService analitikService;
-        private ExternalOrdersService externalOrdersService;
+        private ExternalFromSiteOrdersService externalFromSiteOrdersService;
+        private ExternalFromDeleveryClubService externalFromDeleveryClubService;
+        private ExternalFromYandexService externalFromYandexService;
 
         private static bool MapperInited = false;
         public AlohaService()
@@ -227,7 +230,9 @@ namespace AlohaService
             updaterService = new UpdaterService(new AlohaDb());
 
             analitikService = new AnalitikService(new AlohaDb());
-            externalOrdersService = new ExternalOrdersService(new AlohaDb());
+            externalFromSiteOrdersService = new ExternalFromSiteOrdersService(new AlohaDb());
+            externalFromDeleveryClubService = new ExternalFromDeleveryClubService(new AlohaDb());
+            externalFromYandexService = new ExternalFromYandexService(new AlohaDb());
 
 
         }
@@ -1303,10 +1308,33 @@ namespace AlohaService
 
         #region External
 
-        public OperationResult CreateSiteToGoOrder(ExternalToGoOrder order)
+        public OperationResult ExternalCreateSiteToGoOrder(ExternalToGoOrder order)
         {
-            return externalOrdersService.CreateSiteToGoOrder(order);
+            return externalFromSiteOrdersService.CreateToGoOrder(order);
         }
+        public OperationResult ExternalCreateDeleveryClubToGoOrder(ExternalToGoOrder order)
+        {
+            return externalFromDeleveryClubService.CreateToGoOrder(order);
+        }
+        public OperationResult ExternalCreateYandexToGoOrder(ExternalToGoOrder order)
+        {
+            return externalFromYandexService.CreateToGoOrder(order);
+        }
+
+
+        public OperationResultValue<List<long>> ExternalGetSiteOrderList()
+        {
+            return externalFromSiteOrdersService.GetExternalOrderList();
+        }
+        public OperationResultValue<List<long>> ExternalGetDeleveryClubOrderList()
+        {
+            return externalFromDeleveryClubService.GetExternalOrderList();
+        }
+        public OperationResultValue<List<long>> ExternalGetYandexOrderList()
+        {
+            return externalFromYandexService.GetExternalOrderList();
+        }
+
 
         #endregion
 

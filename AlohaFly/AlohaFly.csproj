@@ -355,6 +355,9 @@
     <Compile Include="Import\OrderFlightImport.cs" />
     <Compile Include="Interface\IMenuItem.cs" />
     <Compile Include="Models\AddOrderCustomerViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientFinderBaseViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientFinderByAddressViewModel .cs" />
+    <Compile Include="Models\ToGoClient\ToGoClientFinderByNamePhoneViewModel.cs" />
     <Compile Include="Models\ToGoOrder\AddToGoOrderViewModel.cs" />
     <Compile Include="Models\ToGoClient\DDTest.cs" />
     <Compile Include="Models\ToGoClient\ShowMapViewModel.cs" />
