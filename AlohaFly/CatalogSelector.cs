@@ -27,6 +27,8 @@ namespace AlohaFly
                         new MenuItemCatalog("Обновить гастроцены", Utils.EditGastroPrices.Edit, AccessTypeConst.Access_ImportToFlyRkeeper,false),
                         new MenuItemCatalog("Обновить блюда ToFly ", new Import.PricesImportToFlyFromExcel(), AccessTypeConst.Access_ImportToFlyRkeeper,false),
                         new MenuItemCatalog("Обновить блюда ToGo ", new Import.PricesImportToGoFromExcel(), AccessTypeConst.Access_ImportToFlyRkeeper,false),
+                        new MenuItemCatalog("Синхрогизировать цены в SH", Utils.SincSHPrices.Sinc, AccessTypeConst.Access_ImportToFlyRkeeper,false),
+                        //new MenuItemCatalog("8to+7", Utils.EditCustomers.MergeCustomers, AccessTypeConst.Access_ImportToFlyRkeeper,false),
 
                     };
                 }

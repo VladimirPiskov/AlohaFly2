@@ -101,6 +101,7 @@ namespace AlohaFly
                 UI.UIModify.ShowAlert($"Чек {ord.Id} имеет статус {ord.OrderStatus}  и не может быть закрыт");
             }
             UI.CtrlSetPayment sp = new UI.CtrlSetPayment();
+            sp.Init(ord);
             sp.ShowDialog();
             long pId = sp.Pid;
             if (pId > 0)

@@ -1,5 +1,6 @@
 ﻿using AlohaFly.DataExtension;
 using AlohaFly.Models;
+using AlohaFly.SH;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,4 +32,14 @@ namespace AlohaFly.Utils
 
         
     }
+    public static class SincSHPrices
+    {
+        public static void Sinc()
+        {
+            var d = DataCatalogsSingleton.Instance.DishData.Data.ToList();
+            SHUtils.UpdateSHItems(d,out string str);
+        }
+
+    }
+
 }

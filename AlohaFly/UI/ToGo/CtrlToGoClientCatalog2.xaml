@@ -72,7 +72,7 @@
         <telerik:RadGridView 
             x:Name="radGridView"
            Grid.RowSpan="2"
-            
+            ShowSearchPanel="True" 
             GroupRenderMode="Flat"
             IsReadOnly="True"
             AutoGenerateColumns="False"
@@ -105,8 +105,11 @@
                 <telerik:GridViewDataColumn Header="Адрес" Width="450"   DataMemberBinding="{Binding PrimaryAddress.Address}"/>
                 <telerik:GridViewDataColumn Header="Метро" Width="130"   DataMemberBinding="{Binding PrimaryAddress.SubWay}"/>
                 <telerik:GridViewDataColumn Header="Зона" Width="70"  TextAlignment="Right"  DataMemberBinding="{Binding PrimaryAddress.ZoneId}"/>
-                <telerik:GridViewDataColumn Header="Комментарий" Width="*"  DataMemberBinding="{Binding OrderCustomer.Comments}"/>
-                
+                <telerik:GridViewDataColumn Header="Комментарий" Width="200"  DataMemberBinding="{Binding OrderCustomer.Comments}"/>
+                <telerik:GridViewDataColumn Header="CB" Width="60"   DataMemberBinding="{Binding OrderCustomer.CashBack}"/>
+                <telerik:GridViewDataColumn Header="CB Дата старта" Width="90"  TextAlignment="Right"  DataMemberBinding="{Binding OrderCustomer.CashBackStartDateStr}"/>
+                <telerik:GridViewDataColumn Header="Баллы" Width="80"   TextAlignment="Right"   DataMemberBinding="{Binding OrderCustomer.OrderCustomerInfo.CashBackSumm}"/>
+                <telerik:GridViewDataColumn Header="%" Width="40"  TextAlignment="Right" DataMemberBinding="{Binding OrderCustomer.CashBackPercent}"/>
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
 

@@ -255,7 +255,7 @@
                     <telerik:RadWatermarkTextBox WatermarkContent="Телефон" Text="{Binding OrderPhone}" Margin="0,10,0,5"></telerik:RadWatermarkTextBox>
                     <TextBlock Text="{Binding OrderAddress.AddressExt, Mode=OneWay}" Style="{StaticResource TextBlockStyle}"  Margin="0,10,0,5"></TextBlock>
                     <TextBlock Text="{Binding Client.Comments}" Margin="0,10,0,5" FontSize="16" TextWrapping="Wrap" Foreground="Red"  Visibility="{Binding ClientCommentVis}"></TextBlock>
-
+                    <TextBlock Text="{Binding TxtCashBack}" Style="{StaticResource  HeaderTextBlockStyle}"  ></TextBlock>
                     <localToGo:CtrlToGoClientStat DataContext="{Binding ClientInfo}"/>
                 </StackPanel>
             </telerik:GroupBox>

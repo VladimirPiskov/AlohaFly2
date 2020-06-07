@@ -206,6 +206,27 @@ namespace AlohaService.ServiceDataContracts
         [Display(AutoGenerateField = false)]
         public bool IsSHSent { get; set; }
 
+
+
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public string FlightNumber2 { get; set; }
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public DateTime? FlightDateTime { get; set; }
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public string DestPort { get; set; }
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public string Route { get; set; }
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public string Aircraft { get; set; }
+        [DataMember]
+        [Display(AutoGenerateField = false)]
+        public int PersonCount { get; set; }
+
         public decimal OrderTotalSumm
         {
             get
@@ -219,7 +240,7 @@ namespace AlohaService.ServiceDataContracts
             get
             {
                 if (OrderSumm == 0) return 0;
-                return DiscountSumm*100 / OrderSumm;
+                return DiscountSumm * 100 / OrderSumm;
             }
             set { }
         }
@@ -267,7 +288,7 @@ namespace AlohaService.ServiceDataContracts
 
                 //(x.OrderSumm == 0 ? 1 : (x.OrderTotalSumm / x.OrderSumm)
 
-                var dp = (OrderSumm == 0? 0:DiscountSumm / OrderSumm);
+                var dp = (OrderSumm == 0 ? 0 : DiscountSumm / OrderSumm);
                 //return OrderDishesSumm * (ExtraCharge / 100) * (1 - dp);
                 return OrderDishesSumm * (ExtraCharge / 100) * (1 - DiscountPercent / 100);
             }

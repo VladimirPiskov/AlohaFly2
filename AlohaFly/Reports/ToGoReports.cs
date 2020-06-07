@@ -75,12 +75,32 @@ namespace AlohaFly.Reports
                 Ws.Cells[row, 1] = "Клиент";
                 Ws.Cells[row, 2] = "Телефон";
                 Ws.Cells[row, 3] = "E-mail";
-                Ws.Cells[row, 5] = "Сумма заказов";
-                Ws.Cells[row, 6] = "Кол-во заказов";
+                int col = 5;
+                foreach (var ch in DataExtension.DataCatalogsSingleton.Instance.MarketingChannelData.Data)
+                {
+                    Ws.Cells[row, col] = ch.Name;
+                     Ws.Range[Ws.Cells[row, col], Ws.Cells[row, col+1]].Merge(Type.Missing);
+                    //_excelCells1.Merge(Type.Missing);
+
+                    Ws.Cells[row+1, col] = "Сумма заказов";
+                    Ws.Cells[row+1, col+1] = "Кол-во ";
+                    col =col+2;
+                }
+                Ws.Cells[row, col] ="Итого";
+                Ws.Range[Ws.Cells[row, col], Ws.Cells[row, col + 1]].Merge(Type.Missing);
+                Ws.Cells[row + 1, col] = "Сумма";
+                Ws.Cells[row + 1, col + 1] = "Кол-во ";
+
+                //Ws.Cells[row, col++] = "Сумма заказов";
+                //Ws.Cells[row, col++] = "Кол-во заказов";
                 (Ws.Rows[row] as Range).HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                (Ws.Rows[row+1] as Range).HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 (Ws.Rows[row] as Range).Font.Bold = true;
 
 
+
+                int colMax = col + 1;
+                row++;
                 foreach (var client in data.Select(a => new { client = a.OrderCustomer
                     , sum = data.Where(c => c.OrderCustomer == a.OrderCustomer).Sum(c=>c.OrderDishesSumm)
                     , cc = data.Where(c => c.OrderCustomer == a.OrderCustomer).Count() }).Distinct().OrderByDescending(a=>a.sum))
@@ -89,32 +109,50 @@ namespace AlohaFly.Reports
                     if (client.client == null) continue;
                         Ws.Cells[row, 1] = client.client.FullName;
                     Ws.Cells[row, 2].NumberFormat = "@";
-                    if (client.client.Phones.Any(a => a.IsPrimary)) 
+
+                    var q = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerPhoneData.Data.Where(a => a.IsPrimary && a.OrderCustomerId == client.client.Id);
+                    if (q.Any()) 
                     {
-                        if (client.client.Phones.FirstOrDefault(a => a.IsPrimary).Phone!= null)
+                        if (q.FirstOrDefault().Phone!= null)
                         {
-                            Ws.Cells[row, 2] = client.client.Phones.FirstOrDefault(a => a.IsPrimary).Phone.Trim();
+                            Ws.Cells[row, 2] = q.FirstOrDefault().Phone.Trim();
                         }
                     }
+
+
                     Ws.Cells[row, 3].NumberFormat = "@";
                     if (client.client.Email != null)
                     {
                         Ws.Cells[row, 3] = client.client.Email.Trim();
                     }
-                    Ws.Cells[row, 5] = client.sum;
-                    Ws.Cells[row, 6] = client.cc;
+
+
+                    col = 5;
+                    foreach (var ch in DataExtension.DataCatalogsSingleton.Instance.MarketingChannelData.Data)
+                    {
+                        (Ws.Cells[row, col] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                        (Ws.Cells[row, col+1] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+
+                        Ws.Cells[row, col] = data.Where(c => c.OrderCustomerId == client.client.Id && c.MarketingChannelId==ch.Id).Sum(c => c.OrderDishesSumm);
+                        Ws.Cells[row, col + 1] = data.Where(c => c.OrderCustomerId == client.client.Id && c.MarketingChannelId == ch.Id).Count();
+                        
+                        col = col + 2;
+                    }
+
+
+                    Ws.Cells[row, col++] = client.sum;
+                    Ws.Cells[row, col++] = client.cc;
                     (Ws.Cells[row, 1] as Range).HorizontalAlignment = XlHAlign.xlHAlignLeft;
                     (Ws.Cells[row, 2] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                     (Ws.Cells[row, 3] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                     (Ws.Cells[row, 5] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                     
                 }
+                for (int c = 1; c <= colMax; c++)
+                {
+                    Ws.Columns[c].AutoFit();
+                }
                 
-                Ws.Columns[1].AutoFit();
-                Ws.Columns[2].AutoFit();
-                Ws.Columns[3].AutoFit();
-                Ws.Columns[5].AutoFit();
-                Ws.Columns[6].AutoFit();
                 app.Visible = true;
             }
             catch(Exception e)

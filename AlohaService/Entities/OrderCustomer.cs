@@ -13,6 +13,7 @@ namespace AlohaService.Entities
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public bool CashBack { get; set; }
+        public int CashBackPercent { get; set; }
 
         public DateTime CashBackStartDate { get; set; }
 

@@ -182,7 +182,14 @@ namespace AlohaService
 
 
                         cfg.CreateMap<ServiceDataContracts.OrderCustomer, Entities.OrderCustomer>()
-                        .ReverseMap();
+                        .ForMember(m => m.Phones, opt => opt.Ignore())
+                        .ForMember(m => m.Addresses, opt => opt.Ignore());
+
+                        cfg.CreateMap<Entities.OrderCustomer, ServiceDataContracts.OrderCustomer>()
+.ForMember(m => m.Phones, opt => opt.Ignore())
+.ForMember(m => m.Addresses, opt => opt.Ignore())
+.ForMember(m => m.OrderCustomerInfo, opt => opt.Ignore());
+
                         cfg.CreateMap<ServiceDataContracts.OrderCustomerPhone, Entities.OrderCustomerPhone>()
                         .ReverseMap();
                         cfg.CreateMap<ServiceDataContracts.OrderCustomerAddress, Entities.OrderCustomerAddress>()
@@ -755,12 +762,12 @@ namespace AlohaService
         {
             return orderFlightService.GetOrderFlight(orderFlightId);
         }
-
+        /*
         public OperationResultValue<ServiceDataContracts.OrderFlight> GetOrderFlightByCode(long orderCode)
         {
             return orderFlightService.GetOrderFlightByCode(orderCode);
         }
-
+        */
         public OperationResultValue<ServiceDataContracts.OrderFlight> UpdateOrderFlight(ServiceDataContracts.OrderFlight orderFlight, long userId)
         {
             return orderFlightService.UpdateOrderFlight(orderFlight, userId);

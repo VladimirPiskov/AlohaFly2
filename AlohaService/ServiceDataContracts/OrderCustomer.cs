@@ -45,6 +45,32 @@ namespace AlohaService.ServiceDataContracts
         public DateTime CashBackStartDate { get; set; }
 
 
+        public string CashBackStr
+        {
+            get {
+                if (!CashBack) { return "Не подключен к акции CashBack"; }
+                else
+                {
+                    return $"Подключен к акции CashBack {CashBackPercent}% c {CashBackStartDateStr}. Баллов: {OrderCustomerInfo?.CashBackSumm}";
+                }
+            }
+        }
+
+        public string CashBackStartDateStr { 
+            get {
+                if (CashBack) { return CashBackStartDate.ToString("dd.MM.yyyy"); }
+                else {
+                    return "";
+                }
+            } 
+        }
+
+
+        [DataMember]
+        [Display(Name = "CB%")]
+        public int CashBackPercent { get; set; }
+
+
         [DataMember]
         [Display(Name = "Комментарий")]
         public string Comments { get; set; }

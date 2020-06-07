@@ -21,6 +21,8 @@ namespace AlohaService.Entities
         public bool ToGo { get; set; }
         public long SHId { get; set; }
 
+        public long SHPlaceId { get; set; }
+
         public long PaymentGroupId { get; set; }
 
         

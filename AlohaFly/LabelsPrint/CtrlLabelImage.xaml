@@ -54,7 +54,10 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
-                            <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+
+                                <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
@@ -64,14 +67,16 @@
                             <RowDefinition Height="auto"></RowDefinition>
                         </Grid.RowDefinitions>
                         <TextBlock Style="{StaticResource  BigBoldFont}" Grid.Row="0" Text="{Binding BarCode}"/>
-                        <TextBlock Style="{StaticResource  BoldFont}" Grid.Row="1" Text="{Binding CommentStr}" Visibility="{Binding CommentStrVisibility}"/>
-                        <Border Background="Gray" HorizontalAlignment="Stretch" Grid.Row="2" Height="6" BorderThickness="0,2,0,0"></Border>
-                        <TextBlock Style="{StaticResource  BigFont}" Grid.Row="3" Text="{Binding RussianItem}"/>
-                        <TextBlock Style="{StaticResource  BigFont}"  Grid.Row="4" Text="{Binding EnglishItem}"/>
-                        <TextBlock Style="{StaticResource  BoldFont}"  Grid.Row="5" Text="{Binding PartStr}"/>
-                        <TextBlock Style="{StaticResource  SmallFont}"  Grid.Row="6" Text="{Binding RussianComp}"/>
-                        <TextBlock Style="{StaticResource  SmallFont}"  Grid.Row="7" Text="{Binding EnglishComp}"/>
-                        <Border Background="Gray" HorizontalAlignment="Stretch"  Grid.Row="8" Height="6" BorderThickness="0,2,0,0"></Border>
+                            <TextBlock Style="{StaticResource  BoldFont}" Grid.Row="1" Text="{Binding BJU1}" Visibility="{Binding BJUVis}" />
+                            <TextBlock Style="{StaticResource  BoldFont}" Grid.Row="2" Text="{Binding BJU2}" Visibility="{Binding BJUVis}"/>
+                            <TextBlock Style="{StaticResource  BoldFont}" Grid.Row="3" Text="{Binding CommentStr}" Visibility="{Binding CommentStrVisibility}"/>
+                        <Border Background="Gray" HorizontalAlignment="Stretch" Grid.Row="4" Height="6" BorderThickness="0,2,0,0"></Border>
+                        <TextBlock Style="{StaticResource  BigFont}" Grid.Row="5" Text="{Binding RussianItem}"/>
+                        <TextBlock Style="{StaticResource  BigFont}"  Grid.Row="6" Text="{Binding EnglishItem}"/>
+                        <TextBlock Style="{StaticResource  BoldFont}"  Grid.Row="7" Text="{Binding PartStr}"/>
+                        <TextBlock Style="{StaticResource  SmallFont}"  Grid.Row="8" Text="{Binding RussianComp}"/>
+                        <TextBlock Style="{StaticResource  SmallFont}"  Grid.Row="9" Text="{Binding EnglishComp}"/>
+                        <Border Background="Gray" HorizontalAlignment="Stretch"  Grid.Row="10" Height="6" BorderThickness="0,2,0,0"></Border>
                     </Grid>
                 </Viewbox>
 

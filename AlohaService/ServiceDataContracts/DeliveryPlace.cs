@@ -24,6 +24,10 @@ namespace AlohaService.ServiceDataContracts
         public string Phone { get; set; }
 
         [DataMember]
+        [Display(Name = "Имя в накладной")]
+        public string InvoiceName { get; set; }
+
+        [DataMember]
         [Display(Name = "Активно")]
         public bool IsActive { get; set; } = true;
                

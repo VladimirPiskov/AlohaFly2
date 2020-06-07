@@ -247,6 +247,7 @@ namespace AlohaFly.Models
 
                 if (_printInvoiceitems == null)
                 {
+                    var cReps = new Reports.ExcelReports();
                     _printInvoiceitems = new List<RadMenuItem>() {
                         new RadMenuItem()
                         {
@@ -255,8 +256,11 @@ namespace AlohaFly.Models
                             {
                                    if (CurentOrder!=null)
                                    {
-                                        UI.UIModify.ShowWndPrintExcelDoc($"Накладная на русском к заказу №{ CurentOrder?.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookRussian(CurentOrder));
-                                    }
+                                    
+
+                                        //UI.UIModify.ShowWndPrintExcelDoc($"Накладная на русском к заказу №{ CurentOrder?.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookRussian(CurentOrder));
+                                        cReps.InvoiceToFlyCreate(CurentOrder,true,false);
+                                }
                                     else
                                     {
                                         UI.UIModify.ShowAlert("Выделите заказ для печати");
@@ -272,8 +276,10 @@ namespace AlohaFly.Models
 
                                 if (CurentOrder!=null)
                                 {
+                                    
                                 UI.UIModify.ShowWndPrintExcelDoc(
                                  $"Накладная на английском к заказу №{ CurentOrder?.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookEnglish(CurentOrder));
+                                
                                 }
                                 else
                                 {
@@ -289,7 +295,9 @@ namespace AlohaFly.Models
                             {
                                    if (CurentOrder!=null)
                                    {
-                                        UI.UIModify.ShowWndPrintExcelDoc($"Накладная на русском  со скидкой к заказу №{ CurentOrder?.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookRussian(CurentOrder,true));
+                                        cReps.InvoiceToFlyCreate(CurentOrder,true,true);
+                                
+                                        //UI.UIModify.ShowWndPrintExcelDoc($"Накладная на русском  со скидкой к заказу №{ CurentOrder?.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookRussian(CurentOrder,true));
                                     }
                                     else
                                     {

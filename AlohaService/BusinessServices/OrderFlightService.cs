@@ -106,7 +106,7 @@ namespace AlohaService.BusinessServices
 
                 OrderCustomrInfoService srv = new OrderCustomrInfoService(db);
                 //srv.RecalcCustomerInfo(orderToGo.OrderCustomerId.GetValueOrDefault());
-                srv.RecalcCustomerAllInfo();
+                //srv.RecalcCustomerAllInfo();
                 return new OperationResult
                 {
                     Success = true,
@@ -124,7 +124,7 @@ namespace AlohaService.BusinessServices
                 };
             }
         }
-
+        /*
         public OperationResultValue<ServiceDataContracts.OrderFlight> GetOrderFlightByCode(long orderCode)
         {
             var result = new OperationResultValue<ServiceDataContracts.OrderFlight>();
@@ -159,13 +159,7 @@ namespace AlohaService.BusinessServices
                     {
                         Id = order.AirCompany.DiscountType.Id,
                         Name = order.AirCompany.DiscountType.Name,
-                        //Ranges = order.AirCompany.DiscountType.Ranges.Select(r => new ServiceDataContracts.DiscountRange
-                        //{
-                        //    DiscountPercent = r.DiscountPercent,
-                        //    End = r.End,
-                        //    Id = r.Id,
-                        //    Start = r.Start
-                        //}).ToList()
+                       
                     },
                     PaymentId = order.AirCompany.PaymentId,
                     PaymentType = order.AirCompany.PaymentType == null ? null :
@@ -280,7 +274,7 @@ namespace AlohaService.BusinessServices
 
             return result;
         }
-
+        */
         public OperationResultValue<ServiceDataContracts.OrderFlight> GetOrderFlight(long orderFlightId)
         {
             try
@@ -289,90 +283,31 @@ namespace AlohaService.BusinessServices
                 log.Info("GetOrderFlight start");
                 var order = db.OrderFlight.FirstOrDefault(of => of.Id == orderFlightId);
 
+
+
                 if (order == null)
                 {
                     return new OperationResultValue<ServiceDataContracts.OrderFlight> { Success = false, ErrorMessage = "order Not Found." };
                 }
+                var o2 = Mapper.Map<Entities.OrderFlight, ServiceDataContracts.OrderFlight>(order);
+
+
 
                 var result = new OperationResultValue<ServiceDataContracts.OrderFlight>();
                 result.Success = true;
+                result.Result = o2;
+                /*
                 result.Result = new ServiceDataContracts.OrderFlight();
                 result.Result.Id = order.Id;
-                /*
-                result.Result.AirCompany = order.AirCompany == null ? null :
-                    new ServiceDataContracts.AirCompany
-                    {
-                        Id = order.AirCompany.Id,
-                        Code = order.AirCompany.Code,
-                        Name = order.AirCompany.Name,
-                        FullName = order.AirCompany.FullName,
-                        Address = order.AirCompany.Address,
-                        Inn = order.AirCompany.Inn,
-                        IkaoCode = order.AirCompany.IkaoCode,
-                        IataCode = order.AirCompany.IataCode,
-                        RussianCode = order.AirCompany.RussianCode,
-                        IsActive = order.AirCompany.IsActive,
-                        SHId = order.AirCompany.SHId,
-                        Code1C = order.AirCompany.Code1C,
-                        Name1C = order.AirCompany.Name1C,
-                        DiscountType = order.AirCompany.DiscountType == null ? null :
-                        new ServiceDataContracts.Discount
-                        {
-                            Id = order.AirCompany.DiscountType.Id,
-                            Name = order.AirCompany.DiscountType.Name,
-                            //Ranges = order.AirCompany.DiscountType.Ranges.Select(r => new ServiceDataContracts.DiscountRange
-                            //{
-                            //    DiscountPercent = r.DiscountPercent,
-                            //    End = r.End,
-                            //    Id = r.Id,
-                            //    Start = r.Start
-                            //}).ToList()
-                        },
-                        PaymentId = order.AirCompany.PaymentId,
-                        PaymentType = order.AirCompany.PaymentType == null ? null :
-                            new ServiceDataContracts.Payment
-                            {
-                                Code = order.AirCompany.PaymentType.Code,
-                                Id = order.AirCompany.PaymentType.Id,
-                                FiskalId = order.AirCompany.PaymentType.FiskalId,
-                                IsCash = order.AirCompany.PaymentType.IsCash,
-                                Name = order.AirCompany.PaymentType.Name
-                            }
-                    };
-                    */
+                
                 result.Result.AirCompanyId = order.AirCompanyId;
                 result.Result.Comment = order.Comment;
-                /*
-                result.Result.ContactPerson = order.ContactPerson == null ? null :
-                    new ServiceDataContracts.ContactPerson
-                    {
-                        Id = order.ContactPerson.Id,
-                        FirstName = order.ContactPerson.FirstName,
-                        SecondName = order.ContactPerson.SecondName,
-                        Phone = order.ContactPerson.Phone
-                    };
-                    */
+                
                 result.Result.ContactPersonId = order.ContactPersonId;
                 result.Result.DeliveryDate = order.DeliveryDate;
-                /*
-                result.Result.DeliveryPlace = order.DeliveryPlace == null ? null :
-                    new ServiceDataContracts.DeliveryPlace
-                    {
-                        Id = order.DeliveryPlace.Id,
-                        Phone = order.DeliveryPlace.Phone,
-                        Name = order.DeliveryPlace.Name
-                    };
-                    */
+                
                 result.Result.DeliveryPlaceId = order.DeliveryPlaceId;
-                /*
-                result.Result.Driver = order.Driver == null ? null :
-                    new ServiceDataContracts.Driver
-                    {
-                        Id = order.Driver.Id,
-                        FullName = order.Driver.FullName,
-                        Phone = order.Driver.Phone
-                    };
-                    */
+                
                 result.Result.DriverId = order.DriverId;
                 result.Result.ExportTime = order.ExportTime;
                 result.Result.ExtraCharge = order.ExtraCharge;
@@ -388,49 +323,17 @@ namespace AlohaService.BusinessServices
 
 
                 result.Result.CreationDate = order.CreationDate;
-                /*
-                result.Result.CreatedBy = order.CreatedBy == null ? null :
-                    new ServiceDataContracts.User
-                    {
-                        Id = order.CreatedBy.Id,
-
-                        UserName = order.CreatedBy.UserName,
-                        Email = order.CreatedBy.Email,
-                        Phone = order.CreatedBy.Phone,
-
-                        RegistrationStatus = order.CreatedBy.RegistrationStatus,
-                        SequrityQuestion = order.CreatedBy.SequrityQuestion,
-                        SequrityAnswer = order.CreatedBy.SequrityAnswer,
-                        FullName = order.CreatedBy.FullName,
-                        UserRole = (UserRole)order.CreatedBy.UserRole
-                    };
-                    */
+                
                 result.Result.CreatedById = order.CreatedById;
 
-                /*
-                result.Result.SendBy = order.SendBy == null ? null :
-                new ServiceDataContracts.User
-                {
-                    Id = order.SendBy.Id,
-
-                    UserName = order.SendBy.UserName,
-                    Email = order.SendBy.Email,
-                    Phone = order.SendBy.Phone,
-
-                    RegistrationStatus = order.SendBy.RegistrationStatus,
-                    SequrityQuestion = order.SendBy.SequrityQuestion,
-                    SequrityAnswer = order.SendBy.SequrityAnswer,
-                    FullName = order.SendBy.FullName,
-                    UserRole = (UserRole)order.SendBy.UserRole
-                };
-                */
+                
                 result.Result.SendById = order.SendById;
 
                 result.Result.Code = order.Code;
+                */
 
 
-
-
+                
 
                 if (order.DishPackages != null)
                 {
@@ -455,6 +358,7 @@ namespace AlohaService.BusinessServices
 
                     }).ToList();
                 }
+                /*
                 result.Result.PaymentId = order.PaymentId;
                 result.Result.PaymentType = order.PaymentType == null ? null :
                     new ServiceDataContracts.Payment
@@ -465,8 +369,8 @@ namespace AlohaService.BusinessServices
                         IsCash = order.AirCompany.PaymentType.IsCash,
                         Name = order.AirCompany.PaymentType.Name
                     };
-
-
+                    */
+                /*
                 result.Result.DiscountSumm = order.DiscountSumm;
 
                 result.Result.Closed = order.Closed;
@@ -475,8 +379,8 @@ namespace AlohaService.BusinessServices
                 result.Result.FRPrinted = order.FRPrinted;
                 result.Result.PreCheckPrinted = order.PreCheckPrinted;
                 result.Result.IsSHSent = order.IsSHSent;
-
-                log.Info("GetOrderFlight end");
+                */
+                log.Info($"GetOrderFlight end {result.Result.Id}");
 
                 return result;
             }
@@ -513,7 +417,7 @@ namespace AlohaService.BusinessServices
 
             foreach (var dp in orderFlight.DishPackages)
             {
-                result += "Dish Name:" + dp.Dish.Name;
+                result += "Dish Name:" + dp.DishName;
                 result += "Amount: " + dp.Amount;
                 result += Environment.NewLine;
             }
@@ -628,6 +532,10 @@ namespace AlohaService.BusinessServices
                 return new OperationResultValue<ServiceDataContracts.OrderFlight> { Success = false, ErrorMessage = "OrderFlight Not Found." };
             }
 
+
+            //Mapper.Map(orderFlight, order);
+
+            
             order.AirCompanyId = orderFlight.AirCompanyId;
             order.Comment = orderFlight.Comment;
             order.ContactPersonId = orderFlight.ContactPersonId;
@@ -665,8 +573,18 @@ namespace AlohaService.BusinessServices
             order.FRPrinted = orderFlight.FRPrinted;
             order.PreCheckPrinted = orderFlight.PreCheckPrinted;
             order.IsSHSent = orderFlight.IsSHSent;
+            
+            order.FlightNumber2 = orderFlight.FlightNumber2;
+            order.FlightDateTime = orderFlight.FlightDateTime;
+            order.DestPort = orderFlight.DestPort;
+            order.Route = orderFlight.Route;
+            order.Aircraft = orderFlight.Aircraft;
+            order.PersonCount = orderFlight.PersonCount;
 
-            Entities.LogItem logItem = new Entities.LogItem();
+
+                 
+
+        Entities.LogItem logItem = new Entities.LogItem();
 
             if (orderFlight.DishPackages != null)
             {
@@ -960,15 +878,7 @@ namespace AlohaService.BusinessServices
                    DeliveryDate = order.DeliveryDate,
 
                    DeliveryPlaceId = order.DeliveryPlaceId,
-                   /*
-                   Driver = order.Driver == null ? null :
-                       new ServiceDataContracts.Driver
-                       {
-                           Id = order.Driver.Id,
-                           FullName = order.Driver.FullName,
-                           Phone = order.Driver.Phone
-                       },
-                       */
+                
                    DriverId = order.DriverId,
                    ExportTime = order.ExportTime,
                    ExtraCharge = order.ExtraCharge,
@@ -1019,9 +929,15 @@ namespace AlohaService.BusinessServices
                    NeedPrintPrecheck = order.NeedPrintPrecheck,
                    FRPrinted = order.FRPrinted,
                    PreCheckPrinted = order.PreCheckPrinted,
-                   IsSHSent = order.IsSHSent
+                   IsSHSent = order.IsSHSent,
+                   FlightNumber2 = order.FlightNumber2,
+                FlightDateTime = order.FlightDateTime,
+                DestPort = order.DestPort,
+                Route = order.Route,
+                Aircraft = order.Aircraft,
+                PersonCount = order.PersonCount,
 
-               }
+            }
 
 ).ToList();
 
@@ -1068,7 +984,7 @@ namespace AlohaService.BusinessServices
 
         public OperationResultValue<List<ServiceDataContracts.OrderFlight>> GetOrderFlightListNeedToFR()
         {
-            log.Info("GetOrderFlightListNeedToFR");
+          
             try
             {
                 var query = db.OrderFlight.Where(o => o.NeedPrintFR);
@@ -1170,7 +1086,7 @@ namespace AlohaService.BusinessServices
                     or.NeedPrintFR = false;
                 }
                 db.SaveChanges();
-                log.Info($"GetOrderFlightListNeedToFR returned: {result.Count }");
+
                 return new OperationResultValue<List<ServiceDataContracts.OrderFlight>>
                 {
                     Success = true,

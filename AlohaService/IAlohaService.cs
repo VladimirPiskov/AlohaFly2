@@ -370,9 +370,10 @@ namespace AlohaService
         [OperationContract]
         OperationResultValue<OrderFlight> GetOrderFlight(long orderFlightId);
 
+        /*
         [OperationContract]
         OperationResultValue<OrderFlight> GetOrderFlightByCode(long orderCode);
-
+        */
         [OperationContract]
         OperationResultValue<OrderFlight> UpdateOrderFlight(OrderFlight orderFlight, long userId);
 
@@ -665,8 +666,6 @@ namespace AlohaService
         OperationResult ExternalCreateDeleveryClubToGoOrder(ExternalToGoOrder order);
         [OperationContract]
         OperationResult ExternalCreateYandexToGoOrder(ExternalToGoOrder order);
-
-
 
 
         [OperationContract]

@@ -31,6 +31,8 @@ namespace AlohaFly.Reports
 
         private readonly string templateFolder = @"\Data\";
         private readonly string templateMenuPath = @"Menu.xltx";
+        private readonly string templateInvoiceFlyNameRus = @"InvoiceTemplateRus.xltx";
+        private readonly string templateInvoiceFlyNameEng = @"InvoiceTemplateEng.xltx";
 
 
         public void ToFlyMenuCreate(OrderFlight order)
@@ -42,12 +44,94 @@ namespace AlohaFly.Reports
 
         }
 
-            
 
-        
+        public void InvoiceToFlyCreate(OrderFlight order, bool rus,bool showDiscount)
+        {
+            if (order == null) return;
+            app = new Microsoft.Office.Interop.Excel.Application();
+            app.Visible = true;
+            Wb = app.Workbooks.Add(System.AppDomain.CurrentDomain.BaseDirectory + @"\" + templateFolder + (rus ? templateInvoiceFlyNameRus:templateInvoiceFlyNameEng));
+            Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)Wb.ActiveSheet;
 
-        
-            public void ToFlyMenuCreateForPassage(OrderFlight order, int pn)
+            worksheet.Cells[2, 3] = worksheet.Cells[2, 3].Value + $" №{order.Id}";
+            worksheet.Cells[7, 4] = order.AirCompany?.Name;
+            worksheet.Cells[8, 4] = order.FlightNumber;
+            worksheet.Cells[9, 4] = order.FlightNumber2;
+            worksheet.Cells[10, 4] = order.DeliveryDate.ToString("dd.MM.yyyy в HH:mm");
+            worksheet.Cells[11, 4] = order.FlightDateTime?.ToString("dd.MM.yyyy в HH:mm");
+
+            worksheet.Cells[7, 6] = order.DestPort;
+            worksheet.Cells[8, 6] = order.Route;
+            worksheet.Cells[9, 6] = order.DeliveryPlace?.InvoiceName;
+            worksheet.Cells[10, 6] = order.Aircraft;
+            worksheet.Cells[11, 6] = order.PersonCount==0 ? "": order.PersonCount.ToString();
+
+
+
+
+            int rowIndex = 14;
+            foreach (var d in order.DishPackages)
+            {
+
+                if (rowIndex < order.DishPackages.Count+ 13)
+                {
+                    ((worksheet.Cells[rowIndex+1, 2] as Range).EntireRow as Range).Insert(XlInsertShiftDirection.xlShiftDown, false);
+
+                    //worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 5]].Cells.Merge(Type.Missing);
+                    //worksheet.Range[worksheet.Cells[rowIndex, 1], worksheet.Cells[rowIndex, 8]].Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                }
+
+                worksheet.Cells[rowIndex, 1] = rowIndex-13;
+                worksheet.Cells[rowIndex, 2] = d.Dish.Barcode;
+                if (d.Dish.IsAlcohol)
+                {
+                    worksheet.Cells[rowIndex, 3] = rus ? "Открытый напиток" : "Open drink";
+                }
+                else
+                {
+                    worksheet.Cells[rowIndex, 3] = rus ? d.Dish.Name : d.Dish.EnglishName;
+                }
+                    worksheet.Cells[rowIndex, 6] = d.Amount;
+                worksheet.Cells[rowIndex, 7] = d.TotalPrice;
+                worksheet.Cells[rowIndex, 8] = d.TotalSumm;
+                rowIndex++;
+            }
+            if (order.ExtraCharge > 0)
+            {
+                ((worksheet.Cells[rowIndex, 2] as Range).EntireRow as Range).Insert(XlInsertShiftDirection.xlShiftDown, false);
+
+                worksheet.Cells[rowIndex, 1] = rowIndex - 13;
+                worksheet.Cells[rowIndex, 3] = rus ? "Наценка за срочность 10%" : "Extra charge for urgency 10%";
+                worksheet.Cells[rowIndex, 8] = order.OrderDishesSumm * order.ExtraCharge / 100;
+                rowIndex++;
+            }
+
+            if (showDiscount && order.DiscountSumm > 0)
+            {
+
+                ((worksheet.Cells[rowIndex, 2] as Range).EntireRow as Range).Insert(XlInsertShiftDirection.xlShiftDown, false);
+
+                worksheet.Cells[rowIndex, 3] = rus ? $"Скидка ": "Discount"+ (order.DiscountSumm / order.OrderSumm) +"%";
+                worksheet.Cells[rowIndex, 8] = (order.DiscountSumm );
+                rowIndex++;
+            }
+
+
+            worksheet.Cells[rowIndex, 6] = order.DishPackages.Sum(a=>a.Amount);
+            worksheet.Cells[rowIndex, 8] = order.OrderTotalSumm;
+            rowIndex += 2;
+
+            worksheet.Cells[rowIndex, 1] = worksheet.Cells[rowIndex, 1].Value.ToString() + Math.Ceiling(((decimal)rowIndex+14)/45).ToString();
+            rowIndex++;
+            worksheet.Cells[rowIndex, 1] = worksheet.Cells[rowIndex, 1].Value.ToString() + order.DishPackages.Count.ToString();
+            worksheet.Cells[rowIndex + 12, 3] = order.NumberOfBoxes;
+
+        }
+
+
+
+
+        public void ToFlyMenuCreateForPassage(OrderFlight order, int pn)
         {
 
             try

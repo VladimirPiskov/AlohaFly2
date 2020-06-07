@@ -13,7 +13,7 @@ namespace AlohaFly.SH
         static Logger logger = LogManager.GetCurrentClassLogger();
         static TStoreHouse sh;
 
-        static TStoreHouse ConnectSH()
+        static public TStoreHouse ConnectSH()
         {
             try
             {
@@ -32,7 +32,7 @@ namespace AlohaFly.SH
                 }
                 conn = sh.ConnectSH(ip, port, login, pass, out errCode, out err);
 
-
+                
                 logger.Debug($"ConnectSH {conn} err: {err}");
                 if (conn) return sh;
                 return null;
@@ -44,34 +44,16 @@ namespace AlohaFly.SH
             }
         }
 
-        /*
-        public static void CreateSalesInvoice(OrderFlight order)
+
+
+        public static void GetPRids()
         {
-            var t = new Task(
-
-                () =>
-                {
-                    string ErrMesssage = "";
-                    var CreateSHres = CreateSalesInvoiceSync(order, out ErrMesssage);
-                    if (!CreateSHres)
-                    {
-                        UI.UIModify.ShowAlert($"{ErrMesssage + Environment.NewLine} Накладная будет создана при появлении связи со StoreHouse");
-                        order.IsSHSent = false;
-                        Models.AirOrdersModelSingleton.Instance.UpdateOrder(order);
-                    }
-                }
-
-            );
-            t.Start();
+            var res = sh.PlaceImpl(out int errCode, out string err);
+            foreach (var s in res.ListPlace)
+            {
+                logger.Debug($"{s.Rid} {s.Name} ");
+            }
         }
-        /*
-        static int UnitId = 6;
-        static int ToFlyFolderId = 5;
-        static int SharFolderId = 6;
-        static int ToGoFolderId = 7;
-        */
-
-
 
         private static List<TGoods> GetDishesFromSH(List<int> groups)
         {
@@ -153,27 +135,7 @@ namespace AlohaFly.SH
             toFlyGroups.AddRange(GetSVOGoodsTreeDic().Keys.ToList());
             var existD = GetDishesFromSH(toFlyGroups);
 
-            //if (dish.IsTemporary)
-            //{
-            //    
-            //    if (existD.Any(a => GetBarCode(a.prCode) == dish.Barcode && GetBarCode2OpenDish(a.prCode) == dish.Id))
-            //    {
-
-            //        dish.SHIdNewBase = existD.FirstOrDefault(a => GetBarCode(a.prCode) == dish.Barcode && GetBarCode2OpenDish(a.prCode) == dish.Id).Rid;
-            //        //catId = -1;
-            //        DBProvider.Client.UpdateDish(dish);
-            //        return true;
-            //    }
-            //    /*
-            //    if (DataExtension.DataCatalogsSingleton.Instance.Dishes.Any(a => a.Barcode == dish.Barcode && !a.IsTemporary))
-            //    {
-            //        dish.SHIdNewBase = DataExtension.DataCatalogsSingleton.Instance.Dishes.SingleOrDefault(a => a.Barcode == dish.Barcode && !a.IsTemporary).SHIdNewBase;
-            //        return true;
-            //    }
-            //   */
-            //}
-            //else
-
+            
             {
 
                 if (existD.Any(a => GetBarCode(a.prCode, dish.IsDop()) == dish.Barcode || GetBarCode(a.prCode, dish.IsDop()) == dish.Barcode + 10000))
@@ -194,16 +156,7 @@ namespace AlohaFly.SH
                 }
 
                 string dName = dish.Name.Length > ShMaxNameLenght ? dish.Name.Substring(0, ShMaxNameLenght) : dish.Name;
-                /*
-                if (dish.IsTemporary)
-                {
-                    catId = Properties.Settings.Default.SHOpenDishFolderToFly;
-                    res = sh.AddGoods(catId, dName + "_ToFly", "Al_Op_" + dish.Barcode.ToString() + "_" + dish.Id.ToString(), (int)dish.Barcode, (int)dish.Barcode, 1, 2, Properties.Settings.Default.SHUnitId, (double)dish.PriceForFlight, out errCode, out ErrMesssage);
-
-                }
                 
-                else
-                */
                 {
                     string prefixDop = dish.DishLogicGroupId == MainClass.DopLogikCatId ? "dop_" : "";
                     if (dish.DishLogicGroupId == null || (int)dish.DishLogicGroupId != 1)
@@ -268,6 +221,10 @@ namespace AlohaFly.SH
             }
         }
 
+
+        
+      
+        
 
         private static bool AddNewDishToGo(Dish dish, out string ErrMesssage, out int catId)
         {
@@ -706,33 +663,53 @@ namespace AlohaFly.SH
         //    }
         //}
 
-            /*
+        /*
 
-        public static bool ShSendCheck(IOrderLabel order, out string ErrMesssage)
+    public static bool ShSendCheck(IOrderLabel order, out string ErrMesssage)
+    {
+        ErrMesssage = "";
+        var prefix = Properties.Settings.Default.SHDocPrefix + DBProvider.TestStr + (order is OrderToGo ? "ToGo" : "");
+        var prefixAnn = prefix + "_Annul";
+        TExpenceDocument d = new TExpenceDocument()
         {
-            ErrMesssage = "";
-            var prefix = Properties.Settings.Default.SHDocPrefix + DBProvider.TestStr + (order is OrderToGo ? "ToGo" : "");
-            var prefixAnn = prefix + "_Annul";
-            TExpenceDocument d = new TExpenceDocument()
-            {
-                Prefix = prefix,
-                DocNum = (int)order.Id,
-                Date = order.DeliveryDate,
-                Type = 1
-            };
-            TStoreHouse sh = null;
-            sh = ConnectSH();
-            if (sh == null) return false;
-            //sh.ExpenceDocumentCheck(d,)
-                bool res = sh.ExpenceDocumentCheck(d, out int errCode, out string err);
-            logger.Debug($"DeleteSalesInvoice {res}; err: {err}");
-            if (errCode == -100)
-            {
-                logger.Debug($"(errCode == -100) ok;");
-                res = true;
-            }
+            Prefix = prefix,
+            DocNum = (int)order.Id,
+            Date = order.DeliveryDate,
+            Type = 1
+        };
+        TStoreHouse sh = null;
+        sh = ConnectSH();
+        if (sh == null) return false;
+        //sh.ExpenceDocumentCheck(d,)
+            bool res = sh.ExpenceDocumentCheck(d, out int errCode, out string err);
+        logger.Debug($"DeleteSalesInvoice {res}; err: {err}");
+        if (errCode == -100)
+        {
+            logger.Debug($"(errCode == -100) ok;");
+            res = true;
         }
-        */
+    }
+    */
+
+
+        private static long GetSHRidPlace(IOrderLabel order)
+        {
+            long? pNum = 0;
+            if (order is OrderFlight orderFlight)
+            {
+                if (orderFlight.AirCompany != null)
+                {
+                    pNum = orderFlight.AirCompany.PaymentType?.SHPlaceId;
+                }
+            }
+            else if (order is OrderToGo orderToGo)
+            {
+                pNum = orderToGo.PaymentType?.SHPlaceId;
+            }
+
+                return pNum.GetValueOrDefault(0);
+
+        }
 
             public static bool CreateSalesInvoiceSync(IOrderLabel order, out string ErrMesssage)
         {
@@ -831,7 +808,13 @@ namespace AlohaFly.SH
                 }
                 bool res = true;
 
-                if (order.DishPackagesNoSpis.Any())
+                var SHPlaceByPayment = GetSHRidPlace(order);
+                if (SHPlaceByPayment != 0)
+                {
+                    ridPlace = (int)SHPlaceByPayment;
+                }
+
+                    if (order.DishPackagesNoSpis.Any())
                 {
                     res &= CreateSalesInvoiceSyncSale(order, order.DishPackagesNoSpis.ToList(), docNum, catExp, ridPlace, prefix, comment, out string ErrMesssage2);
                     ErrMesssage += ErrMesssage2 + Environment.NewLine;
@@ -875,7 +858,6 @@ namespace AlohaFly.SH
 
         public static bool CreateSalesInvoiceSyncSale(IOrderLabel order, List<IDishPackageLabel> dishes, int docNum, int catExp, int ridPlace, string prefix, string comment, out string ErrMesssage)
         {
-
             try
             {
                 ErrMesssage = "";

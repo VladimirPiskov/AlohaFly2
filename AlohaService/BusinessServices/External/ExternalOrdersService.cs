@@ -15,7 +15,7 @@ namespace AlohaService.BusinessServices.External
 {
     public abstract class ExternalOrdersService
     {
-        private AlohaDb db;
+        protected AlohaDb db;
         protected ILog log;
 
         public  ExternalOrdersService(AlohaDb databaseContext)
@@ -57,16 +57,21 @@ namespace AlohaService.BusinessServices.External
             {
                 Success = false
             };
-            try
+           // try
             {
-                log.Debug($"CreateSiteToGoOrder {order.ExternalId}");
+                log.Debug($"CreateSiteToGoOrder {order.ExternalId} Addr: {order.Client.Address}");
+                
                 if (order.Dishes == null)
                 {
                     log.Error($"No one dish");
                     res.ErrorMessage = "No one dish";
                     return res;
                 }
-                if (db.OrderToGo.Any(a=>a.MarketingChannelId==3 && a.OldId==order.ExternalId))
+                CreateUnknownDish();
+                DateTime testDT = new DateTime(2020, 05, 14);
+                if (db.OrderToGo.Any(a=>a.MarketingChannelId==marketingChanelId && a.ExternalId==order.ExternalId 
+                && (a.DeliveryDate> testDT ^ a.OrderStatus==2)
+                ))
                 {
                     log.Error($"Order exists");
                     res.ErrorMessage = "Order exists";
@@ -95,12 +100,13 @@ namespace AlohaService.BusinessServices.External
                 res.CreatedObjectId = orderToGo.Id;
                 res.Success = true;
             }
+            /*
             catch (Exception e)
             {
                 log.Error($"CreateSiteToGoOrder {e.Message}");
                 res.ErrorMessage = e.Message;
             }
-
+            */
             return res;
         }
 
@@ -115,7 +121,7 @@ namespace AlohaService.BusinessServices.External
             {
 
                 var orderCustomer = db.OrderCustomerPhones.First(a => a.Phone == client.Phone).OrderCustomer;
-                log.Debug($"Find phone in client: {orderCustomer.Id} {orderCustomer.Name}");
+                log.Debug($"Find  client by phone: {orderCustomer.Id} {orderCustomer.Name}");
                 if (!orderCustomer.IsActive)
                 {
                     log.Debug($"Do client active");
@@ -157,8 +163,9 @@ namespace AlohaService.BusinessServices.External
                     address.OrderCustomerId = orderCustomer.Id;
                     address.UpdatedDate = DateTime.Now;
                     address.LastUpdatedSession = updatedGuid;
-
+                    address.Address = client.Address;
                     db.OrderCustomerAddresses.Add(address);
+
                     //orderCustomer.Addresses.Add(address);
                     db.SaveChanges();
                     log.Debug($"Address created id {address.Id}");
@@ -201,6 +208,7 @@ namespace AlohaService.BusinessServices.External
                 {
                     IsActive = true,
                     IsPrimary=true,
+                    Phone= client.Phone,
                     UpdatedDate = DateTime.Now,
                     LastUpdatedSession = updatedGuid
                 };
@@ -226,12 +234,14 @@ namespace AlohaService.BusinessServices.External
             return address;
         }
 
-        private long GetDishIdFromBarcode(int barcode, out bool succeessful)
+        protected virtual long GetDishIdFromBarcode(int barcode, out string name, out bool succeessful)
         {
-            if (db.Dish.Any(a => a.Barcode == barcode))
+            name = "";
+            if (db.Dish.Any(a => a.Barcode == barcode && a.IsActive))
             {
                 succeessful = true;
-                return db.Dish.First(a => a.Barcode == barcode).Id;
+                name = db.Dish.First(a => a.Barcode == barcode && a.IsActive).Name;
+                return db.Dish.First(a => a.Barcode == barcode && a.IsActive).Id;
             }
             succeessful = false;
             return db.Dish.First(a => a.Barcode == -1).Id;
@@ -239,7 +249,9 @@ namespace AlohaService.BusinessServices.External
 
         private Entities.DishPackageToGoOrder GetDPFromExternalDishDP(ExternalDishPackage dp)
         {
-            var dId = GetDishIdFromBarcode(dp.Id, out bool sucss);
+            
+            var dId = GetDishIdFromBarcode(dp.Id, out string name, out bool sucss);
+            log.Error($"GetDPFromExternalDishDP dp.Id: {dp.Id}; dId:{dId}; sucss:{sucss}");
             int bc = sucss ? dp.Id : -1;
             var dpEnt = new Entities.DishPackageToGoOrder()
             {
@@ -248,9 +260,13 @@ namespace AlohaService.BusinessServices.External
                 DishId = dId,
                 Comment = dp.Comment,
                 Deleted = false,
-                DishName = dp.Name,
+                DishName = name,
                 TotalPrice = dp.Price
             };
+            if (sucss)
+            {
+                dpEnt.DishName = name;
+            }
             return dpEnt;
         }
 
@@ -265,6 +281,7 @@ namespace AlohaService.BusinessServices.External
                 CreationDate = DateTime.Now,
                 DeliveryDate = order.DeliveryDate,
                 DeliveryPrice = order.DeliveryPrice,
+                ReadyTime = order.DeliveryDate,
                 DiscountPercent = 0,
                 DriverId = null,
                 ExportTime = DateTime.Now,
@@ -294,6 +311,39 @@ namespace AlohaService.BusinessServices.External
 
 
             return orderToGo;
+        }
+
+        private void CreateUnknownDish()
+        {
+            try
+
+            {
+                if (!db.Dish.Any(a => a.Barcode == -1))
+                {
+                    var d = new Entities.Dish()
+                    {
+                        Barcode = -1,
+                        Name = "Неизвестное блюдо",
+                        IsActive = true,
+                        IsTemporary = false,
+                        IsShar = false,
+                        IsAlcohol = false,
+                        IsToGo = true,
+                        LabelEnglishName = "",
+                    LabelRussianName="",
+                        LastUpdatedSession = Guid.NewGuid(),
+                        UpdatedDate = DateTime.Now,
+
+                    };
+                    db.Dish.Add(d);
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+                log.Error($"CreateSiteToGoOrder {e.Message} {e.InnerException?.Message}");
+
+            }
         }
     }
 }

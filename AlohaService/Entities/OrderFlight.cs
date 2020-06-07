@@ -93,6 +93,15 @@ namespace AlohaService.Entities
 
         public bool IsSHSent { get; set; }
 
+
+        public string FlightNumber2 { get; set; }
+        public DateTime? FlightDateTime { get; set; }
+        public string  DestPort { get; set; }
+        public string Route { get; set; }
+        public string Aircraft { get; set; }
+        public int PersonCount { get; set; }
+
+
         public OrderFlight()
         {
             DishPackages = new HashSet<DishPackageFlightOrder>();

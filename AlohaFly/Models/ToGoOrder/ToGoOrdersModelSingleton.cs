@@ -106,7 +106,9 @@ namespace AlohaFly.Models
                             {
 
                                 var resPrinted = new List<string>();
-                                var printDeleted = PrintRecieps.PrintOnWinPrinter.PrintOrderToGoToKitchen(CurentOrder, out resPrinted, CurentOrder.DishPackagesForLab);
+                                var printDeleted  = CurentOrder.OrderStatus== OrderStatus.New || PrintRecieps.PrintOnWinPrinter.PrintOrderToGoToKitchen(CurentOrder, out resPrinted, CurentOrder.DishPackagesForLab);
+
+
 
                                 if (printDeleted)
                                 {
@@ -189,7 +191,7 @@ namespace AlohaFly.Models
                             SH.SHWrapper.CreateSalesInvoiceSync(CurentOrder, out string err);
 
                         }
-                        else if (CurentOrder.OrderStatus == OrderStatus.Sent)
+                        else if ((CurentOrder.OrderStatus == OrderStatus.Sent)||(CurentOrder.OrderStatus == OrderStatus.New))
                         {
                             CurentOrder.OrderStatus = OrderStatus.InWork;
                         }
@@ -255,7 +257,7 @@ namespace AlohaFly.Models
                     {
                         return "Отправить";
                     }
-                    else if (CurentOrder.OrderStatus == OrderStatus.Sent)
+                    else if ((CurentOrder.OrderStatus == OrderStatus.Sent)||(CurentOrder.OrderStatus == OrderStatus.New))
                     {
                         return "В работу";
                     }
@@ -270,7 +272,7 @@ namespace AlohaFly.Models
         {
             get
             {
-                return CurentOrder == null ? false : (CurentOrder.OrderStatus == OrderStatus.InWork || CurentOrder.OrderStatus == OrderStatus.Sent);
+                return CurentOrder == null ? false : (CurentOrder.OrderStatus == OrderStatus.InWork || CurentOrder.OrderStatus == OrderStatus.Sent || CurentOrder.OrderStatus == OrderStatus.New);
             }
         }
         public bool CanEditCurentOrder

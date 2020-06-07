@@ -132,24 +132,21 @@ namespace AlohaService.BusinessServices
 
         public OperationResult UpdateOrderCustomer(ServiceDataContracts.OrderCustomer orderCustomer)
         {
-            var order = db.OrderCustomers.FirstOrDefault(oc => oc.Id == orderCustomer.Id);
+            var order = db.OrderCustomers.FirstOrDefault(cust => cust.Id == orderCustomer.Id);
 
             if (order == null)
             {
                 return new OperationResult { Success = false, ErrorMessage = "OrderCustomer Not Found." };
             }
-          
-            order.Name = orderCustomer.Name;
-            order.IsActive = orderCustomer.IsActive;
-            order.OldId = orderCustomer.OldId;
-            order.Comments = orderCustomer.Comments;
-            order.Email = orderCustomer.Email;
-            order.MiddleName = orderCustomer.MiddleName;
-            order.SecondName = orderCustomer.SecondName;
-            order.DiscountPercent = orderCustomer.DiscountPercent;
+            Mapper.Map(orderCustomer, order);
             order.UpdatedDate = DateTime.Now;
             order.LastUpdatedSession = orderCustomer.LastUpdatedSession;
             db.SaveChanges();
+
+
+            OrderCustomrInfoService srv = new OrderCustomrInfoService(db);
+            srv.RecalcCustomerInfo(orderCustomer.Id);
+
             return new OperationResult { Success = true, CreatedObjectId=order.Id };
         }
 

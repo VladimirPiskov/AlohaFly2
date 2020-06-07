@@ -52,6 +52,19 @@ namespace AlohaFly.Models.ToGoClient
             }
             EditablePhones.ItemPropertyChanged += EditablePhones_ItemPropertyChanged;
             EditableAddresses.ItemPropertyChanged += EditablePhones_ItemPropertyChanged;
+
+            this.WhenAnyValue(a => a.Client.CashBack).Subscribe(_ =>
+            {
+                if (Client != null)
+                {
+                    if (Client.CashBack && Client.CashBackPercent == 0)
+                    {
+                        Client.CashBackPercent = 10;
+                        Client.CashBackStartDate = DateTime.Now.Date;
+                    }
+                }
+            }
+            );
         }
 
 

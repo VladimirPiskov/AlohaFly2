@@ -86,6 +86,21 @@ namespace AlohaFly.LabelsPrint
                 return d.LabelEnglishName;
             }
         }
+        public string BJU1
+        {
+            get
+            {
+                return $"Белки:{d.B};Жиры:{d.J}";
+            }
+        }
+        public string BJU2
+        {
+            get
+            {
+                return $"Углеводы:{d.U};Ккал:{d.Ccal}";
+            }
+        }
+
         public string PartStr
         {
             get
@@ -129,6 +144,22 @@ namespace AlohaFly.LabelsPrint
             get
             {
                 if (CommentStr?.Trim() == "")
+                { return System.Windows.Visibility.Collapsed; }
+                else
+                {
+                    return System.Windows.Visibility.Visible;
+                }
+
+            }
+        }
+
+
+
+        public System.Windows.Visibility BJUVis
+        {
+            get
+            {
+                if (d.B==0 && d.Ccal==0 && d.J==0 && d.U==0)
                 { return System.Windows.Visibility.Collapsed; }
                 else
                 {

@@ -51,6 +51,7 @@ namespace AlohaFly.Models
                         AddToOrderDish.Amount = 1;
                         AddToOrderDish.TotalPrice = 0;
                         AddToOrderDish.Comment = "";
+                   
                     }
                 }
                 catch
@@ -253,6 +254,8 @@ namespace AlohaFly.Models
         {
             get
             {
+                Reports.ExcelReports cReps = new Reports.ExcelReports(); 
+                //InvoiceToFlyCreate(OrderFlight order, bool rus, bool showDiscount)
                 if (_printInvoiceitems == null)
                 {
                     _printInvoiceitems = new List<RadMenuItem>() {
@@ -260,9 +263,12 @@ namespace AlohaFly.Models
                         {
                             Command = new DelegateCommand((_) => {
                                 try{
+                                    cReps.InvoiceToFlyCreate(Model.Order,true,false);
+                                    /*
                                     UI.UIModify.ShowWndPrintExcelDoc(
-                                        $"Накладная на русском к заказу №{ Model.Order.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookRussian(Model.Order)
+                                        $"Накладная на русском к заказу №{ Model.Order.Id}",cReps.InvoiceToFlyCreate(Model.Order,true,false)
                                     );
+                                    */
                                 }
                                 catch(Exception e )
                                 {
@@ -291,9 +297,12 @@ namespace AlohaFly.Models
                         {
                             Command = new DelegateCommand((_) => {
                                 try{
+                                       cReps.InvoiceToFlyCreate(Model.Order,true,true);
+                                    /*
                                     UI.UIModify.ShowWndPrintExcelDoc(
                                         $"Накладная на русском со скидкой к заказу №{ Model.Order.Id}",AlohaService.ExcelExport.ExportHelper.ExportToExcelWorkbookRussian(Model.Order,true)
                                     );
+                                    */
                                 }
                                 catch(Exception e )
                                 {
@@ -538,6 +547,16 @@ namespace AlohaFly.Models
                 return new ObservableCollection<string>(Models.AirOrdersModelSingleton.Instance.Orders.Select(a => a.FlightNumber).Distinct());
             }
         }
+
+        public ObservableCollection<string> FlightNumbers2
+        {
+            get
+            {
+                return new ObservableCollection<string>(Models.AirOrdersModelSingleton.Instance.Orders.Select(a => a.FlightNumber2).Distinct());
+            }
+        }
+
+
         public DeliveryPlace SelectedDeliveryPlace
         {
             get
@@ -783,8 +802,6 @@ namespace AlohaFly.Models
                 Model.AddToOrderDish.Comment = value;
                 OnPropertyChanged("AddToOrderDishComment");
             }
-
-
         }
 
 
@@ -816,6 +833,34 @@ namespace AlohaFly.Models
             }
         }
 
+
+        public string DestPort
+        {
+            get
+            {
+                return Model.Order.DestPort;
+            }
+            set
+            {
+                Model.Order.DestPort = value;
+                OnPropertyChanged("DestPort");
+            }
+        }
+
+        public string Route
+        {
+            get
+            {
+                return Model.Order.Route;
+            }
+            set
+            {
+                Model.Order.Route = value;
+                OnPropertyChanged("Route");
+            }
+        }
+
+
         public string FlightNumber
         {
             get
@@ -825,6 +870,45 @@ namespace AlohaFly.Models
             set
             {
                 Model.Order.FlightNumber = value;
+                OnPropertyChanged("FlightNumber");
+            }
+        }
+
+        public string FlightNumber2
+        {
+            get
+            {
+                return Model.Order.FlightNumber2;
+            }
+            set
+            {
+                Model.Order.FlightNumber2 = value;
+                OnPropertyChanged("FlightNumber2");
+            }
+        }
+        public string Aircraft
+        {
+            get
+            {
+                return Model.Order.Aircraft;
+            }
+            set
+            {
+                Model.Order.Aircraft = value;
+                OnPropertyChanged("Aircraft");
+            }
+        }
+
+        public int PersonCount
+        {
+            get
+            {
+                return Model.Order.PersonCount;
+            }
+            set
+            {
+                Model.Order.PersonCount = value;
+                OnPropertyChanged("PersonCount");
             }
         }
 
@@ -914,10 +998,24 @@ namespace AlohaFly.Models
                 ExportTime = value;
                 OnPropertyChanged("DeliveryDate");
                 //  ExportTime = value.AddHours(-2);
-
-
             }
         }
+
+
+        public DateTime? FlightDateTime
+        {
+            get
+            {
+                return Model.Order.FlightDateTime;
+            }
+            set
+            {
+                Model.Order.FlightDateTime = value;
+                OnPropertyChanged("FlightDateTime");
+            }
+        }
+
+
 
         public DateTime ExportTime
         {
@@ -1052,7 +1150,7 @@ namespace AlohaFly.Models
                     airCompaniesVM.IsFocused = Model.NewOrder;
                     airCompaniesVM.ReturnCommand = new DelegateCommand(_ => { BortNumberFocused = true; BortNumberFocused = false; });
                     //Инициализация ComboBox
-                    try { airCompaniesVM.SelectedData = Model.AirCompanyes.Single(a => a.Id == SelectedAirCompany.Id); } catch { }
+                    try { airCompaniesVM.SelectedData = Model.AirCompanyes.Single(a => a.Id == SelectedAirCompany?.Id); } catch { }
 
 
 
@@ -1092,7 +1190,7 @@ namespace AlohaFly.Models
                         //SelectedData = SelectedDeliveryPlace,
                         DisplayMemberPathName = "Name",
                     };
-                    try { deliveryPlaceVM.SelectedData = Model.DeliveryPlaces.Single(a => a.Id == SelectedDeliveryPlace.Id); } catch { }
+                    try { deliveryPlaceVM.SelectedData = Model.DeliveryPlaces.Single(a => a.Id == SelectedDeliveryPlace?.Id); } catch { }
 
                     deliveryPlaceVM.SelectedDataChanged += new EventHandler<DeliveryPlace>((sender, e) =>
                    {
@@ -1117,7 +1215,7 @@ namespace AlohaFly.Models
                         EmptyText = "Укажите кто отвез..",
                         DisplayMemberPathName = "FullName"
                     };
-                    try { deliveryPerconVM.SelectedData = Model.DeliveryPerson.Single(a => a.Id == SelectedDeliveryPerson.Id); } catch { }
+                    try { deliveryPerconVM.SelectedData = Model.DeliveryPerson.Single(a => a.Id == SelectedDeliveryPerson?.Id); } catch { }
                     deliveryPerconVM.SelectedDataChanged += new EventHandler<Driver>((sender, e) =>
                     {
                         SelectedDeliveryPerson = e;
@@ -1208,6 +1306,9 @@ namespace AlohaFly.Models
                 CreatedBy = Authorization.CurentUser,
                 CreatedById = Authorization.CurentUser.Id,
                 OrderStatus = OrderStatus.InWork,
+                PersonCount =0,
+                DestPort = "",
+                Route = "Москва-"
 
             };
             OrderDishez = new FullyObservableCollection<DishPackageFlightOrder>();
@@ -1503,7 +1604,7 @@ namespace AlohaFly.Models
         {
             if (RemoveToOrderDish != null)
             {
-                if (Order.OrderStatus == OrderStatus.InWork)
+                if (Order.OrderStatus == OrderStatus.InWork || Order.OrderStatus == OrderStatus.New)
                 {
                     foreach (var ord in OrderDishez.Where(a => a.PositionInOrder > RemoveToOrderDish.PositionInOrder))
                     {

@@ -52,6 +52,9 @@ namespace AlohaService.ServiceDataContracts
         public long SHId { get; set; }
 
         [DataMember]
+        public long SHPlaceId { get; set; }
+
+        [DataMember]
         [Display(Name = "Активно")]
         public bool IsActive { get; set; } = true;
 

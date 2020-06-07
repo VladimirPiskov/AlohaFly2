@@ -205,7 +205,7 @@ namespace AlohaFlyAdmin
                 Comment = "It's comment",
                 DeliveryDate = new DateTime(2020, 04, 20),
                 DeliveryPrice = 300,
-                ExternalId = 1,
+                ExternalId = 3,
                 Summ = 2000,
                 Dishes = new List<ExternalDishPackage>()
             };
@@ -221,7 +221,15 @@ namespace AlohaFlyAdmin
 
 
 
-            AlohaFly.DBProvider.Client.CreateSiteToGoOrder(order);
+          var res1=  AlohaFly.DBProvider.Client.ExternalCreateSiteToGoOrder(order);
+
+           // var res2 = AlohaFly.DBProvider.Client.ExternalCreateDeleveryClubToGoOrder(order);
+        }
+
+        private void btnGetPRid_Click(object sender, RoutedEventArgs e)
+        {
+            AlohaFly.SH.SHWrapper.ConnectSH();
+            AlohaFly.SH.SHWrapper.GetPRids();
         }
     }
 }

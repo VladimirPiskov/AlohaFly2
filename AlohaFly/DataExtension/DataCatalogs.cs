@@ -2,7 +2,7 @@
 using AlohaFly.Models.ToGoClient;
 using AlohaFly.Utils;
 using AlohaService.ServiceDataContracts;
-using AutoMapper;
+
 using DynamicData;
 using NLog;
 using ReactiveUI;
@@ -24,7 +24,7 @@ namespace AlohaFly.DataExtension
         Logger _logger = LogManager.GetCurrentClassLogger();
         private DataCatalogsSingleton()
         {
-            InitMapers();
+            //InitMapers();
             /*
             Dishes.CollectionChanged += (sender, eventArgs) =>
              {
@@ -144,7 +144,7 @@ namespace AlohaFly.DataExtension
             // Raise the event in a thread-safe manner using the ?. operator.
             ChangeOrdersDateRangeEvent?.Invoke(this, new EventArgs());
         }
-
+        /*
         void InitMapers()
         {
             Mapper.Initialize(cfg =>
@@ -159,7 +159,7 @@ namespace AlohaFly.DataExtension
                 cfg.CreateMap<OrderCustomerAddress, OrderCustomerAddress>();
             });
         }
-        
+        */
         #endregion
 
         static DataCatalogsSingleton instance;

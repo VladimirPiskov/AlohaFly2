@@ -50,7 +50,7 @@ namespace AlohaFly
                                 ordForDisc.DiscountSumm = disc;
 
                                 DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(ordForDisc);
-                               // DBProvider.Client.UpdateOrderFlight(ordForDisc, Authorization.CurentUser.Id);
+                                // DBProvider.Client.UpdateOrderFlight(ordForDisc, Authorization.CurentUser.Id);
                             }
 
 
@@ -77,6 +77,22 @@ namespace AlohaFly
 
 
 
+                }
+                else if (arcId == 22 || arcId == 105)
+                {
+                    foreach (var ord in orders.Where(a => a.AirCompany.Id == arcId).OrderBy(a => a.Id))
+                    {
+                        if ((ord.OrderStatus != OrderStatus.Closed)&&(ord.DeliveryDate>=new DateTime(2020,4,20)))
+                        {
+                            decimal disc = ord.OrderSumm * 0.1M;
+                            if (disc != ord.DiscountSumm)
+                            {
+                                ord.DiscountSumm = disc;
+
+                                DataCatalogsSingleton.Instance.OrdersFlightData.EndEdit(ord);
+                            }
+                        }
+                    }
                 }
                 else
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlohaService.ServiceDataContracts;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,13 +15,18 @@ namespace AlohaFly.UI
         public CtrlSetPayment()
         {
             InitializeComponent();
-            Init();
+            
         }
-        public void Init()
+        public void Init(OrderToGo ord)
         {
             var pps = DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.ToGo);
             foreach (var p in pps)
             {
+                if ((p.Id == 38) && (ord.OrderTotalSumm > ord.OrderCustomer?.OrderCustomerInfo?.CashBackSumm))
+                {
+                    continue;
+                }
+
                 Button btn = new Button()
                 {
                     Width = 200,

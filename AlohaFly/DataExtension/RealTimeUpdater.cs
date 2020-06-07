@@ -63,7 +63,7 @@ namespace AlohaFly.DataExtension
         }
 
         bool endQueue = false;
-        int interval = 20;
+        int interval = 40;
         public DateTime dataDate
 
         {
@@ -75,6 +75,7 @@ namespace AlohaFly.DataExtension
         public Guid Transaction;
         private void UpdateDataQueue()
         {
+            Thread.Sleep(20000);
             while (!endQueue)
             {
                 UpdateData();

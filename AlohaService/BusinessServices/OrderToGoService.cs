@@ -36,7 +36,7 @@ namespace AlohaService.BusinessServices
 
                 OrderCustomrInfoService srv = new OrderCustomrInfoService(db);
                 //srv.RecalcCustomerInfo(orderToGo.OrderCustomerId.GetValueOrDefault());
-                srv.RecalcCustomerAllInfo();
+                //srv.RecalcCustomerAllInfo();
                 return new OperationResult
                 {
                     Success = true,

@@ -12,5 +12,7 @@ namespace AlohaService.Entities
         public int OrderCount { get; set; }
         public decimal MoneyCount { get; set; }
 
+        public decimal CashBackSumm { get; set; }
+
     }
 }

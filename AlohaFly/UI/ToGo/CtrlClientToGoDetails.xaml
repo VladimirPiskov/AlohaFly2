@@ -76,10 +76,18 @@
             <StackPanel Orientation="Vertical">
 
                 <TextBox Style="{StaticResource  HeaderTextBoxBigStyle}" Text="{Binding OrderCustomer.FullName,Mode=OneWay}"/>
-                <TextBlock Text="E-mail" Style="{StaticResource  HeaderTextBlockStyle}" Visibility="{Binding EmailVis}" />
-                <TextBox Style="{StaticResource  HeaderTextBoxStyle}" Text="{Binding OrderCustomer.Email}"  Visibility="{Binding EmailVis}" />
-                <TextBlock Text="Скидка" Style="{StaticResource  HeaderTextBlockStyle}"  Visibility="{Binding DiscountPercentVis}"/>
-                <TextBox Style="{StaticResource  HeaderTextBoxStyle}" Text="{Binding OrderCustomer.DiscountPercent}" Visibility="{Binding DiscountPercentVis}"/>
+
+                <StackPanel Orientation="Horizontal" Visibility="{Binding EmailVis}">
+                    <TextBox  Text="E-mail: " Style="{StaticResource  HeaderTextBoxStyle}"  />
+                    <TextBox Style="{StaticResource  HeaderTextBoxStyle}" Text="{Binding OrderCustomer.Email}"   />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding DiscountPercentVis}">
+                    <TextBox Text="Скидка: " Style="{StaticResource  HeaderTextBoxStyle}"  />
+                    <TextBox Style="{StaticResource  HeaderTextBoxStyle}" Text="{Binding OrderCustomer.DiscountPercent, StringFormat=\{0:0.##\}}" />
+                    <TextBox Text="%" Style="{StaticResource  HeaderTextBoxStyle}"  />
+                </StackPanel>
+                <TextBlock Text="{Binding TxtCashBack}" Style="{StaticResource  HeaderTextBlockStyle}"  ></TextBlock>
+                
                 <TextBlock Text="Комментарий" Style="{StaticResource  HeaderTextBlockStyle}"  Visibility="{Binding CommentsVis}"/>
                 <TextBox Style="{StaticResource  HeaderTextBoxStyle}" Text="{Binding OrderCustomer.Comments}" Visibility="{Binding CommentsVis}"/>
                 <TextBlock Text="Телефон" Style="{StaticResource  HeaderTextBlockStyle}" />

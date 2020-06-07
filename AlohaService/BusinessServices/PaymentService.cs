@@ -35,7 +35,8 @@ namespace AlohaService.BusinessServices
                     ToGo = payment.ToGo,
                      FRSend= payment.FRSend,
                      PaymentGroupId = payment.PaymentGroupId,
-                     SHId =payment.SHId
+                    SHPlaceId = payment.SHPlaceId,
+                    SHId =payment.SHId
                 };
 
                 p.UpdatedDate = DateTime.Now;
@@ -79,7 +80,8 @@ namespace AlohaService.BusinessServices
                     FRSend = payment.FRSend,
                     SHId = payment.SHId,
                     PaymentGroupId= payment.PaymentGroupId,
-                }
+                    SHPlaceId = payment.SHPlaceId
+        }
             };
 
             return result;
@@ -104,7 +106,7 @@ namespace AlohaService.BusinessServices
             paymentToUpdate.FRSend = payment.FRSend;
             paymentToUpdate.PaymentGroupId = payment.PaymentGroupId;
             paymentToUpdate.SHId = payment.SHId;
-
+            paymentToUpdate.SHPlaceId = payment.SHPlaceId;
             paymentToUpdate.UpdatedDate = DateTime.Now;
             paymentToUpdate.LastUpdatedSession = payment.LastUpdatedSession;
 
@@ -130,6 +132,7 @@ namespace AlohaService.BusinessServices
                      ToGo = p.ToGo,
                     FRSend = p.FRSend,
                     SHId =p.SHId,
+                    SHPlaceId=p.SHPlaceId,
                     PaymentGroupId = p.PaymentGroupId,
                 }).ToList()
             };

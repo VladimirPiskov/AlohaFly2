@@ -31,7 +31,7 @@ namespace AlohaService.BusinessServices
                 dp.Name = deliveryPlace.Name;
                 dp.Phone = deliveryPlace.Phone;
                 dp.IsActive = deliveryPlace.IsActive;
-
+                dp.InvoiceName = deliveryPlace.InvoiceName;
                 dp.UpdatedDate = DateTime.Now;
                 dp.LastUpdatedSession = deliveryPlace.LastUpdatedSession;
 
@@ -66,6 +66,7 @@ namespace AlohaService.BusinessServices
             result.Result.Id = deliveryPlace.Id;
             result.Result.Phone = deliveryPlace.Phone;
             result.Result.IsActive = deliveryPlace.IsActive;
+            result.Result.InvoiceName = deliveryPlace.InvoiceName;
 
             return result;
         }
@@ -82,7 +83,7 @@ namespace AlohaService.BusinessServices
             dp.Name = deliveryPlace.Name;
             dp.Phone = deliveryPlace.Phone;
             dp.IsActive = deliveryPlace.IsActive;
-
+            dp.InvoiceName = deliveryPlace.InvoiceName;
             dp.UpdatedDate = DateTime.Now;
             dp.LastUpdatedSession = deliveryPlace.LastUpdatedSession;
 
@@ -116,7 +117,9 @@ namespace AlohaService.BusinessServices
                     Id = dp.Id,
                     Name = dp.Name,
                     Phone = dp.Phone,
-                    IsActive = dp.IsActive
+                    IsActive = dp.IsActive,
+
+                    InvoiceName=dp.InvoiceName
                 }).ToList();
                 return new OperationResultValue<List<ServiceDataContracts.DeliveryPlace>>
                 {

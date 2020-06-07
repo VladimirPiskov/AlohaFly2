@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using AlohaService.Entities;
@@ -91,6 +88,7 @@ namespace AlohaService
 
         public DbSet<OrderCustomerInfo> OrderCustomerInfo { get; set; }
 
+        public DbSet<DishExternalLinks> DishExternalLinks { get; set; }
         
     }
 }

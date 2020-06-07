@@ -586,7 +586,7 @@ namespace AlohaFly.DataExtension
                         {
                             d.Dish = DataExtension.DataCatalogsSingleton.Instance.DishData.Data.SingleOrDefault(a => a.Id == d.DishId);
 
-                            d.Printed = true;
+                            d.Printed = ord.OrderStatus!=OrderStatus.New;
                             if (d.Deleted && d.DeletedStatus == 1) { d.UpDateSpisPayment(); }
                         }
                     }

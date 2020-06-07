@@ -89,8 +89,10 @@ namespace AlohaFly.Models.ToGoClient
         private void _toGoClientsCol_CurrentChanged(object sender, EventArgs e)
         {
             SelectedClientVM?.Dispose();
-
-            SelectedClientVM = new ToGoClientExtViewModel(((ToGoClientViewModel)ToGoClientsCol.CurrentItem).OrderCustomer);
+            if ((ToGoClientViewModel)ToGoClientsCol.CurrentItem != null)
+            {
+                SelectedClientVM = new ToGoClientExtViewModel(((ToGoClientViewModel)ToGoClientsCol.CurrentItem).OrderCustomer);
+            }
         }
 
         [Reactive] public bool GridViewIsEnabled { get; set; }

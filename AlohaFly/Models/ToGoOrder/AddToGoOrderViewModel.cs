@@ -193,14 +193,20 @@ namespace AlohaFly.Models
         {
             if (RemoveToOrderDish != null)
             {
-                if (Order.OrderStatus == OrderStatus.InWork)
+                if (Order.OrderStatus == OrderStatus.InWork || Order.OrderStatus == OrderStatus.New)
                 {
                     bool printDeleted = true;
                     var resPrinted = new List<string>();
-                    if (RemoveToOrderDish.Printed)
+                    if (RemoveToOrderDish.Printed && Order.OrderStatus != OrderStatus.New)
                     {
                         printDeleted = PrintRecieps.PrintOnWinPrinter.PrintOrderToGoToKitchen(Order, out resPrinted, new List<IDishPackageLabel>() { RemoveToOrderDish });
                     }
+
+                    if (Order.OrderStatus == OrderStatus.New)
+                    {
+                        printDeleted = true;
+                    }
+                    
 
                     if (printDeleted)
                     {
@@ -290,13 +296,23 @@ namespace AlohaFly.Models
 
                     if (sRes.UpdatedItem.DishPackages != null && sRes.UpdatedItem.DishPackages.Any(a => !a.Printed))
                     {
-                        //Печатаем
-                        List<string> outErr = new List<string>();
-                        if (!PrintRecieps.PrintOnWinPrinter.PrintOrderToGoToKitchen(sRes.UpdatedItem, out outErr))
+                        if (Order.OrderStatus != OrderStatus.New)
                         {
-                            foreach (string s in outErr)
+                            //Печатаем
+                            List<string> outErr = new List<string>();
+                            if (!PrintRecieps.PrintOnWinPrinter.PrintOrderToGoToKitchen(sRes.UpdatedItem, out outErr))
                             {
-                                UI.UIModify.ShowAlert(s);
+                                foreach (string s in outErr)
+                                {
+                                    UI.UIModify.ShowAlert(s);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var d in sRes.UpdatedItem.DishPackages)
+                                {
+                                    d.Printed = true;
+                                }
                             }
                         }
                         else
@@ -306,6 +322,7 @@ namespace AlohaFly.Models
                                 d.Printed = true;
                             }
                         }
+
                     }
                 }
                 catch (Exception e)
@@ -431,6 +448,7 @@ namespace AlohaFly.Models
             this.WhenAnyValue(a => a.Client, b => b.Client.DiscountPercent)
                 .Subscribe(_ =>
                 {
+                    TxtCashBack = Client?.CashBackStr;
                     if (needUpd)
                         if (needUpd)
                         {
@@ -455,8 +473,8 @@ namespace AlohaFly.Models
                 {
                     if ((ClientInfo == null) ||(ClientInfo.OrderCount >= 2)) { ControlColor = new SolidColorBrush(Colors.White);return; }
 
-                    ControlColor = new SolidColorBrush(Colors.LightSteelBlue); 
-                    
+                    ControlColor = new SolidColorBrush(Colors.LightSteelBlue);
+                    TxtCashBack = Client?.CashBackStr;
                 }
                 );
 
@@ -672,6 +690,10 @@ namespace AlohaFly.Models
 
             }
         }
+
+        
+
+        [Reactive] public string TxtCashBack { set; get; }
 
         [Reactive]  public OrderCustomerInfo ClientInfo { get; private set; }
 

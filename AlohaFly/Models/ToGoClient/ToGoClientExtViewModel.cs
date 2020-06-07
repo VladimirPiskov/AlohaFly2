@@ -34,7 +34,17 @@ namespace AlohaFly.Models.ToGoClient
 
             string n = OrderCustomer.FullName;
 
+            _cashBakTxt=this.WhenAnyValue(a => a.OrderCustomer.CashBack, b => b.OrderCustomer.CashBackPercent, c => c.OrderCustomer.CashBackStartDate, d=>d.OrderCustomer.OrderCustomerInfo.CashBackSumm)
+            .Select((a) =>OrderCustomer.CashBackStr
+            )
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .ToProperty(this, x => x.TxtCashBack);
+
         }
+
+
+        private readonly ObservableAsPropertyHelper<string> _cashBakTxt;
+        public string TxtCashBack => _cashBakTxt.Value;
 
 
         private readonly ObservableAsPropertyHelper<Visibility> _emailVis;
