@@ -1,5 +1,8 @@
-﻿using AlohaFly.Utils;
+﻿using AlohaFly.DataExtension;
+using AlohaFly.Utils;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AlohaFly.Analytics
 {
@@ -17,7 +20,16 @@ namespace AlohaFly.Analytics
                         new MenuItemCatalog ("Выручка",ShowMainAnalytics, AccessTypeConst.Access_Analytics1,false),
                         new MenuItemCatalog ("Выручка по категориям",ShowPivotAir, AccessTypeConst.Access_Analytics2,false),
                         new MenuItemCatalog ("LTV2GO",ShowLTV, AccessTypeConst.Access_Analytics2,false),
-                    };
+                        /*
+                        new MenuItemCatalog ("Отчет по себестоимости",new Action(() => { Task.Run(() =>
+                             new  Reports.ExcelReports().AnaliticReportCreate(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); }), AccessTypeConst.Access_Analytics2,false),
+                    
+                        */
+
+                        new MenuItemCatalog ("Отчет по себестоимости",new Action(() => { new  Reports.ExcelReports().AnaliticReportCreate(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt); }), AccessTypeConst.Access_Analytics2,false),
+
+
+                        };
                 }
                 return _itemsCatalog;
 

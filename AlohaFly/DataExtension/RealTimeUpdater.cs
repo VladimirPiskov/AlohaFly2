@@ -71,6 +71,13 @@ namespace AlohaFly.DataExtension
                 return DataCatalogsSingleton.Instance.OrdersToGoData.startDate.GetValueOrDefault();
             }
         }
+
+        bool needFastUpd = false;
+        public  void FastUpdate()
+        {
+            needFastUpd = true;
+        }
+
         DateTime lastUpdatetime;
         public Guid Transaction;
         private void UpdateDataQueue()
@@ -82,6 +89,11 @@ namespace AlohaFly.DataExtension
                 
                 for (int i = 0; i < interval; i++)
                 {
+                    if (needFastUpd)
+                    {
+                        needFastUpd = false;
+                        break;
+                    }
                     if (endQueue) { return;}
                     Thread.Sleep(1000);
                 }

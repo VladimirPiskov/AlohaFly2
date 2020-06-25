@@ -61,6 +61,34 @@ namespace AlohaFly.Reports
                        
             */
         }
+
+
+        private string RemoveStreetFromAddr(string addrStr)
+        {
+            if (addrStr.ToLower().StartsWith("ул.") || addrStr.ToLower().StartsWith("ул "))
+            {
+                return addrStr.Substring(3).Trim();
+            }
+            if (addrStr.ToLower().StartsWith("адрес:"))
+            {
+                return addrStr.Substring(6).Trim();
+            }
+            if (addrStr.ToLower().StartsWith("улица:"))
+            {
+                return addrStr.Substring(6).Trim();
+            }
+            if (addrStr.ToLower().StartsWith("улица "))
+            {
+                return addrStr.Substring(6).Trim();
+            }
+            if (addrStr.ToLower().StartsWith("москва "))
+            {
+                return addrStr.Substring(6).Trim();
+            }
+
+            return addrStr; 
+
+        }
         public  void ShowClientsReport(DateTime sDt, DateTime eDt)
         {
             OpenXls();
@@ -74,8 +102,9 @@ namespace AlohaFly.Reports
                 int row = 5;
                 Ws.Cells[row, 1] = "Клиент";
                 Ws.Cells[row, 2] = "Телефон";
-                Ws.Cells[row, 3] = "E-mail";
-                int col = 5;
+                Ws.Cells[row, 3] = "Адрес";
+                Ws.Cells[row, 4] = "E-mail";
+                int col = 6;
                 foreach (var ch in DataExtension.DataCatalogsSingleton.Instance.MarketingChannelData.Data)
                 {
                     Ws.Cells[row, col] = ch.Name;
@@ -109,6 +138,7 @@ namespace AlohaFly.Reports
                     if (client.client == null) continue;
                         Ws.Cells[row, 1] = client.client.FullName;
                     Ws.Cells[row, 2].NumberFormat = "@";
+                    Ws.Cells[row, 3].NumberFormat = "@";
 
                     var q = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerPhoneData.Data.Where(a => a.IsPrimary && a.OrderCustomerId == client.client.Id);
                     if (q.Any()) 
@@ -120,14 +150,25 @@ namespace AlohaFly.Reports
                     }
 
 
-                    Ws.Cells[row, 3].NumberFormat = "@";
-                    if (client.client.Email != null)
+                    var qa = DataExtension.DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data.Where(a => a.IsPrimary && a.OrderCustomerId == client.client.Id);
+                    if (qa.Any())
                     {
-                        Ws.Cells[row, 3] = client.client.Email.Trim();
+                        if (qa.FirstOrDefault().Address != null)
+                        {
+                            
+                            Ws.Cells[row, 3] = RemoveStreetFromAddr(qa.FirstOrDefault().Address.Trim());
+                        }
                     }
 
+                    
 
-                    col = 5;
+
+                    Ws.Cells[row, 4].NumberFormat = "@";
+                    if (client.client.Email != null)
+                    {
+                        Ws.Cells[row, 4] = client.client.Email.Trim();
+                    }
+                    col = 6;
                     foreach (var ch in DataExtension.DataCatalogsSingleton.Instance.MarketingChannelData.Data)
                     {
                         (Ws.Cells[row, col] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
@@ -144,8 +185,9 @@ namespace AlohaFly.Reports
                     Ws.Cells[row, col++] = client.cc;
                     (Ws.Cells[row, 1] as Range).HorizontalAlignment = XlHAlign.xlHAlignLeft;
                     (Ws.Cells[row, 2] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    (Ws.Cells[row, 3] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
-                    (Ws.Cells[row, 5] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    (Ws.Cells[row, 3] as Range).HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                    (Ws.Cells[row, 4] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    (Ws.Cells[row, 6] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
                     
                 }
                 for (int c = 1; c <= colMax; c++)

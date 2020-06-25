@@ -73,7 +73,8 @@ namespace StoreHouseConnect
         private static extern string GetGroupComplect();
         [DllImport("StoreHouse.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         private static extern void InsertGoodsTree(int RID_Parent, string Code, string Name);
-
+        [DllImport("StoreHouse.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        private static extern double GetPriceItem(string json_str);
 
         //Подключение к StoreHouse
         public bool ConnectSH(string ServerName, int Port, string UserName, string Password, out int ErrCode, out string ErrorMessage)
@@ -470,6 +471,38 @@ namespace StoreHouseConnect
             return true;
         }
 
+        public double GetPriceGoods(int Rid, DateTime DTStart, DateTime DTEnd, out int ErrCode, out string ErrorMessage)
+        {
+            TParametrForPrice param = new TParametrForPrice
+            {
+                DTStart = DTStart,
+                DTEnd = DTEnd,
+                Rid = Rid
+            };
+            MemoryStream Mstream = new MemoryStream();
+
+            DataContractJsonSerializer Serializer = new DataContractJsonSerializer(typeof(TParametrForPrice), new DataContractJsonSerializerSettings
+            {
+                DateTimeFormat = new DateTimeFormat("dd.MM.yyyy HH:mm:ss")
+            });
+
+            Serializer.WriteObject(Mstream, param);
+
+            Mstream.Position = 0;
+            StreamReader sr = new StreamReader(Mstream);
+
+            string json_str = sr.ReadToEnd();
+
+            double Result = GetPriceItem(json_str);
+            ErrCode = GetErrorCode();
+            ErrorMessage = GetErrorMessage();
+            _fpreset();
+
+
+            if (ErrCode != 0) { return -1; }
+
+            return Result;
+        }
 
     }
 }

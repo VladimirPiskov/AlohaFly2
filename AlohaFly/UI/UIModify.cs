@@ -135,8 +135,6 @@ namespace AlohaFly.UI
         {
             try
             {
-
-
                 logger.Debug("ShowWndMap");
                 
 
@@ -157,6 +155,35 @@ namespace AlohaFly.UI
                 logger.Error($"ShowWndChangeOrderStatus {e.Message}");
             }
         }
+
+
+        public static void ShowWndMergeCustomers(ToGoClientViewModel parentClient)
+        {
+            try
+            {
+                logger.Debug("ShowWndMap");
+
+              
+
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var model = new ToGoMergeCustomers(parentClient);
+
+                    var mergeWnd = new UI.ToGo.WndMergeCustomers
+                    {
+                        DataContext = model
+                    };
+
+                    ShowDialogWnd(mergeWnd);
+                });
+            }
+            catch (Exception e)
+            {
+                logger.Error($"ShowWndChangeOrderStatus {e.Message}");
+            }
+        }
+
+
 
         public static void ShowWndChangeOrderStatus(OrderFlight order)
         {
@@ -257,9 +284,11 @@ namespace AlohaFly.UI
 
                 var dp = new DialogParameters
                 {
-                    Content = alertText,
+                    Content = new TextBlock() { Text = alertText, TextWrapping = TextWrapping.Wrap, Width = 350 },
                     Header = header,
-                    DialogStartupLocation = WindowStartupLocation.CenterScreen
+                    DialogStartupLocation = WindowStartupLocation.CenterScreen,
+                    
+                    
                 };
 
                 if (!((System.Windows.Application.Current.MainWindow == null) || (System.Windows.Application.Current.MainWindow.Visibility != System.Windows.Visibility.Visible)))
@@ -296,7 +325,7 @@ namespace AlohaFly.UI
 
                 var dp = new DialogParameters
                 {
-                    Content = promtText,
+                    Content = new TextBlock() { Text = promtText, TextWrapping = TextWrapping.Wrap, Width = 350 },
                     Header = header,
                     DialogStartupLocation = WindowStartupLocation.CenterScreen
                 };
@@ -382,6 +411,7 @@ namespace AlohaFly.UI
         {
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             wnd.Owner = System.Windows.Application.Current.MainWindow;
+            //wnd.Show();
             wnd.ShowDialog();
         }
     }
@@ -430,6 +460,7 @@ namespace AlohaFly.UI
                 {
                     return OpenItemStyle2;
                 }
+               
                 if (Authorization.IsDirector)
                 {
                     if ((club.Dish != null) && (club.Dish.PriceForFlight != club.TotalPrice))
@@ -448,12 +479,17 @@ namespace AlohaFly.UI
                 {
                     return DeletedStyle;
                 }
+                if ((toGoOrder.Dish != null) && (toGoOrder.Dish.Barcode == -1))
+                {
+                    return OpenItemStyle3;
+                }
 
             }
             return null;
         }
         public Style OpenItemStyle1 { get; set; }
         public Style OpenItemStyle2 { get; set; }
+        public Style OpenItemStyle3 { get; set; }
         public Style DeletedStyle { get; set; }
         public Style ChangePriceStyle { get; set; }
 

@@ -12,7 +12,7 @@ namespace AlohaService.ServiceDataContracts.ExternalContracts
         public int ExternalId { set; get; }
 
         [DataMember]
-        public int ExternalStringId { set; get; }
+        public string ExternalStringId { set; get; }
 
         [DataMember]
         public decimal Summ { set; get; }

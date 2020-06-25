@@ -1,0 +1,87 @@
+﻿<telerik:RadWindow x:Class="AlohaFly.UI.WndSetExternalDishLink"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+                   Width="1624" Height="900"
+             Header="Объединение клентов"
+                    DataContextChanged="RadWindow_DataContextChanged" 
+                   >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            
+            
+            <RowDefinition Height="80"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="20">
+            <TextBlock Grid.Row="0"  FontSize="16"  Text="Выберите блюдо из списка которое соответствует блюду:" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="0"  FontSize="16"  Text="{Binding InfoMessage}" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+       
+            </StackPanel >
+
+
+
+        <telerik:RadGridView  Grid.Row="1"
+            x:Name="mainGrid"
+            ShowSearchPanel="True" 
+                              
+            GroupRenderMode="Flat" Grid.RowSpan="2"
+             ItemsSource="{Binding Path=ToGoClientsCol}"
+                              CurrentItem="{Binding Path=SelectedClientVM,Mode=TwoWay}"
+             IsReadOnly="True"
+             ShowGroupPanel="False"
+             CanUserFreezeColumns="True"
+             FrozenColumnCount="2"
+             DragElementAction="None"
+             RowIndicatorVisibility="Collapsed"
+             ColumnWidth="SizeToHeader"
+             AutoGenerateColumns="True"
+                             />
+
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <telerik:RadButton  Grid.Column="0" Width="300"  TabIndex="4" Style="{StaticResource MainButtonsStyle}" IsDefault="True" FontSize="16"  Command="{Binding OkCommand}" >
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/ok-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Ок" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+
+            <telerik:RadButton  Grid.Column="1" Width="300"    TabIndex="5" Style="{StaticResource MainButtonsStyle}" IsCancel="True"  FontSize="16"  Command="{Binding CancelCommand}" >
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/cancel-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Отмена" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+        </Grid>
+        
+        
+        
+      
+    </Grid>
+</telerik:RadWindow>

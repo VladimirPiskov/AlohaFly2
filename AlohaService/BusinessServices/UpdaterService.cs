@@ -157,7 +157,7 @@ namespace AlohaService.BusinessServices
                     var resultPh = db.OrderCustomerPhones.Where(o => o.UpdatedDate != null && o.UpdatedDate > lastUpdateTime && o.LastUpdatedSession != session).ToList();
                     res.Result.OrderCustomerPhones = Mapper.Map<List<Entities.OrderCustomerPhone>, List<ServiceDataContracts.OrderCustomerPhone>>(resultPh);
 
-                    var resultOc = db.OrderCustomers.Where(o => o.UpdatedDate != null && o.UpdatedDate > lastUpdateTime && o.LastUpdatedSession != session).ToList();
+                    var resultOc = db.OrderCustomers.Where(o => o.UpdatedDate != null && o.UpdatedDate > lastUpdateTime && o.LastUpdatedSession != session && o.IsActive).ToList();
                     
                     res.Result.OrderCustomers = Mapper.Map<List<Entities.OrderCustomer>, List<ServiceDataContracts.OrderCustomer>>(resultOc);
                     if (res.Result.OrderCustomers!=null)

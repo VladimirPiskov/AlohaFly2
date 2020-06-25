@@ -130,7 +130,40 @@ namespace AlohaService.BusinessServices
                 return result;
         }
 
-        public OperationResult UpdateOrderCustomer(ServiceDataContracts.OrderCustomer orderCustomer)
+        public OperationResult MergeCustomers(ServiceDataContracts.OrderCustomer orderCustomer1, ServiceDataContracts.OrderCustomer orderCustomer2)
+        {
+            try
+            {
+                log.Debug($"MergeCustomers from {orderCustomer2.Id} {orderCustomer2.Name} to {orderCustomer1.Id} {orderCustomer1.Name}");
+                var orders = db.OrderToGo.Where(cust => cust.OrderCustomerId == orderCustomer2.Id);
+                foreach (var ord in orders)
+                {
+                    ord.OrderCustomerId = orderCustomer1.Id;
+                    ord.UpdatedDate = DateTime.Now;
+                    ord.LastUpdatedSession = orderCustomer1.LastUpdatedSession;
+                }
+                var customer = db.OrderCustomers.FirstOrDefault(cust => cust.Id == orderCustomer2.Id);
+                customer.IsActive = false;
+                customer.UpdatedDate = DateTime.Now;
+                customer.LastUpdatedSession = orderCustomer1.LastUpdatedSession;
+                db.SaveChanges();
+
+                OrderCustomrInfoService srv = new OrderCustomrInfoService(db);
+                srv.RecalcCustomerInfo(orderCustomer1.Id);
+                srv.RecalcCustomerInfo(orderCustomer2.Id);
+                return new OperationResult { Success = true };
+
+            }
+            catch(Exception e)
+            {
+                log.Error("Error MergeCustomers " + e.Message);
+                return new OperationResult { Success = false, ErrorMessage=e.Message };
+            }
+
+        }
+
+
+            public OperationResult UpdateOrderCustomer(ServiceDataContracts.OrderCustomer orderCustomer)
         {
             var order = db.OrderCustomers.FirstOrDefault(cust => cust.Id == orderCustomer.Id);
 

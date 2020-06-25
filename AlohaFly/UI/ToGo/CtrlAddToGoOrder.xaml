@@ -601,6 +601,19 @@
                         </telerik:RadButton.Content>
                     </telerik:RadButton>
 
+                    <telerik:RadButton Style="{StaticResource MainButtonsStyle}" Command="{Binding EditExternalDishCommand}" Height="55 ">
+                        <telerik:RadButton.Content>
+                            <Grid Background="{Binding ElementName=Parent, Path=Background}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="/Icons/plus-96.png" Stretch="Fill" />
+                                <TextBlock Text="Редактировать внешнее блюдо" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                            </Grid>
+                        </telerik:RadButton.Content>
+                    </telerik:RadButton>
+
                 </StackPanel>
             </Grid>
         </telerik:GroupBox >

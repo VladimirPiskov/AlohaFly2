@@ -35,10 +35,12 @@ namespace AlohaFly
 
 
                    var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddressRelease));
-                   /*
+                   
+                   /* 
                     var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddress));
                     TestStr = "test";
                     */
+                    
 #else
                     var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddressRelease));
 #endif

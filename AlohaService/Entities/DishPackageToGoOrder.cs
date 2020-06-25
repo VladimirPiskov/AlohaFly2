@@ -32,5 +32,7 @@ namespace AlohaService.Entities
         public int DeletedStatus { get; set; }
         public long SpisPaymentId { get; set; }
 
+        public long ExternalCode { get; set; }
+
     }
 }

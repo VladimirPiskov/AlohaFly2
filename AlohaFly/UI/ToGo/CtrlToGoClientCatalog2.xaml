@@ -125,11 +125,19 @@
                     </StackPanel>
                 </telerik:RadButton.Content>
             </telerik:RadButton>
-            <telerik:RadButton  Width="160" Style="{StaticResource btnCatalogStyle}"  Grid.Column="1" Command="{Binding AddCommand}"   Visibility="{Binding ReadOnlyClientVisibility}">
+            <telerik:RadButton  Width="120" Style="{StaticResource btnCatalogStyle}"  Grid.Column="1" Command="{Binding AddCommand}"   Visibility="{Binding ReadOnlyClientVisibility}">
                 <telerik:RadButton.Content>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
                         <telerik:RadGlyph Glyph="&#xe11e;" Style="{StaticResource btnCatalogImgStyle}" />
                         <TextBlock Text="Добавить" Style="{StaticResource btnCatalogTextStyle}"  ></TextBlock>
+                    </StackPanel>
+                </telerik:RadButton.Content>
+            </telerik:RadButton>
+            <telerik:RadButton x:Name="MergeBtn" Width="160" Style="{StaticResource btnCatalogStyle}"  Grid.Column="1" Command="{Binding MergeCommand}"  Visibility="{Binding ReadOnlyClientVisibility}">
+                <telerik:RadButton.Content>
+                    <StackPanel Orientation="Horizontal" >
+                        <telerik:RadGlyph Glyph="&#xe10b;" Style="{StaticResource btnCatalogImgStyle}" />
+                        <TextBlock Text="Объединить" Style="{StaticResource btnCatalogTextStyle}"  ></TextBlock>
                     </StackPanel>
                 </telerik:RadButton.Content>
             </telerik:RadButton>

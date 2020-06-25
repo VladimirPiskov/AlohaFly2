@@ -1,0 +1,116 @@
+﻿<telerik:RadWindow x:Class="AlohaFly.UI.ToGo.WndMergeCustomers"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:local="clr-namespace:AlohaFly.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+                   Width="1624" Height="900"
+             Header="Объединение клентов"
+                    DataContextChanged="RadWindow_DataContextChanged" 
+                   >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            
+            
+            <RowDefinition Height="80"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="20">
+            <TextBlock Grid.Row="0"  FontSize="16"  Text="Основной клиент(1):" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="0"  FontSize="16"  Text="{Binding InfoMessage}" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        <TextBlock Grid.Row="0"  FontSize="16"  Text="Выберите с кем объединяем(2):" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="0"  FontSize="16"  Text="{Binding InfoMessage2}" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        <TextBlock Grid.Row="1"  FontSize="16"  Text="При объединении все заказы от выбранного в этом окне клиента(2) перейдут к ранее выбранному(1), а клиент 2 станет неактивным. Если клиент 1 учавствует в акции кэшбэк, то его баллы пересчитаются автоматически." HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel >
+
+                <telerik:RadGridView 
+            x:Name="radGridView"
+           Grid.Row="2"
+            ShowSearchPanel="True" 
+            GroupRenderMode="Flat"
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            CanUserFreezeColumns="False"
+            RowIndicatorVisibility="Collapsed"
+            
+            FrozenColumnsSplitterVisibility="Hidden"
+            CanUserResizeColumns="True"
+            
+            
+            ItemsSource="{Binding Path=ToGoClientsCol}"
+                
+            ShowGroupPanel="False"             
+             CanUserInsertRows="False"      
+            
+             
+             ScrollMode="Deferred"
+            
+             
+             
+            
+            
+            
+            >
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="№" Width="40"   IsFilterable="False" DataMemberBinding="{Binding OrderCustomer.Id}"/>
+                <telerik:GridViewDataColumn Header="Имя" Width="220"   DataMemberBinding="{Binding OrderCustomer.FullName}"/>
+                <telerik:GridViewDataColumn Header="Телефон" Width="140"  TextAlignment="Right"  DataMemberBinding="{Binding PrimaryPhone.Phone}"/>
+                <telerik:GridViewDataColumn Header="E-mail" Width="150"   DataMemberBinding="{Binding OrderCustomer.Email}"/>
+                <telerik:GridViewDataColumn Header="Адрес" Width="450"   DataMemberBinding="{Binding PrimaryAddress.Address}"/>
+                <telerik:GridViewDataColumn Header="Метро" Width="130"   DataMemberBinding="{Binding PrimaryAddress.SubWay}"/>
+                <telerik:GridViewDataColumn Header="Зона" Width="70"  TextAlignment="Right"  DataMemberBinding="{Binding PrimaryAddress.ZoneId}"/>
+                <telerik:GridViewDataColumn Header="Комментарий" Width="200"  DataMemberBinding="{Binding OrderCustomer.Comments}"/>
+                <telerik:GridViewDataColumn Header="CB" Width="60"   DataMemberBinding="{Binding OrderCustomer.CashBack}"/>
+                <telerik:GridViewDataColumn Header="CB Дата старта" Width="90"  TextAlignment="Right"  DataMemberBinding="{Binding OrderCustomer.CashBackStartDateStr}"/>
+                <telerik:GridViewDataColumn Header="Баллы" Width="80"   TextAlignment="Right"   DataMemberBinding="{Binding OrderCustomer.OrderCustomerInfo.CashBackSumm}"/>
+                <telerik:GridViewDataColumn Header="%" Width="40"  TextAlignment="Right" DataMemberBinding="{Binding OrderCustomer.CashBackPercent}"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+
+
+        
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <telerik:RadButton  Grid.Column="0" Width="300"  TabIndex="4" Style="{StaticResource MainButtonsStyle}" IsDefault="True" FontSize="16"  Command="{Binding OkCommand}" >
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/ok-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Ок" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+
+            <telerik:RadButton  Grid.Column="1" Width="300"    TabIndex="5" Style="{StaticResource MainButtonsStyle}" IsCancel="True"  FontSize="16"  Command="{Binding CancelCommand}" >
+            <telerik:RadButton.Content>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Icons/cancel-96.png"  Stretch="Fill" />
+                    <TextBlock Text="Отмена" Style="{StaticResource MainButtonsTextBlockStyle}" />
+                </Grid>
+            </telerik:RadButton.Content>
+        </telerik:RadButton>
+        </Grid>
+        
+        
+        
+      
+    </Grid>
+</telerik:RadWindow>

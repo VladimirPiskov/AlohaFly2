@@ -43,7 +43,18 @@ namespace AlohaFly.Models.ToGoClient
                 IsEdit = false;
             }
             );
-            EndEditCommand = new DelegateCommand(_ =>
+
+            MergeCommand = new DelegateCommand(_ =>
+            {
+                if (SelectedClientVM == null)
+                {
+                    UI.UIModify.ShowAlert("Не выбран клиент");
+                }
+                UI.UIModify.ShowWndMergeCustomers(SelectedClientVM);
+            }
+            );
+
+                EndEditCommand = new DelegateCommand(_ =>
             {
 
                 if (EditableSelectedClient.Save())
@@ -104,7 +115,7 @@ namespace AlohaFly.Models.ToGoClient
         public ICommand CancelEditCommand { get; }
 
 
-
+        public ICommand MergeCommand { set; get; }
         [Reactive] public ToGoClientEditViewModel EditableSelectedClient { get; set; }
 
         [Reactive] public ToGoClientViewModel SelectedClientVM { get; set; }

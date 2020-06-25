@@ -187,7 +187,8 @@ namespace AlohaFly.DataExtension
                 createFunc = itm => { return DBProvider.Client.CreateOrderCustomer(itm as OrderCustomer); };
                 updateFunc = itm => { return DBProvider.Client.UpdateOrderCustomer(itm as OrderCustomer); };
                 getFunc = itm => { return DBProvider.Client.GetOrderCustomer2(itm) as OperationResultValue<T>; };
-                deleteFunc = itm => { return DBProvider.Client.DeleteOrderCustomer(itm) as OperationResult; };
+                //deleteFunc = itm => { return DBProvider.Client.DeleteOrderCustomer(itm) as OperationResult; };
+                deleteFunc = itm => { return new OperationResult() {Success=true }; };
                 preUpdateFunc = itm => { var tItm = itm as OrderCustomer; tItm.LastUpdatedSession = RealTimeUpdaterSingleton.Instance.Transaction; return tItm as T; };
             }
             else if (typeof(T) == (typeof(User)))

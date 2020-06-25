@@ -167,7 +167,8 @@ namespace AlohaService.BusinessServices
                                 Deleted = pack.Deleted,
                                 DeletedStatus = pack.DeletedStatus,
                                 SpisPaymentId = pack.SpisPaymentId,
-                                Code = pack.Code
+                                Code = pack.Code,
+                                ExternalCode = pack.ExternalCode
                             }).ToList();
             result.Result.PaymentId = order.PaymentId;
             result.Result.DiscountPercent = order.DiscountPercent;
@@ -536,7 +537,8 @@ namespace AlohaService.BusinessServices
                                          Deleted = pack.Deleted,
                                          DeletedStatus = pack.DeletedStatus,
                                          SpisPaymentId = pack.SpisPaymentId,
-                                         Code = pack.Code
+                                         Code = pack.Code,
+                                         ExternalCode = pack.ExternalCode
 
                                      }).ToList(),
 
@@ -619,7 +621,8 @@ namespace AlohaService.BusinessServices
                                            OrderToGoId = pack.OrderToGoId,
                                            TotalPrice = pack.TotalPrice,
                                            PositionInOrder = pack.PositionInOrder,
-                                           Code = pack.Code
+                                           Code = pack.Code,
+                                           ExternalCode = pack.ExternalCode
 
                                        }).ToList(),
 

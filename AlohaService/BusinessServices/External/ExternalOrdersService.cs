@@ -59,7 +59,7 @@ namespace AlohaService.BusinessServices.External
             };
            // try
             {
-                log.Debug($"CreateSiteToGoOrder {order.ExternalId} Addr: {order.Client.Address}");
+                log.Debug($"CreateSiteToGoOrder {order.ExternalId}, ExtStrId {order.ExternalStringId} Addr: {order.Client.Address}");
                 
                 if (order.Dishes == null)
                 {
@@ -69,11 +69,23 @@ namespace AlohaService.BusinessServices.External
                 }
                 CreateUnknownDish();
                 DateTime testDT = new DateTime(2020, 05, 14);
-                if (db.OrderToGo.Any(a=>a.MarketingChannelId==marketingChanelId && a.ExternalId==order.ExternalId 
-                && (a.DeliveryDate> testDT ^ a.OrderStatus==2)
-                ))
+
+                if (db.OrderToGo.Any(a => a.MarketingChannelId == marketingChanelId && ((order.ExternalId != 0 && a.ExternalId == order.ExternalId))))
                 {
-                    log.Error($"Order exists");
+                    log.Error($"Order exists ExternalId");
+                    res.ErrorMessage = "Order exists";
+                    res.Success = true;
+                    return res;
+                }
+
+
+                if (db.OrderToGo.Any(a=>a.MarketingChannelId==marketingChanelId && 
+                (order.ExternalStringId!=null && order.ExternalStringId.Trim() != "" && a.ExternalStringId == order.ExternalStringId)))
+
+                
+                
+                {
+                    log.Error($"Order exists by ExternalStringId");
                     res.ErrorMessage = "Order exists";
                     res.Success = true;
                     return res;
@@ -251,7 +263,7 @@ namespace AlohaService.BusinessServices.External
         {
             
             var dId = GetDishIdFromBarcode(dp.Id, out string name, out bool sucss);
-            log.Error($"GetDPFromExternalDishDP dp.Id: {dp.Id}; dId:{dId}; sucss:{sucss}");
+            log.Debug($"GetDPFromExternalDishDP dp.Id: {dp.Id}; dId:{dId}; sucss:{sucss}");
             int bc = sucss ? dp.Id : -1;
             var dpEnt = new Entities.DishPackageToGoOrder()
             {
@@ -261,12 +273,19 @@ namespace AlohaService.BusinessServices.External
                 Comment = dp.Comment,
                 Deleted = false,
                 DishName = name,
-                TotalPrice = dp.Price
+                TotalPrice = dp.Price,
+                ExternalCode = dp.Id
             };
             if (sucss)
             {
                 dpEnt.DishName = name;
             }
+            if ((marketingChanelId == 2) && (!sucss))
+            {
+                dpEnt.DishName = dp.Name;
+            }
+
+
             return dpEnt;
         }
 
@@ -299,7 +318,8 @@ namespace AlohaService.BusinessServices.External
                 UpdatedDate = DateTime.Now,
                 PreCheckPrinted = false,
                 ExternalId = order.ExternalId,
-               LastUpdatedSession = Guid.NewGuid(),
+                ExternalStringId = order.ExternalStringId,
+                LastUpdatedSession = Guid.NewGuid(),
 
             };
 

@@ -64,7 +64,40 @@ namespace AlohaService.BusinessServices
             return result;
         }
 
-        public OperationResult UpdateDish(ServiceDataContracts.Dish dish)
+
+        public OperationResult SetExternalLink(long dishId, int marketingChanel,long externalId)
+        {
+            var res = new OperationResult() { Success=true};
+            try
+
+            {
+                DishExternalLinks dl = new DishExternalLinks();
+
+                if (db.DishExternalLinks.Any(a => a.MarketingChanelId == marketingChanel && a.ExternalId == externalId))
+                {
+                    dl = db.DishExternalLinks.FirstOrDefault(a => a.MarketingChanelId == marketingChanel && a.ExternalId == externalId);
+                }
+                else
+                
+                {
+                    dl.ExternalId = externalId;
+                    dl.MarketingChanelId = marketingChanel;
+                    db.DishExternalLinks.Add(dl);
+                }
+                dl.DishId = dishId;
+
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                res.ErrorMessage = e.Message;
+                res.Success = false;
+            }
+            return res;
+
+        }
+
+            public OperationResult UpdateDish(ServiceDataContracts.Dish dish)
         {
             try
             {
@@ -159,26 +192,9 @@ namespace AlohaService.BusinessServices
                 LabelEnglishName = dish.LabelEnglishName,
                 LabelRussianName = dish.LabelRussianName,
                 DishKitсhenGroupId = dish.DishKitсhenGroupId,
-                /*
-                DishKitсhenGroup = dish.DishKitсhenGroup == null ? null : new ServiceDataContracts.DishKitchenGroup
-                {
-                    Id = dish.DishKitсhenGroup.Id,
-                    IsActive = dish.DishKitсhenGroup.IsActive,
-                    Name = dish.DishKitсhenGroup.Name,
-                    EnglishName = dish.DishKitсhenGroup.EnglishName,
-                    PositionForPrint = dish.DishKitсhenGroup.PositionForPrint
-                },
-                */
+                
                 DishLogicGroupId = dish.DishLogicGroupId,
-                /*
-                DishLogicGroup = dish.DishLogicGroup == null ? null : new ServiceDataContracts.DishLogicGroup
-                {
-                    Id = dish.DishLogicGroup.Id,
-                    IsActive = dish.DishLogicGroup.IsActive,
-                    Name = dish.DishLogicGroup.Name,
-                    PositionForPrint = dish.DishLogicGroup.PositionForPrint
-                },
-                */
+               
                 ToFlyLabelSeriesCount = dish.ToFlyLabelSeriesCount,
                 ToGoLabelSeriesCount = dish.ToGoLabelSeriesCount
             }
@@ -232,24 +248,7 @@ namespace AlohaService.BusinessServices
                     .Skip(page.Skip)
                     .Take(page.Take).ToList();
 
-            //if (string.IsNullOrEmpty(filter.RussianNameLike))
-            //{
-            //    list = db.Dish.Where(d => d.PriceForFlight <= filter.FlightPriceEnd &&
-            //    d.PriceForFlight >= filter.FlightPriceStart)
-            //    //.OrderBy(d => d.RussianName)
-            //    .OrderBy(d => d.Id)
-            //    .Skip(page.Skip)
-            //    .Take(page.Take).ToList();
-            //}
-            //else
-            //{
-            //    list = db.Dish.Where(d => d.RussianName.Contains(filter.RussianNameLike) && 
-            //    d.PriceForFlight <= filter.FlightPriceEnd &&
-            //    d.PriceForFlight >= filter.FlightPriceStart)
-            //    .OrderBy(d => d.RussianName)
-            //    .Skip(page.Skip)
-            //    .Take(page.Take).ToList();
-            //}
+            
 
 
 
@@ -271,26 +270,9 @@ namespace AlohaService.BusinessServices
                 LabelEnglishName = dish.LabelEnglishName,
                 LabelRussianName = dish.LabelRussianName,
                 DishKitсhenGroupId = dish.DishKitсhenGroupId,
-                /*
-                DishKitсhenGroup = dish.DishKitсhenGroup == null? null: new ServiceDataContracts.DishKitchenGroup
-                {
-                    Id = dish.DishKitсhenGroup.Id,
-                    IsActive = dish.DishKitсhenGroup.IsActive,
-                    Name = dish.DishKitсhenGroup.Name,
-                    EnglishName = dish.DishKitсhenGroup.EnglishName,
-                    PositionForPrint = dish.DishKitсhenGroup.PositionForPrint
-                },
-                */
+                
                 DishLogicGroupId = dish.DishLogicGroupId,
-                /*
-                DishLogicGroup = dish.DishLogicGroup == null? null: new ServiceDataContracts.DishLogicGroup
-                {
-                    Id = dish.DishLogicGroup.Id,
-                    IsActive = dish.DishLogicGroup.IsActive,
-                    Name = dish.DishLogicGroup.Name,
-                    PositionForPrint = dish.DishLogicGroup.PositionForPrint
-                },
-                */
+                
                 ToFlyLabelSeriesCount = dish.ToFlyLabelSeriesCount,
                 ToGoLabelSeriesCount = dish.ToGoLabelSeriesCount
             }

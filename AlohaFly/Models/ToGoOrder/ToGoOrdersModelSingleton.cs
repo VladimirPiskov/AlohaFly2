@@ -185,7 +185,7 @@ namespace AlohaFly.Models
                         //CurentOrder.SendBy = Authorization.CurentUser;
                         // UI.UIModify.ShowAlert("ChangeStatusCommand from togo orders");
 
-                        if (CurentOrder.OrderStatus == OrderStatus.InWork)
+                        if (CurentOrder.OrderStatus == OrderStatus.InWork )
                         {
                             CurentOrder.OrderStatus = OrderStatus.Sent;
                             SH.SHWrapper.CreateSalesInvoiceSync(CurentOrder, out string err);
@@ -438,7 +438,7 @@ namespace AlohaFly.Models
                             .Subsribe(DataCatalogsSingleton.Instance.OrdersToGoData, Orders);
 
             OrdersNonSH = new FullyObservableCollection<OrderToGo>();
-            ordersNonSHConnector.Select(a=>!a.IsSHSent && a.OrderStatus!=OrderStatus.InWork)
+            ordersNonSHConnector.Select(a=>!a.IsSHSent && a.OrderStatus!=OrderStatus.InWork && a.OrderStatus != OrderStatus.New)
                 .OrderByDesc(a => a.DeliveryDate)
                             .Subsribe(DataCatalogsSingleton.Instance.OrdersToGoData, OrdersNonSH);
         }

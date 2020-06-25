@@ -79,7 +79,9 @@ namespace AlohaService.BusinessServices
             try
             {
                 var dbContext = new AlohaDb();
-                var res = dbContext.OrderCustomerPhones.Where(a => a.IsActive).ToList();
+                var custsPh = dbContext.OrderCustomers.Where(a => a.IsActive).SelectMany(a=>a.Phones).Select(a=>a.Id).ToList();
+                var res = dbContext.OrderCustomerPhones.Where(a => a.IsActive && custsPh.Contains( a.Id)).ToList();
+                
                 var result =  Mapper.Map<List<Entities.OrderCustomerPhone>, List<ServiceDataContracts.OrderCustomerPhone>>(res);
                 return new OperationResultValue<List<ServiceDataContracts.OrderCustomerPhone>>
                 {

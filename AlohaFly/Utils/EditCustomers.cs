@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlohaService.ServiceDataContracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,22 @@ namespace AlohaFly.Utils
 
         }
 
-       
+        public static void MergeTwoCustomers(OrderCustomer cust1, OrderCustomer cust2)
+        {
+            var ordrs = DataExtension.DataCatalogsSingleton.Instance.OrdersToGoData.Data.Where(b => b.OrderCustomerId == cust2.Id).ToList(); ;
+            if (ordrs != null)
+            {
+                foreach (var ord in ordrs)
+                {
+                    ord.OrderCustomerId = cust1.Id;
+                    DataExtension.DataCatalogsSingleton.Instance.OrdersToGoData.EndEdit(ord);
+                }
+                cust2.IsActive = false;
+                DataExtension.DataCatalogsSingleton.Instance.OrderCustomerData.EndEdit(cust2);
+                DataExtension.DataCatalogsSingleton.Instance.OrderCustomerData.EndEdit(cust1); //Пересчет
+            }
+        }
+
 
         public static void MergeCustomers()
         {

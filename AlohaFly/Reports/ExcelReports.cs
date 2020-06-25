@@ -33,6 +33,7 @@ namespace AlohaFly.Reports
         private readonly string templateMenuPath = @"Menu.xltx";
         private readonly string templateInvoiceFlyNameRus = @"InvoiceTemplateRus.xltx";
         private readonly string templateInvoiceFlyNameEng = @"InvoiceTemplateEng.xltx";
+        private readonly string templateAnalitikReport = @"AnalRepTemplate.xltx";
 
 
         public void ToFlyMenuCreate(OrderFlight order)
@@ -45,7 +46,18 @@ namespace AlohaFly.Reports
         }
 
 
-        public void InvoiceToFlyCreate(OrderFlight order, bool rus,bool showDiscount)
+        public void AnaliticReportCreate(DateTime sDt, DateTime eDt)
+        {
+            app = new Microsoft.Office.Interop.Excel.Application();
+            app.Visible = true;
+            Wb = app.Workbooks.Add(System.AppDomain.CurrentDomain.BaseDirectory + @"\" + templateFolder + templateAnalitikReport);
+            Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)Wb.ActiveSheet;
+
+            var data = Analytics.ReportsGeneratorSingleton.Instance.GetSebesReportData(sDt, eDt);
+        }
+
+
+            public void InvoiceToFlyCreate(OrderFlight order, bool rus,bool showDiscount)
         {
             if (order == null) return;
             app = new Microsoft.Office.Interop.Excel.Application();
@@ -66,14 +78,11 @@ namespace AlohaFly.Reports
             worksheet.Cells[10, 6] = order.Aircraft;
             worksheet.Cells[11, 6] = order.PersonCount==0 ? "": order.PersonCount.ToString();
 
-
-
-
             int rowIndex = 14;
-            foreach (var d in order.DishPackages)
+            foreach (var d in order.DishPackages.Where(a=>!a.Deleted).OrderBy(a=>a.PositionInOrder))
             {
 
-                if (rowIndex < order.DishPackages.Count+ 13)
+                if (rowIndex < order.DishPackages.Where(a => !a.Deleted).Count()+ 13)
                 {
                     ((worksheet.Cells[rowIndex+1, 2] as Range).EntireRow as Range).Insert(XlInsertShiftDirection.xlShiftDown, false);
 
@@ -118,12 +127,12 @@ namespace AlohaFly.Reports
 
 
             worksheet.Cells[rowIndex, 6] = order.DishPackages.Sum(a=>a.Amount);
-            worksheet.Cells[rowIndex, 8] = order.OrderTotalSumm;
+            worksheet.Cells[rowIndex, 8] = showDiscount ? order.OrderTotalSumm: order.OrderSumm;
             rowIndex += 2;
 
             worksheet.Cells[rowIndex, 1] = worksheet.Cells[rowIndex, 1].Value.ToString() + Math.Ceiling(((decimal)rowIndex+14)/45).ToString();
             rowIndex++;
-            worksheet.Cells[rowIndex, 1] = worksheet.Cells[rowIndex, 1].Value.ToString() + order.DishPackages.Count.ToString();
+            worksheet.Cells[rowIndex, 1] = worksheet.Cells[rowIndex, 1].Value.ToString() + order.DishPackages.Where(a => !a.Deleted).Count().ToString();
             worksheet.Cells[rowIndex + 12, 3] = order.NumberOfBoxes;
 
         }

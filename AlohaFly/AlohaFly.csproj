@@ -362,6 +362,7 @@
     <Compile Include="Analytics\MainAnalyticsViewModel.cs" />
     <Compile Include="Analytics\MenuItems.cs" />
     <Compile Include="Analytics\PivotGridAirCompaniesViewModel.cs" />
+    <Compile Include="Analytics\ReportsGenerator.cs" />
     <Compile Include="Analytics\RevenueInfo.cs" />
     <Compile Include="Analytics\ServerData.cs" />
     <Compile Include="Calc.cs" />
@@ -381,9 +382,11 @@
     <Compile Include="Import\OrderFlightImport.cs" />
     <Compile Include="Interface\IMenuItem.cs" />
     <Compile Include="Models\AddOrderCustomerViewModel.cs" />
+    <Compile Include="Models\SetExternalDishLinkModel.cs" />
     <Compile Include="Models\ToGoClient\ToGoClientFinderBaseViewModel.cs" />
     <Compile Include="Models\ToGoClient\ToGoClientFinderByAddressViewModel .cs" />
     <Compile Include="Models\ToGoClient\ToGoClientFinderByNamePhoneViewModel.cs" />
+    <Compile Include="Models\ToGoClient\ToGoMergeCustomers.cs" />
     <Compile Include="Models\ToGoOrder\AddToGoOrderViewModel.cs" />
     <Compile Include="Models\ToGoClient\DDTest.cs" />
     <Compile Include="Models\ToGoClient\ShowMapViewModel.cs" />
@@ -443,6 +446,7 @@
     <Compile Include="Reports\WordReports.cs" />
     <Compile Include="SH\SHUtils.cs" />
     <Compile Include="SH\SHWrapper.cs" />
+    <Compile Include="SH\SHWrapperExt.cs" />
     <Compile Include="UI\AirCompaniesOrders.xaml.cs">
       <DependentUpon>AirCompaniesOrders.xaml</DependentUpon>
     </Compile>
@@ -524,6 +528,12 @@
     <Compile Include="UI\ToGo\CtrlToGoClientStat.xaml.cs">
       <DependentUpon>CtrlToGoClientStat.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\WndSetExternalDishLink.xaml.cs">
+      <DependentUpon>WndSetExternalDishLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ToGo\WndMergeCustomers.xaml.cs">
+      <DependentUpon>WndMergeCustomers.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UIModify.cs" />
     <Compile Include="UI\WndChangeOrderStatus.xaml.cs">
       <DependentUpon>WndChangeOrderStatus.xaml</DependentUpon>
@@ -582,6 +592,14 @@
     <Page Include="UI\ToGo\CtrlToGoClientStat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WndSetExternalDishLink.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\ToGo\WndMergeCustomers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\WndShowMap.xaml">
       <SubType>Designer</SubType>

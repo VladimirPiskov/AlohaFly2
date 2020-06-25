@@ -612,6 +612,13 @@ namespace AlohaService
             return dishService.GetDishPage(filter, page);
         }
 
+
+        public OperationResult SetExternalLink(long dishId, int marketingChanel, long externalId)
+        {
+            return dishService.SetExternalLink(dishId, marketingChanel, externalId);
+        }
+
+
         #endregion Dish
 
         #region Driver
@@ -736,6 +743,12 @@ namespace AlohaService
         public OperationResultValue<ServiceDataContracts.OrderCustomer> GetOrderCustomer2(long orderCustomerId)
         {
             return orderCustomerService.GetOrderCustomer2(orderCustomerId);
+        }
+
+
+        public OperationResult MergeCustomers(ServiceDataContracts.OrderCustomer orderCustomer1, ServiceDataContracts.OrderCustomer orderCustomer2)
+        {
+            return orderCustomerService.MergeCustomers(orderCustomer1, orderCustomer2);
         }
 
         #endregion Order Customer

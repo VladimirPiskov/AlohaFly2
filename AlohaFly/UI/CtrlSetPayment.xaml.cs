@@ -19,6 +19,7 @@ namespace AlohaFly.UI
         }
         public void Init(OrderToGo ord)
         {
+            int n = 0;
             var pps = DataExtension.DataCatalogsSingleton.Instance.PaymentData.Data.Where(a => a.ToGo);
             foreach (var p in pps)
             {
@@ -36,7 +37,15 @@ namespace AlohaFly.UI
                     Tag = p.Id
                 };
                 btn.Click += Btn_Click;
-                stMain.Children.Add(btn);
+                if (n < 8)
+                {
+                    stMain.Children.Add(btn);
+                }
+                else
+                {
+                    stMain2.Children.Add(btn);
+                }
+                n++;
             }
 
         }

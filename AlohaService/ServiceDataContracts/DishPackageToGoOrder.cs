@@ -60,6 +60,9 @@ namespace AlohaService.ServiceDataContracts
         public int DeletedStatus { get; set; }
         [DataMember]
         public long SpisPaymentId { get; set; }
+
+        [DataMember]
+        public long ExternalCode { get; set; }
         public Payment SpisPayment { get; set; }
         public string NameWithDeletedInfo
         {

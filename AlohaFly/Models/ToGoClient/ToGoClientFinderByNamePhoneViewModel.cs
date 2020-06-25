@@ -24,6 +24,7 @@ namespace AlohaFly.Models.ToGoClient
         {
             var res2 = new List<ToGoClientFinderItemViewModel>();
 
+            
 
             List<OrderCustomer> res = new List<OrderCustomer>();
             var PrPhones = DataCatalogsSingleton.Instance.OrderCustomerPhoneData.Data.Where(a => a.IsPrimary && a.Phone != null && a.Phone.Contains(arg));

@@ -18,17 +18,28 @@ namespace AlohaService.BusinessServices.External
         }
         protected override long GetDishIdFromBarcode(int barcode,out string name, out bool succeessful)
         {
-            log.Error($"ExternalFromDeleveryClubService.GetDishIdFromBarcode()");
+            log.Debug($"ExternalFromDeleveryClubService.GetDishIdFromBarcode() extern barcode: "+ barcode);
             name = "";
-            if (db.DishExternalLinks.Any(a => a.MarketingChanelId ==marketingChanelId && a.ExternalId==barcode))
+            try
             {
-                succeessful = true;
-                var dId = db.DishExternalLinks.First(a => a.MarketingChanelId == marketingChanelId && a.ExternalId == barcode).Id;
-                name = db.Dish.SingleOrDefault(a => a.Id == dId).Name;
-                return dId;
+                
+                if (db.DishExternalLinks.Any(a => a.MarketingChanelId == marketingChanelId && a.ExternalId == barcode))
+                {
+                    succeessful = true;
+                    var dId = db.DishExternalLinks.First(a => a.MarketingChanelId == marketingChanelId && a.ExternalId == barcode).DishId;
+                    name = db.Dish.SingleOrDefault(a => a.Id == dId).Name;
+                    log.Debug($"ExternalFromDeleveryClubService.GetDishIdFromBarcode() return " + dId);
+                    return dId;
+                }
+            }
+            catch(Exception e)
+            {
+                log.Error($"ExternalFromDeleveryClubService.GetDishIdFromBarcode() " + e.Message);
             }
             succeessful = false;
+            log.Debug($"ExternalFromDeleveryClubService.GetDishIdFromBarcode() return Unknown" );
             return db.Dish.First(a => a.Barcode == -1).Id;
+
 
         }
     }

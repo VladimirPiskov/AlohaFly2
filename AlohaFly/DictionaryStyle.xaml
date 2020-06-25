@@ -39,7 +39,17 @@
 
             </Style>
         </localUI:OpenItemStyleSelector.OpenItemStyle2>
-        
+
+
+        <localUI:OpenItemStyleSelector.OpenItemStyle3>
+            <Style TargetType="telerik:GridViewRow">
+                <Setter Property="Background" Value="MistyRose"/>
+                <Setter Property="BorderBrush" Value="LightGray"/>
+                <Setter Property="BorderThickness" Value="1"/>
+
+            </Style>
+        </localUI:OpenItemStyleSelector.OpenItemStyle3>
+
         <localUI:OpenItemStyleSelector.ChangePriceStyle>
             <Style TargetType="telerik:GridViewRow">
                 <Setter Property="Foreground" Value="Red"/>

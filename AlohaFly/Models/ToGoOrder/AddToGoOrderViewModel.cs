@@ -330,7 +330,7 @@ namespace AlohaFly.Models
                     logger.Error("Error save print " + e.Message);
                 }
 
-                if (Order.OrderStatus != OrderStatus.InWork)
+                if (Order.OrderStatus != OrderStatus.InWork && Order.OrderStatus != OrderStatus.New)
                 {
 
                     var CreateSHres = SH.SHWrapper.CreateSalesInvoiceSync(Order, out string err);
@@ -485,6 +485,24 @@ namespace AlohaFly.Models
             SetFocusedCommands();
 
             //DataExtension.DataCatalogsSingleton.Instance.PropertyChanged += DataCatalog_PropertyChanged;
+
+
+            EditExternalDishCommand = new DelegateCommand(_ =>
+            {
+                if (model.RemoveToOrderDish != null)
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var extWndModel = new  SetExternalDishLinkModel(model.Order, model.RemoveToOrderDish);
+                    var mergeWnd = new UI.WndSetExternalDishLink()
+                    {
+                        DataContext = extWndModel
+                    };
+
+                    UI.UIModify.ShowDialogWnd(mergeWnd);
+                    });
+                }
+            });
 
             AddClientCommand = new DelegateCommand(_ =>
             {
@@ -832,6 +850,10 @@ namespace AlohaFly.Models
 
         public ICommand AddClientCommand { get; set; }
         public ICommand EditClientCommand { get; set; }
+
+
+        public ICommand EditExternalDishCommand { get; set; }
+    
 
         /*
         private void DataCatalog_PropertyChanged(object sender, PropertyChangedEventArgs e)

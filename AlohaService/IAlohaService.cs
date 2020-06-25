@@ -222,6 +222,9 @@ namespace AlohaService
         [OperationContract]
         OperationResultValue<List<Dish>> GetDishPage(DishFilter filter, PageInfo page);
 
+        [OperationContract]
+        OperationResult SetExternalLink(long dishId, int marketingChanel, long externalId);
+
         #endregion Dish
 
 
@@ -311,6 +314,9 @@ namespace AlohaService
         OperationResultValue<OrderCustomer> GetOrderCustomer2(long orderCustomerId);
         [OperationContract]
         OperationResultValue<List<OrderCustomer>> GetOrderCustomerList2();
+
+        [OperationContract]
+        OperationResult MergeCustomers(ServiceDataContracts.OrderCustomer orderCustomer1, ServiceDataContracts.OrderCustomer orderCustomer2);
 
         #endregion Order Customer
 

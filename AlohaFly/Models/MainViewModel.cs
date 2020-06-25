@@ -182,9 +182,9 @@ namespace AlohaFly.Models
 
             if (UIElement.DataContext is Models.ViewModelPane vm)
             {
-                if (Panes.Where(a => a.Header?.ToString().Replace("*", "") == vm.Header.Replace("*", "") && a.IsVisible).Count() > 0)
+                if (Panes.Any(a => a.Header?.ToString().Replace("*", "") == vm.Header.Replace("*", "") && a.IsVisible))
                 {
-                    ShowPane(Panes.Single(a => a.Header?.ToString().Replace("*", "") == vm.Header.Replace("*", "") && a.IsVisible));
+                    ShowPane(Panes.FirstOrDefault(a => a.Header?.ToString().Replace("*", "") == vm.Header.Replace("*", "") && a.IsVisible));
                 }
                 else
                 {
@@ -217,9 +217,9 @@ namespace AlohaFly.Models
             else if (UIElement.DataContext is Models.ViewModelPaneReactiveObject vm2)
             {
 
-                if (Panes.Where(a => a.Header?.ToString().Replace("*", "") == vm2.Header.Replace("*", "") && a.IsVisible).Count() > 0)
+                if (Panes.Any(a => a.Header?.ToString().Replace("*", "") == vm2.Header.Replace("*", "") && a.IsVisible))
                 {
-                    ShowPane(Panes.Single(a => a.Header?.ToString().Replace("*", "") == vm2.Header.Replace("*", "") && a.IsVisible));
+                    ShowPane(Panes.FirstOrDefault(a => a.Header?.ToString().Replace("*", "") == vm2.Header.Replace("*", "") && a.IsVisible));
                 }
                 else
                 {

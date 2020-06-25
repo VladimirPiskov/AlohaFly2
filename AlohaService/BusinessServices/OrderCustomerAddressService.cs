@@ -68,7 +68,8 @@ namespace AlohaService.BusinessServices
             try
             {
                 var dbContext = new AlohaDb();
-                var res = dbContext.OrderCustomerAddresses.Where(a=>a.IsActive).ToList();
+                var custsAddr = dbContext.OrderCustomers.Where(a => a.IsActive).SelectMany(a => a.Addresses).Select(a => a.Id).ToList();
+                var res = dbContext.OrderCustomerAddresses.Where(a=>a.IsActive && custsAddr.Contains(a.Id)).ToList();
                 var result =Mapper.Map<List<Entities.OrderCustomerAddress>, List<ServiceDataContracts.OrderCustomerAddress>>(res);
                 
                 return new OperationResultValue<List<ServiceDataContracts.OrderCustomerAddress>>

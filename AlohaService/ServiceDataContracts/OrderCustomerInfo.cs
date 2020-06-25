@@ -15,6 +15,8 @@ namespace AlohaService.ServiceDataContracts
         [DataMember]
         public int OrderCount { get; set; }
         [DataMember]
+        public int OrderCountAll { get; set; }
+        [DataMember]
         public decimal MoneyCount { get; set; }
 
 

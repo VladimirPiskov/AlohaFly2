@@ -54,6 +54,7 @@ namespace AlohaService.BusinessServices
                 log.Debug($"RecalcCustomerAllInfo info get");
                 DateTime dtS = DateTime.Now.AddMonths(-deepMonthCount);
                 info.OrderCount = db2.OrderToGo.Where(a => a.DeliveryDate>=dtS && a.OrderStatus>2 && a.OrderCustomerId == orderCustomerId).Count();
+                info.OrderCountAll = db2.OrderToGo.Where(a => a.OrderStatus > 2 && a.OrderCustomerId == orderCustomerId).Count();
                 log.Debug($"RecalcCustomerAllInfo OrderCount get");
                 var ordrs = db2.OrderToGo.Where(a => a.DeliveryDate >= dtS && a.OrderStatus > 2 &&  (a.OrderCustomerId ?? 0)== orderCustomerId && a.DishPackages.Count > 0).ToList();
                 log.Debug($"RecalcCustomerAllInfo ordrs get");

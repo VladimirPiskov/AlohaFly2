@@ -207,7 +207,8 @@
 
         </StackPanel>
         <telerik:RadGridView  x:Name="ordersGrid"
-            
+            CanUserSearch="True"
+                              ShowSearchPanel="True"
                     RowHeight="23"
                     Grid.Row="1" Grid.Column="0"
                     RowIndicatorVisibility="Collapsed"
