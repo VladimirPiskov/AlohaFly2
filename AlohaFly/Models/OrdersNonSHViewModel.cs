@@ -42,13 +42,18 @@ namespace AlohaFly.Models
 
             CreateAllToFlySHInvoice = new DelegateCommand(_ =>
             {
-                ReturnMessage = "";
-                foreach (var ord in Orders)
+                try
                 {
-                    mCreateSHToFlyInvoice((OrderFlight)ord);
+                    ReturnMessage = "";
+                    foreach (var ord in Orders)
+                    {
+                        mCreateSHToFlyInvoice((OrderFlight)ord);
+                    }
+                    RaisePropertyChanged("Orders");
+                    ShowEndMsg();
                 }
-                RaisePropertyChanged("Orders");
-                ShowEndMsg();
+                catch
+                { }
             });
 
 

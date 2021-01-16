@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,9 +63,68 @@ namespace AlohaFly.Reports
             */
         }
 
-
-        private string RemoveStreetFromAddr(string addrStr)
+        public void ShowOrderssReport(DateTime sDt, DateTime eDt)
         {
+            OpenXls();
+            try
+            {
+                WriteStandartHeader("Отчет по заказам ToGo", sDt, eDt);
+
+                var data = DataExtension.DataCatalogsSingleton.Instance.OrdersToGoData.Data.Where(a => a.DeliveryDate >= sDt && a.DeliveryDate < eDt.AddDays(1) && a.OrderStatus != AlohaService.ServiceDataContracts.OrderStatus.Cancelled).OrderBy(a=>a.DeliveryDate);
+                int row = 5;
+                Ws.Cells[row, 1] = "Id";
+                Ws.Cells[row, 2] = "Клиент";
+                Ws.Cells[row, 3] = "Адрес";
+                Ws.Cells[row, 4] = "Дата создания";
+                Ws.Cells[row, 5] = "Дата доставки";
+                Ws.Cells[row, 6] = "Канал продаж";
+                Ws.Cells[row, 7] = "Сумма заказа";
+                (Ws.Rows[row] as Range).HorizontalAlignment = XlHAlign.xlHAlignCenter ;
+                (Ws.Rows[row] as Range).Font.Bold = true;
+
+                row++;
+                foreach (var ord in data)
+                {
+                    Ws.Cells[row, 1] = ord.Id;
+                    Ws.Cells[row, 2] = ord.OrderCustomer.Name;
+                    Ws.Cells[row, 3] = RemoveStreetFromAddr(ord.Address?.Address);
+                    Ws.Cells[row, 4] = ord.CreationDate?.ToString("dd/MM/yyyy HH:mm");
+                    Ws.Cells[row, 5] = ord.DeliveryDate.ToString("dd/MM/yyyy HH:mm");
+
+                    Ws.Cells[row, 6] = ord.MarketingChannel?.Name;
+                    Ws.Cells[row, 7] = ord.OrderTotalSumm;
+                    
+
+
+                    (Ws.Cells[row, 1] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    (Ws.Cells[row, 2] as Range).HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                    (Ws.Cells[row, 3] as Range).HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                    (Ws.Cells[row, 4] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    (Ws.Cells[row, 5] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+
+                    (Ws.Cells[row, 6] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    (Ws.Cells[row, 7] as Range).HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    row++;
+                }
+
+                for (int c = 1; c <= 7; c++)
+            {
+                Ws.Columns[c].AutoFit();
+            }
+
+                app.Visible = true;
+
+            }
+            catch(Exception e)
+            {
+                UI.UIModify.ShowAlert("Ошибка при создании отчета  по заказам ToGo " +e.Message);
+            }
+        }
+
+
+                private string RemoveStreetFromAddr(string addrStr)
+        {
+            if (String.IsNullOrEmpty(addrStr)) return "";
             if (addrStr.ToLower().StartsWith("ул.") || addrStr.ToLower().StartsWith("ул "))
             {
                 return addrStr.Substring(3).Trim();
@@ -86,7 +146,7 @@ namespace AlohaFly.Reports
                 return addrStr.Substring(6).Trim();
             }
 
-            return addrStr; 
+            return addrStr.Replace('\r',' ').Replace('\n', ' ').Trim(); 
 
         }
         public  void ShowClientsReport(DateTime sDt, DateTime eDt)

@@ -18,15 +18,42 @@ namespace AlohaFly.Models.ToGoClient
         {
                     WatermarkContent  = "Введите ФИО или телефон для поиска клиента";
 
-    }
+            prData = DataCatalogsSingleton.Instance.OrderCustomerPhoneData.Data.Where(a => a.IsPrimary && a.Phone!= null).Select(a => new FindData()
+            {
+                Data = a.Phone,
+                Id = a.Id,
+                OrderCustomer = DataCatalogsSingleton.Instance.OrderCustomerData.Data.FirstOrDefault(b => b.Id == a.OrderCustomerId)
+            }).Where(a => a.OrderCustomer != null).ToList();
 
-    protected override List<ToGoClientFinderItemViewModel> GetFindResults(string arg)
+            custData = DataCatalogsSingleton.Instance.OrderCustomerData.Data.Where(a => !string.IsNullOrEmpty(a.FullName)).Select(a => new FindData()
+            {
+                Data = a.FullName.ToLower().Replace('ё', 'е'),
+                Id = a.Id,
+                OrderCustomer = a
+            }).ToList();
+
+            nprData = DataCatalogsSingleton.Instance.OrderCustomerPhoneData.Data.Where(a => !a.IsPrimary && a.Phone != null).Select(a => new FindData()
+            {
+                Data = a.Phone,
+                Id = a.Id,
+                OrderCustomer = DataCatalogsSingleton.Instance.OrderCustomerData.Data.FirstOrDefault(b => b.Id == a.OrderCustomerId)
+            }).Where(a => a.OrderCustomer != null).ToList();
+        }
+
+        List<FindData> prData = new List<FindData>();
+        List<FindData> custData = new List<FindData>();
+
+        List<FindData> nprData = new List<FindData>();
+
+
+        protected override List<ToGoClientFinderItemViewModel> GetFindResults(string arg)
         {
             var res2 = new List<ToGoClientFinderItemViewModel>();
 
             
 
             List<OrderCustomer> res = new List<OrderCustomer>();
+            /*
             var PrPhones = DataCatalogsSingleton.Instance.OrderCustomerPhoneData.Data.Where(a => a.IsPrimary && a.Phone != null && a.Phone.Contains(arg));
             if (PrPhones != null && PrPhones.Any())
             {
@@ -39,6 +66,15 @@ namespace AlohaFly.Models.ToGoClient
             {
                 res.AddRange(DataCatalogsSingleton.Instance.OrderCustomerData.Data.Where(a => AllPhones.Select(b => b.OrderCustomerId).Contains(a.Id)));
             }
+            */
+            string arg2 = arg.ToLower().Replace('ё', 'е');
+
+            res.AddRange(prData.Where(a => a.Data.Contains(arg2)).Select(a => a.OrderCustomer));
+            res.AddRange(custData.Where(a => a.Data.Contains(arg2)).Select(a => a.OrderCustomer));
+
+            res.AddRange(nprData.Where(a => a.Data.Contains(arg2)).Select(a => a.OrderCustomer));
+
+
             if (res != null)
             {
                 

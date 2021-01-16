@@ -17,14 +17,39 @@ namespace AlohaFly.Models.ToGoClient
         public ToGoClientFinderByAddressViewModel()
         {
             WatermarkContent = "Введите адрес для поиска клиента";
+
+            prData = DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data.Where(a=>a.IsPrimary && a.Address!=null).Select(a => new FindData()
+            {
+                Data = a.Address.ToLower().Replace('ё', 'е'),
+                Id = a.Id,
+                OrderCustomer = DataCatalogsSingleton.Instance.OrderCustomerData.Data.FirstOrDefault(b=>b.Id==a.OrderCustomerId)
+            }).Where(a=>a.OrderCustomer!=null).ToList();
+
+            nprData = DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data.Where(a => !a.IsPrimary && a.Address != null).Select(a => new FindData()
+            {
+                Data = a.Address.ToLower().Replace('ё', 'е'),
+                Id = a.Id,
+                OrderCustomer = DataCatalogsSingleton.Instance.OrderCustomerData.Data.FirstOrDefault(b => b.Id == a.OrderCustomerId)
+            }).Where(a => a.OrderCustomer != null).ToList();
         }
-                     
+
+        List<FindData> prData = new List<FindData>();
+        List<FindData> nprData = new List<FindData>();
+
         protected override List<ToGoClientFinderItemViewModel> GetFindResults(string arg)
         {
             var res2 = new List<ToGoClientFinderItemViewModel>();
+            string arg2 = arg.ToLower().Replace('ё', 'е');
 
 
             List<OrderCustomer> res = new List<OrderCustomer>();
+
+            res.AddRange(prData.Where(a=>a.Data.Contains(arg2)).Select(a=>a.OrderCustomer));
+            res.AddRange(nprData.Where(a => a.Data.Contains(arg2)).Select(a => a.OrderCustomer));
+
+
+
+            /*
             var PrAddresses = DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data.Where(a => a.IsPrimary && a.Address != null && a.Address.ToLower().Replace('ё', 'е').Contains(arg.ToLower().Replace('ё', 'е')));
             if (PrAddresses != null && PrAddresses.Any())
             {
@@ -37,9 +62,10 @@ namespace AlohaFly.Models.ToGoClient
             {
                 res.AddRange(DataCatalogsSingleton.Instance.OrderCustomerData.Data.Where(a => AllAddresses.Select(b => b.OrderCustomerId).Contains(a.Id)));
             }
+            */
             if (res != null)
             {
-                
+
                 int fontSize1 = 18;
                 int fontSize2 = 14;
                 res2 = res.Distinct().Select(a => new ToGoClientFinderItemViewModel()
@@ -50,7 +76,7 @@ namespace AlohaFly.Models.ToGoClient
                     Phone =
                     GetFindHTML(
                     string.Join(", ", DataCatalogsSingleton.Instance.OrderCustomerAddressData.Data
-                    .Where(b => b.OrderCustomerId == a.Id && b.Address != null && (b.Address.Contains(arg) || (b.IsPrimary)  ))
+                    .Where(b => b.OrderCustomerId == a.Id && b.Address != null && (b.Address.Contains(arg) || (b.IsPrimary)))
                     .Select(b => b.Address).ToArray())
                     , arg, fontSize2),
 
@@ -61,6 +87,14 @@ namespace AlohaFly.Models.ToGoClient
 
 
     }
+
+    public class FindData
+        {
+        public FindData() { }
+        public long Id { set; get; }
+        public string Data { set; get; }
     
+        public OrderCustomer OrderCustomer { set; get; }
+    }
 
 }

@@ -59,7 +59,7 @@ namespace AlohaFlyAdmin.UI
         {
             //CTmp.CreateEMUser();
             //CTmp.CreateOperatorUser1();
-            CTmp.CreateOperatorUser11();
+            CTmp.CreateOperatorUser12();
 
             // CTmp.CreateTUser();
             //CTmp.CreateAlohaSharUser2();

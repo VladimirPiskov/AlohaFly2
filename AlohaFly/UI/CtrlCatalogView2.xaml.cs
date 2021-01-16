@@ -1,4 +1,5 @@
 ﻿using AlohaFly.DataExtension;
+using AlohaFly.Models;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -78,7 +79,6 @@ namespace AlohaFly.UI
 
         private void RadDataForm_AddedNewItem(object sender, Telerik.Windows.Controls.Data.DataForm.AddedNewItemEventArgs e)
         {
-
             
             if (!((Models.CatalogViewModel)DataContext).AddItem())
             {
@@ -86,11 +86,35 @@ namespace AlohaFly.UI
             }
             else
             {
+                radDataForm.CancelEdit();
+                mainGrid.FilterDescriptors.Clear();
+                radDataForm.CurrentItem = GetMaxIdElement();
+                //radDataForm.MoveCurrentToLast();
+                //radDataForm.ItemsSource
+                //radDataForm.CurrentItem
+                radDataForm.BeginEdit();
+                mainGrid.ScrollIntoViewAsync(mainGrid.CurrentItem, _ => { });
                 IsNew = true;
             }
             
         }
+        
+        private object GetMaxIdElement()
+        {
+            var la = ((CatalogViewModel)radDataForm.DataContext).LastAddedItem;
+            var lId = ((dynamic)la).Id;
+            foreach (var itm in radDataForm.ItemsSource)
+            {
+                var id = ((dynamic)itm).Id;
+                if (id == lId)
+                {
+                    return itm;
+                }
 
+            }
+            return null;
+        }
+        
         private void radDataForm_DeletingItem(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = !((Models.CatalogViewModel)DataContext).DeleteItem();
@@ -105,10 +129,12 @@ namespace AlohaFly.UI
             }
             else
             {
+                /*
                 if (IsNew)
                 {
                     ((Models.CatalogViewModel)DataContext).CancelAddItem();
                 }
+                */
             }
             IsNew = false;
             Editing = false;

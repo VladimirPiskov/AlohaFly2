@@ -86,9 +86,25 @@ namespace AlohaFly.Reports
                 {
                     ((worksheet.Cells[rowIndex+1, 2] as Range).EntireRow as Range).Insert(XlInsertShiftDirection.xlShiftDown, false);
 
-                    //worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 5]].Cells.Merge(Type.Missing);
-                    //worksheet.Range[worksheet.Cells[rowIndex, 1], worksheet.Cells[rowIndex, 8]].Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                    
+                    
+                    //worksheet.Rows[rowIndex+1].AutoFit();
                 }
+
+                worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 5]].Merge();
+
+                worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 5]].WrapText = true;
+
+
+                //Это для переноса
+                worksheet.Range[worksheet.Cells[rowIndex, 15], worksheet.Cells[rowIndex, 15]].WrapText = true;
+                worksheet.Cells[rowIndex, 15] = rus ? d.Dish.Name : d.Dish.EnglishName;
+                worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 6]].EntireRow.AutoFit();
+                var h = worksheet.Rows[rowIndex].RowHeight;
+                worksheet.Cells[rowIndex, 15] = "";
+                worksheet.Rows[rowIndex].RowHeight = h;
+                //Конец Это для переноса
+
 
                 worksheet.Cells[rowIndex, 1] = rowIndex-13;
                 worksheet.Cells[rowIndex, 2] = d.Dish.Barcode;
@@ -100,9 +116,25 @@ namespace AlohaFly.Reports
                 {
                     worksheet.Cells[rowIndex, 3] = rus ? d.Dish.Name : d.Dish.EnglishName;
                 }
-                    worksheet.Cells[rowIndex, 6] = d.Amount;
+
+
+                if (rus && order.AirCompany.Id == 129 && !string.IsNullOrWhiteSpace(d.Dish.RussianNameExt))
+                {
+                    worksheet.Cells[rowIndex, 3] = d.Dish.RussianNameExt;
+                }
+
+
+                worksheet.Cells[rowIndex, 6] = d.Amount;
                 worksheet.Cells[rowIndex, 7] = d.TotalPrice;
                 worksheet.Cells[rowIndex, 8] = d.TotalSumm;
+
+                
+                //worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 5]].Cells.Merge(Type.Missing);
+                worksheet.Range[worksheet.Cells[rowIndex, 1], worksheet.Cells[rowIndex, 8]].Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+                
+                //worksheet.Range[worksheet.Cells[rowIndex, 3], worksheet.Cells[rowIndex, 5]].EntireRow.AutoFit();
+
+
                 rowIndex++;
             }
             if (order.ExtraCharge > 0)
@@ -142,7 +174,6 @@ namespace AlohaFly.Reports
 
         public void ToFlyMenuCreateForPassage(OrderFlight order, int pn)
         {
-
             try
             {
                 logger.Debug($"ToFlyMenuCreate order:{order.Id}; template:{templateFolder + templateMenuPath}");

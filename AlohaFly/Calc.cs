@@ -1,5 +1,6 @@
 ﻿using AlohaFly.DataExtension;
 using AlohaService.ServiceDataContracts;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,24 @@ namespace AlohaFly
 {
     public static class Calc
     {
-
+        static Logger _logger = LogManager.GetCurrentClassLogger();
         public static void CalkDiscounts(List<OrderFlight> orders)
         {
             foreach (int arcId in orders.Where(a => a.OrderStatus != OrderStatus.Closed && (a.AirCompany?.DiscountType == null) && a.AirCompanyId != MainClass.AirAvangardId).Select(a => a.AirCompany.Id).Distinct())
             {
-                foreach (var ord in orders.Where(a => a.AirCompany.Id == arcId).OrderBy(a => a.DeliveryDate))
+                try
                 {
-                    if (ord.OrderStatus != OrderStatus.Closed)
+                    foreach (var ord in orders.Where(a => a.AirCompany.Id == arcId).OrderBy(a => a.DeliveryDate))
                     {
-                        ord.DiscountSumm = 0;
+                        if (ord.OrderStatus != OrderStatus.Closed)
+                        {
+                            ord.DiscountSumm = 0;
+                        }
                     }
+                }
+                catch(Exception e)
+                {
+                    _logger.Error($"CalkDiscounts {e.Message}");
                 }
             }
 
@@ -28,7 +36,7 @@ namespace AlohaFly
                 if (arcId == MainClass.AirAvangardId)//Это схема Авангарда
                 {
                     decimal AvSumm = orders.Where(a => a.AirCompany.Id == arcId).Sum(a => a.OrderSumm);
-                    decimal NeedDiscPercent = AvSumm > 800000 ? 0.10M : (AvSumm > 500000 ? 0.08M : 0.05M);
+                    decimal NeedDiscPercent = AvSumm > 1200000 ? 0.12M : (AvSumm > 800000 ? 0.10M : (AvSumm > 500000 ? 0.08M : 0.05M));
                     decimal NeedDiscSumm = AvSumm * NeedDiscPercent;
                     decimal AlreadyDisc = orders.Where(a => a.AirCompany.Id == arcId && a.OrderStatus == OrderStatus.Closed).Sum(a => a.DiscountSumm);
                     decimal NeedDiscForClosed = orders.Where(a => a.AirCompany.Id == arcId && a.OrderStatus == OrderStatus.Closed).Sum(a => a.OrderSumm) * NeedDiscPercent;

@@ -196,6 +196,22 @@ namespace AlohaFlyAdmin
             AlohaFly.DBProvider.GetClient().AddUserToGroup(userid, OperGrId);
         }
 
+        public static void CreateOperatorUser12()
+        {
+            var U = new UserInfo()
+            {
+                FullName = "Алиса Крутова",
+                Email = "a.k@mail.ru",
+                Password = "123",
+                UserName = "a.k",
+                Phone = "89017777777",
+                UserRole = UserRole.Other
+            };
+            long userid = AlohaFly.DBProvider.GetClient().CreateUser(U).CreatedObjectId;
+            AlohaFly.DBProvider.GetClient().AddUserToGroup(userid, OperGrId);
+        }
+
+
         public static void CreateOperatorUser10()
         {
             var U = new UserInfo()

@@ -95,6 +95,20 @@ namespace AlohaFly.Models
         public bool CommitEditItem(T item)
         {
             //var res = dBData.EndEdit(item);
+            if (item is Dish tItm) //Костыль для блюд
+            {
+                if (DataExtension.DataCatalogsSingleton.Instance.DishKitchenGroupData.Data.Any(a => a.Id == tItm.DishKitсhenGroupId))
+                {
+                    tItm.DishKitсhenGroup = DataExtension.DataCatalogsSingleton.Instance.DishKitchenGroupData.Data.FirstOrDefault(a => a.Id == tItm.DishKitсhenGroupId);
+                }
+                if (DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.Any(a => a.Id == tItm.DishLogicGroupId))
+                {
+                    tItm.DishLogicGroup = DataExtension.DataCatalogsSingleton.Instance.DishLogicGroupData.Data.FirstOrDefault(a => a.Id == tItm.DishLogicGroupId);
+                }
+            }
+
+
+
             return dBData.EndEdit(item).Succeess;
 
           // return DBDataExtractor<T>.EditItem(EditFuncs.EditItemFunc, item);
@@ -146,6 +160,8 @@ namespace AlohaFly.Models
         public abstract bool AddItem();
         public abstract bool DeleteItem();
         public abstract bool CancelAddItem();
+
+        public object LastAddedItem { set; get; }
 
         /*
         public void CommitChanges()
@@ -216,12 +232,48 @@ namespace AlohaFly.Models
             return _model.CommitEditItem(SelectedItem);
         }
 
+
+        private int GetMaxBC()
+        {
+            var maxBc = 2095;
+            for (var bc = maxBc; bc < 999999; bc++)
+            {
+
+                if (!bcExist(bc))
+                {
+                    return bc;
+                }
+                
+            }
+            return 0;
+        }
+
+        private bool bcExist(int bc)
+        {
+            foreach (var d in ItemsSource)
+            {
+                if ((((dynamic)d).Barcode) == bc)
+                {
+                    return true;
+                }
+                        }
+            return false;
+        }
+
         private T AddedItem;
         public override bool AddItem()
         {
 
-            T t = new T();
+            T t = new T(); //Добавить баркод
+            if (t is Dish d)
+            {
+                d.Barcode = GetMaxBC();
+                    }
             AddedItem = _model.AddItem(t);
+            LastAddedItem = AddedItem;
+            //ItemsSource.MoveCurrentTo(AddedItem);
+
+
             /*
             if (AddedItem != null)
             {

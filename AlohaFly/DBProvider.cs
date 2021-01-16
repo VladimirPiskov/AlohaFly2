@@ -34,12 +34,12 @@ namespace AlohaFly
 #if DEBUG
 
 
-                   var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddressRelease));
+                  var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddressRelease));
                    
-                   /* 
+                 /*   
                     var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddress));
                     TestStr = "test";
-                    */
+                   */
                     
 #else
                     var address = new EndpointAddress(new Uri(Properties.Settings.Default.DBAddressRelease));
@@ -61,7 +61,7 @@ namespace AlohaFly
 
 
                     Binding binding = new CustomBinding(encoding, transport);
-                    
+                    binding.SendTimeout = new TimeSpan(0, 10, 0);
 
 
                     var channelFactory = new System.ServiceModel.ChannelFactory<AlohaService.IAlohaService>(binding, address);

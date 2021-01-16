@@ -95,9 +95,12 @@ namespace AlohaService.ServiceDataContracts
         [Display(Name = "Для Шереметьево")]
         public bool IsShar { get; set; } = false;
 
-        
-        
-        
+        [DataMember]
+        [Display(Name = "Доп. имя")]
+
+
+        public string RussianNameExt { get; set; }
+
 
 
 

@@ -198,6 +198,9 @@ namespace AlohaFly
                          new MenuItemCatalog("Клиенты ToGo", new Action(() => { Task.Run(() =>
                                Reports.ToGoReports.Instanse.ShowClientsReport(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
                         , AccessTypeConst.Access_Reports_Rep1, false),
+                         new MenuItemCatalog("Заказы ToGo", new Action(() => { Task.Run(() =>
+                               Reports.ToGoReports.Instanse.ShowOrderssReport(DataCatalogsSingleton.Instance.StartDt, DataCatalogsSingleton.Instance.EndDt)); })
+                        , AccessTypeConst.Access_Reports_Rep1, false),
 
                     };
                 }
@@ -497,17 +500,17 @@ namespace AlohaFly
         private static void ShowItemsCatalog()
         {
 
-            ShowItemsCatalog("Справочник блюд всех", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishData.Data));
+            //ShowItemsCatalog("Справочник блюд всех", new FullyObservableCollection<Dish>(DataCatalogsSingleton.Instance.DishData.Data));
 
 
-            /*
+            
             var _model = new Models.CatalogModel<Dish>(DataCatalogsSingleton.Instance.DishData);
             var ItemsCatalog = new UI.CtrlCatalogView2();
             var ItemsCatalogVm = new Models.CatalogViewModel<Dish>(_model) { Header = "Справочник блюд всех" };
             ItemsCatalogVm.CanDeleteItem = false;
             ItemsCatalog.DataContext = ItemsCatalogVm;
             MainClass.ShowUC(ItemsCatalog);
-            */
+            
         }
 
         public static void ShowItemsCatalogToFly()

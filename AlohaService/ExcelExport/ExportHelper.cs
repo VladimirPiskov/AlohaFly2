@@ -916,8 +916,18 @@ namespace AlohaService.ExcelExport
 
             worksheet.Cells[rowIndex, colIndex].SetUnderline(UnderlineType.Single);
             worksheet.Columns[colIndex].SetWidth(new ColumnWidth(120, false));
-            worksheet.Cells[rowIndex, colIndex++].SetValue(order.AirCompany.Name);
+            if (order.AirCompany.Id !=27)
+            {
+                worksheet.Cells[rowIndex, colIndex++].SetValue(order.AirCompany.Name);
+            }
+            else
+            {
+                worksheet.Cells[rowIndex, colIndex++].SetValue(@"ЗАО «ИстЮнион» ИНН 7718879020, КПП 772901001 119530,"+Environment.NewLine+ @" Москва, Россия, Очаковское шоссе, д. 34, комн. 3, оф. 25");
+                CellIndex cp111 = new CellIndex(rowIndex, colIndex - 1);
+                CellIndex cp211 = new CellIndex(rowIndex, colIndex+2);
+                worksheet.Cells[cp111, cp211].Merge();
 
+            }
             rowIndex += 2;
             colIndex = 1;
 
@@ -1158,7 +1168,8 @@ namespace AlohaService.ExcelExport
 
            //worksheet.Cells[rowIndex, colIndex].SetBorders(new CellBorders(null, border1, border1, border1, null, null, null, null));
             worksheet.Cells[rowIndex, colIndex].SetUnderline(UnderlineType.Single);
-            worksheet.Cells[rowIndex, colIndex++].SetValue("ИТОГО");
+            
+            worksheet.Cells[rowIndex, colIndex++].SetValue(order.AirCompany.Id != 27?"ИТОГО": "ИТОГО БЕЗ НДС");
             colIndex++;
             colIndex++;
           
@@ -1167,7 +1178,20 @@ namespace AlohaService.ExcelExport
             worksheet.Cells[rowIndex, colIndex++].SetValue(
                 showDiscount? order.OrderTotalSumm.ToString():order.OrderSumm.ToString()
                 );
-         
+
+            rowIndex += 3;
+            if (order.AirCompany.Id == 27)
+            {
+                worksheet.Cells[rowIndex, 2].SetValue(@"Заместитель директора / Парасинина Н.В. / ____________");
+                CellIndex cp111 = new CellIndex(rowIndex, 2);
+                CellIndex cp211 = new CellIndex(rowIndex, 7);
+                worksheet.Cells[cp111, cp211].Merge();
+
+                
+                    }
+
+
+
             return workbook;
         }
 

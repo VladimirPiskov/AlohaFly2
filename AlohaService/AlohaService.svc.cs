@@ -1334,7 +1334,11 @@ namespace AlohaService
         }
         public OperationResult ExternalCreateDeleveryClubToGoOrder(ExternalToGoOrder order)
         {
-            return externalFromDeleveryClubService.CreateToGoOrder(order);
+            //return externalFromDeleveryClubService.CreateToGoOrder(order);
+            return new OperationResult()
+            {
+                Success = true
+            };
         }
         public OperationResult ExternalCreateYandexToGoOrder(ExternalToGoOrder order)
         {

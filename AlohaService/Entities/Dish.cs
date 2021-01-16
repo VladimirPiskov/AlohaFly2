@@ -16,7 +16,7 @@ namespace AlohaService.Entities
         public decimal PriceForDelivery { get; set; }
         public bool IsToGo { get; set; } = false;
         public bool IsShar { get; set; } = false;
-
+        public string RussianNameExt { get; set; }
 
         public bool IsAlcohol { get; set; }
         public bool IsActive { get; set; }
